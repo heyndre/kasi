@@ -1,5 +1,7 @@
 <?php
 
+use App\Livewire\Student\Active as StudentActive;
+use App\Livewire\Student\Show as StudentShow;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,7 +17,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('root');
 
 Route::middleware([
     'auth:sanctum',
@@ -25,4 +27,9 @@ Route::middleware([
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
+
+
+    // Student Menu
+    Route::get('/murid/aktif', StudentActive::class)->name('student.active');
+    Route::get('/murid/data/{nim}', StudentShow::class)->name('student.show');
 });
