@@ -18,6 +18,10 @@
     <!-- Styles -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.0.0/flowbite.min.css" rel="stylesheet" />
 
+    @if (isset($style))
+        {{ $style }}
+    @endif
+
     @livewireStyles
 </head>
 
@@ -29,12 +33,18 @@
 
         <!-- Page Heading -->
         @if (isset($header))
-        <header class="bg-white shadow">
-            <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+        <header class="bg-white shadow ">
+            <div class="max-w-7xl flex justify-between items-center mx-auto py-6 px-4 sm:px-6 lg:px-8">
                 {{ $header }}
+                @if (isset($button))
+                    <div class="flex space-x-2">
+                        {{ $button }}
+                    </div>
+                @endif
             </div>
         </header>
         @endif
+
 
         <!-- Page Content -->
         <main>
@@ -46,6 +56,7 @@
 
     @livewireScripts
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.0.0/flowbite.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.1.1/datepicker.min.js"></script>
 </body>
 
 </html>

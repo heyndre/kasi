@@ -97,7 +97,7 @@
                                         {{ __('Daftar Murid Aktif') }}
                                     </x-dropdown-link>
 
-                                    <x-dropdown-link href="{{ route('profile.show') }}">
+                                    <x-dropdown-link href="{{ route('profile.show') }}" wire:navigate>
                                         {{ __('Daftar Murid Inaktif') }}
                                     </x-dropdown-link>
 
@@ -105,7 +105,7 @@
                                         {{ __('Manajemen Murid') }}
                                     </div>
 
-                                    <x-dropdown-link href="{{ route('profile.show') }}">
+                                    <x-dropdown-link href="{{ route('student.register') }}" wire:navigate>
                                         {{ __('Registrasi') }}
                                     </x-dropdown-link>
 

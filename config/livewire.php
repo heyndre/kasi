@@ -50,7 +50,7 @@ return [
     |
     */
 
-    'lazy_placeholder' => null,
+    'lazy_placeholder' => 'components.page.skeleton',
 
     /*
     |---------------------------------------------------------------------------
@@ -128,7 +128,8 @@ return [
 
     'navigate' => [
         'show_progress_bar' => true,
-        'progress_bar_color' => '#2299dd',
+        // 'progress_bar_color' => '#2299dd',
+        'progress_bar_color' => '#ff8e34',
     ],
 
     /*
