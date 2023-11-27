@@ -6,15 +6,20 @@ use App\Models\Student;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Livewire\Component;
+use Livewire\WithFileUploads;
+use Spatie\Image\Image as Image;
+use Spatie\Image\Manipulations;
 
 class Register extends Component
 {
 
-    public $email, $whatsapp, $birthday, $name, $hasGuardian = false, $showGuardian = false, $guardianName, $guardianWhatsapp, $city, $address, $province, $eduStatus = 'educating', $eduLevel, $workTitle = 'unemployed', $workSite, $eduSite;
+    use WithFileUploads;
+
+    public $email, $whatsapp, $birthday, $name, $avatar, $hasGuardian = false, $showGuardian = false, $guardianName, $guardianWhatsapp, $city, $address, $province, $eduStatus = 'educating', $eduLevel, $workTitle = 'unemployed', $workSite, $eduSite;
 
     public function register()
     {
-
+        // dd($this->avatar);
         $data = $this->validate([
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'whatsapp' => ['required', 'numeric', 'unique:users,mobile_number'],
@@ -23,20 +28,26 @@ class Register extends Component
             'guardianName' => ['nullable', 'string'],
             'guardianWhatsapp' => ['nullable', 'numeric'],
             'address' => ['required', 'string', 'max:512'],
+            'avatar' => ['image', 'max:5120'],
 
         ], [
             'email.required' => 'Email tidak boleh kosong',
             'email.unique' => 'Email sudah digunakan, silakan gunakan alamat email lain',
             'whatsapp.required' => 'Nomor Whatsapp murid tidak boleh kosong',
             'whatsapp.unique' => 'Nomor telepon sudah digunakan, silakan gunakan nomor telepon lain',
+            'whatsapp.numeric' => 'Nomor telepon tidak valid',
             'address.required' => 'Alamat murid tidak boleh kosong',
             'name.required' => 'Nama murid tidak boleh kosong',
         ]);
+
+        Image::load($this->avatar->getRealPath())->fit(Manipulations::FIT_FILL, 1080, 1080)->optimize()->save();
+        $filename = $this->avatar->store('/profile-photos', 'public');
         $base = User::create([
             'email' => $data['email'],
             'name' => $data['name'],
-            'password' => Hash::make('12345678'),
+            'password' => Hash::make('BelajarDuluMenginspirasiKemudian'),
             'mobile_number' => $data['whatsapp'],
+            'profile_photo_path' => $filename,
         ]);
         $last_nim = Student::where('nim', 'like', date('Y') . '%')->max('nim');
         if (substr($last_nim, 4, 2) == date('m')) {
@@ -72,7 +83,7 @@ class Register extends Component
 
 
         session()->flash('success', 'Registrasi murid baru berhasil.');
-        return redirect(route('student.active'));
+        return $this->redirect(route('student.active'), navigate: true);
     }
 
     public function updatedEmail()
@@ -129,6 +140,14 @@ class Register extends Component
     {
         // dd($this->hasGuardian);
         // $this->showGuardian = $this->hasGuardian;
+    }
+
+    public function updatedAvatar()
+    {
+        $this->validate(['avatar' => ['image', 'max:5120']], [
+            'avatar.image' => 'Silakan masukkan file gambar',
+            'avatar.max' => 'Ukuran file maksimal 5 MB',
+        ]);
     }
 
     public function render()

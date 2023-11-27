@@ -18,7 +18,38 @@
 
     <x-page.content-white>
         <div class="px-4 py-2">
-            <form wire:submit.prevent='register'>
+            <form wire:submit.prevent='register' class="grid grid-cols-2 gap-4">
+                <div class="mb-6">
+                    <div x-data="{photoName: null, photoPreview: null}" class="col-span-6 sm:col-span-4">
+                        <!-- Profile Photo File Input -->
+                        <input type="file" id="photo" class="hidden" wire:model.live="avatar" x-ref="photo" x-on:change="
+                                            photoName = $refs.photo.files[0].name;
+                                            const reader = new FileReader();
+                                            reader.onload = (e) => {
+                                                photoPreview = e.target.result;
+                                            };
+                                            reader.readAsDataURL($refs.photo.files[0]);
+                                    " />
+
+                        <x-label for="photo" value="{{ __('Photo') }}" />
+
+                        <!-- New Profile Photo Preview -->
+                        <div class="mt-2" x-show="photoPreview" style="display: none;">
+                            <span class="block rounded-full w-20 h-20 bg-cover bg-no-repeat bg-center"
+                                x-bind:style="'background-image: url(\'' + photoPreview + '\');'">
+                            </span>
+                        </div>
+
+                        <x-secondary-button class="mt-2 me-2" type="button" x-on:click.prevent="$refs.photo.click()">
+                            Tambah Foto Murid
+                        </x-secondary-button>
+
+                        @error('avatar')
+                        <p class="mt-2 text-sm text-red-600 dark:text-red-500"><span class="font-medium">Oops!</span>
+                            {{$message}}</p>
+                        @enderror
+                    </div>
+                </div>
                 <div class="mb-6">
                     <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                         Email murid
@@ -42,7 +73,7 @@
                     </label>
                     <input type="tel" id="whatsapp" name="whatsapp" wire:model.live.debounce.500ms='whatsapp'
                         class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
-                        placeholder="Masukkan nama murid">
+                        placeholder="Masukkan nomor whatsapp murid">
                 </div>
 
                 <div class="mb-6">
@@ -184,17 +215,18 @@
 
                 </div>
                 @endif
-
-                <label class="relative inline-flex items-center mb-5 cursor-pointer">
-                    <input wire:model.live='hasGuardian' type="checkbox" value='true' class="sr-only peer"
-                        name="has_guardian">
-                    <div
-                        class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:w-5 after:h-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600">
-                    </div>
-                    <span class="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">
-                        Punya Wali Murid
-                    </span>
-                </label>
+                <div class="col-span-2">
+                    <label class="relative inline-flex items-center mb-5 cursor-pointer">
+                        <input wire:model.live='hasGuardian' type="checkbox" value='true' class="sr-only peer"
+                            name="has_guardian">
+                        <div
+                            class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:w-5 after:h-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600">
+                        </div>
+                        <span class="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">
+                            Punya Wali Murid
+                        </span>
+                    </label>
+                </div>
 
                 @if ($hasGuardian == true)
                 <div class="mb-6">

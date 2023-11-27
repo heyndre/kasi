@@ -13,6 +13,7 @@
         "laravel/sanctum": "^3.3",
         "laravel/tinker": "^2.8",
         "livewire/livewire": "^3.0",
+        "spatie/image": "^2.2",
         "symfony/filesystem": "^6.3"
     },
     "require-dev": {

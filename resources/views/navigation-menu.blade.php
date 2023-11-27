@@ -105,7 +105,7 @@
                                         {{ __('Manajemen Murid') }}
                                     </div>
 
-                                    <x-dropdown-link href="{{ route('student.register') }}" wire:navigate>
+                                    <x-dropdown-link href="{{ route('student.register') }}">
                                         {{ __('Registrasi') }}
                                     </x-dropdown-link>
 
