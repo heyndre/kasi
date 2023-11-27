@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Livewire\Student;
+
 use App\Models\Student;
 use App\Models\User;
 use Illuminate\Support\Facades\Validator;
@@ -13,9 +14,10 @@ use Livewire\Component;
 
 class Show extends Component
 {
-    public $nim, $name, $address, $birthday, $whatsapp, $photo, $hasGuardian, $guardianName, $guardianWhatsapp, $registeredAt, $lastLoginAt, $lastActiveAt;
+    public $status, $nim, $acronym, $photoUrl, $acronymPlus, $name, $address, $birthday, $whatsapp, $photo, $hasGuardian, $guardianName, $guardianWhatsapp, $registeredAt, $lastLoginAt, $lastActiveAt;
 
-    public function mount($nim) {
+    public function mount($nim)
+    {
         $data = Student::with('userData')->where('nim', $nim)->firstOrFail();
         // dd($data);
 
@@ -30,6 +32,21 @@ class Show extends Component
         $this->hasGuardian = $data->has_guardian;
         $this->guardianName = $data->guardian_name;
         $this->guardianWhatsapp = $data->guardian_contact;
+        $this->status = $data->userData->exist_status;
+
+        $words = preg_split("/\s+/", $this->name);
+        $this->acronym = '';
+        $this->acronymPlus = '';
+        foreach ($words as $w) {
+            $this->acronym .= mb_substr($w, 0, 1);
+            $this->acronymPlus .= mb_substr($w, 0, 1) . '+';
+        }
+
+        if ($this->photo == '') {
+            $this->photoUrl = 'https://ui-avatars.com/api/?name='.$acronymPlus.'&color=7F9CF5&background=EBF4FF';
+        } else {
+            $this->photoUrl = asset($this->photo);
+        }
     }
 
     public function render()

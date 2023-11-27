@@ -7,7 +7,7 @@ use App\Models\User;
 use Livewire\Component;
 use Livewire\WithPagination;
 
-class Active extends Component
+class Inactive extends Component
 {
 
     use WithPagination;
@@ -17,7 +17,7 @@ class Active extends Component
     public function render()
     {
         // sleep(1);
-        return view('livewire.student.active', [
+        return view('livewire.student.inactive', [
             'students' => Student::with('userData')
             ->join('users','users.id','=','students.user_id')
             ->search('nim', $this->search)
@@ -27,8 +27,8 @@ class Active extends Component
             ->orSearch('guardian_contact', $this->search)
             ->orSearch('parent_name', $this->search)
             ->orderBy('nim', 'asc')
-            ->where('exist_status', 'Aktif')
-            ->orWhere('exist_status', 'Reaktivasi')
+            ->where('exist_status', 'Berhenti Sementara')
+            ->orWhere('exist_status', 'Berhenti Permanen')
             ->paginate(50)
             // 'students' => Student::with('userData')->where('nim', 2023110002)->get()
         ]);
