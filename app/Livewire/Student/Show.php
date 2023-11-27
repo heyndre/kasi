@@ -14,7 +14,7 @@ use Livewire\Component;
 
 class Show extends Component
 {
-    public $status, $nim, $acronym, $photoUrl, $acronymPlus, $name, $address, $birthday, $whatsapp, $photo, $hasGuardian, $guardianName, $guardianWhatsapp, $registeredAt, $lastLoginAt, $lastActiveAt;
+    public $status, $nim, $acronym, $photoUrl, $eduLevel, $acronymPlus, $name, $address, $birthday, $whatsapp, $photo, $hasGuardian, $guardianName, $guardianWhatsapp, $registeredAt, $lastLoginAt, $lastActiveAt;
 
     public function mount($nim)
     {
@@ -23,6 +23,7 @@ class Show extends Component
 
         $this->name = $data->userData->name;
         $this->address = $data->address;
+        $this->eduLevel = $data->edu_level;
         $this->whatsapp = $data->userData->mobile_number;
         $this->photo = $data->userData->profile_photo_path;
         $this->registeredAt = $data->userData->created_at;
@@ -43,7 +44,7 @@ class Show extends Component
         }
 
         if ($this->photo == '') {
-            $this->photoUrl = 'https://ui-avatars.com/api/?name='.$acronymPlus.'&color=7F9CF5&background=EBF4FF';
+            $this->photoUrl = 'https://ui-avatars.com/api/?name='.$this->acronymPlus.'&color=7F9CF5&background=EBF4FF';
         } else {
             $this->photoUrl = asset($this->photo);
         }

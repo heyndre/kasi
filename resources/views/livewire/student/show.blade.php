@@ -116,7 +116,7 @@
                                             Tanggal Ulang Tahun Murid
                                         </label>
                                         <div class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">
-                                            {{$birthday->format('d F Y')}}
+                                            {{$birthday == null ? '' : $birthday->format('d F Y')}}
                                         </div>
                                     </div>
                                     <div>
@@ -126,6 +126,15 @@
                                         </label>
                                         <div class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">
                                             {{$address}}
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label class="mb-2 font-semibold leading-none text-gray-900 dark:text-white"
+                                            for="name">
+                                            Jenjang Pendidikan Murid
+                                        </label>
+                                        <div class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">
+                                            {{$eduLevel}}
                                         </div>
                                     </div>
                                 </div>
@@ -180,14 +189,14 @@
                                         <dd class="text-gray-500 dark:text-gray-400">Registrasi sejak</dd>
                                     </div>
                                     <div class="flex flex-col">
-                                        <dt class="mb-2 text-3xl font-extrabold">{{$lastLoginAt->format('d-m-Y H:i:s
+                                        <dt class="mb-2 text-3xl font-extrabold">{{$lastLoginAt == null ? 'Belum Login' : $lastLoginAt->format('d-m-Y H:i:s
                                             T')}}</dt>
                                         <dd class="text-gray-500 dark:text-gray-400">
                                             Login Terakhir
                                         </dd>
                                     </div>
                                     <div class="flex flex-col">
-                                        <dt class="mb-2 text-3xl font-extrabold">{{$lastActiveAt->format('d-m-Y H:i:s
+                                        <dt class="mb-2 text-3xl font-extrabold">{{$lastActiveAt == null ? 'Belum Aktif' : $lastActiveAt->format('d-m-Y H:i:s
                                             T')}}</dt>
                                         <dd class="text-gray-500 dark:text-gray-400">Aktivitas Terakhir</dd>
                                     </div>

@@ -10,7 +10,7 @@ use Livewire\Component;
 class Register extends Component
 {
 
-    public $email, $whatsapp, $birthday, $name, $hasGuardian, $guardianName, $guardianWhatsapp, $city, $address, $province;
+    public $email, $whatsapp, $birthday, $name, $hasGuardian = false, $showGuardian = false, $guardianName, $guardianWhatsapp, $city, $address, $province, $eduStatus = 'educating', $eduLevel, $workTitle = 'unemployed', $workSite, $eduSite;
 
     public function register()
     {
@@ -44,18 +44,33 @@ class Register extends Component
         } else {
             $number = 1;
         }
+
         if ($data['hasGuardian'] == null) {
             $data['hasGuardian'] = 0;
         } else {
             $data['hasGuardian'] = 1;
         }
+
+        if ($this->eduStatus = 'educating') {
+            $eduStatus = 1;
+        } else {
+            $eduStatus = 0;
+        }
+
         $student = Student::create([
             'user_id' => $base->id,
             'nim' => date("Y") . date('m') . '000' . $number,
             'has_guardian' => $data['hasGuardian'],
             'guardian_name' => $data['guardianName'],
-            'guardian_contact' => $data['guardianWhatsapp']
+            'guardian_contact' => $data['guardianWhatsapp'],
+            'edu_status' => $eduStatus,
+            'edu_level' => $this->eduLevel,
+            'edu_site' => $this->eduSite,
+            'work_title' => $this->workTitle,
+            'work_site' => $this->workSite,
         ]);
+
+
         session()->flash('success', 'Registrasi murid baru berhasil.');
         return redirect(route('student.active'));
     }
@@ -80,10 +95,26 @@ class Register extends Component
         ]);
     }
 
+    public function updatedGuardianWhatsapp()
+    {
+        $this->validate([
+            'whatsapp' => ['required', 'numeric'],
+        ], [
+            'whatsapp.required' => 'Nomor Whatsapp wali murid tidak boleh kosong',
+        ]);
+    }
+
     public function updatedName()
     {
         $this->validate(['name' => ['required', 'string', 'max:255']], [
             'name.required' => 'Nama murid tidak boleh kosong',
+        ]);
+    }
+
+    public function updatedGuardianName()
+    {
+        $this->validate(['name' => ['required', 'string', 'max:255']], [
+            'name.required' => 'Nama wali murid tidak boleh kosong',
         ]);
     }
 
@@ -92,6 +123,12 @@ class Register extends Component
         $this->validate(['address' => ['required', 'string', 'max:255']], [
             'address.required' => 'Alamat murid tidak boleh kosong',
         ]);
+    }
+
+    public function updatedHasGuardian()
+    {
+        // dd($this->hasGuardian);
+        // $this->showGuardian = $this->hasGuardian;
     }
 
     public function render()

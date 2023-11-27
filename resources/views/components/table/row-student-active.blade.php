@@ -26,7 +26,7 @@
         <img class="w-14 h-14 rounded-full" src="{{asset($profile_photo)}}" alt="{{$acronym}}">
         @endif
         <div class="pl-3 space-y-2">
-            <a href="{{route('student.show', ['nim' => $nim])}}" wire:navigate
+            <a href="{{route('student.show', ['nim' => $nim])}}"
                 class="text-base font-semibold bg-sky-100/50 hover:underline rounded-sm px-2 py-1">
                 {{$name}}
             </a>
