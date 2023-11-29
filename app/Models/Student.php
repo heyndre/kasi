@@ -34,6 +34,17 @@ class Student extends Model
         }
     }
 
+    
+    public function getEduStatusAttribute($value)
+    {
+        switch ($value) {
+            case '0':
+                return 'Sedang Menempuh Studi';
+            case '1':
+                return 'Sudah Menyelesaikan Studi';
+        }
+    }
+
     public function getWorkTitleAttribute($value)
     {
         switch ($value) {

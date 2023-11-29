@@ -34,10 +34,12 @@
         <div class="px-4 py-2">
 
             <div
-                class="flex flex-col w-full items-center gap-4 p-4 bg-white border border-gray-200 rounded-lg md:flex-row dark:border-gray-700 dark:bg-gray-800">
-                <img class="object-cover w-full rounded-t-2xl h-96 md:h-auto md:w-48"
+                class=" min-h-[100vh] flex flex-col w-full gap-4 p-4 bg-white border border-gray-200 rounded-lg md:flex-row dark:border-gray-700 dark:bg-gray-800">
+                <div class="w-1/3 p-6">
+                    <img class="object-cover w-full rounded-2xl h-96 md:h-auto drop-shadow-2xl"
                     src="{{$photoUrl}}" alt="">
-                <div class="flex flex-col justify-between leading-normal w-full">
+                </div>
+                <div class="flex flex-col  leading-normal w-2/3">
                     @if ($status == 'Aktif')
                     <div
                         class="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
@@ -87,10 +89,10 @@
                             </li>
                         </ul>
                         <div id="defaultTabContent">
-                            <div class="hidden p-4 bg-white rounded-lg md:p-8 dark:bg-gray-800" id="about"
+                            <div class="hidden p-4 bg-white rounded-lg md:p-8 dark:bg-gray-800 w-full" id="about"
                                 role="tabpanel" aria-labelledby="about-tab">
-                                <div class="grid grid-col-3 grid-flow-auto gap-4">
-                                    <div>
+                                <div class="grid grid-cols-2 grid-flow-auto gap-4">
+                                    <div class="w-fit">
                                         <label class="mb-2 font-semibold leading-none text-gray-900 dark:text-white"
                                             for="name">
                                             Nama Murid
@@ -99,7 +101,7 @@
                                             {{$name}}
                                         </div>
                                     </div>
-                                    <div>
+                                    <div class="w-fit">
                                         <label class="mb-2 font-semibold leading-none text-gray-900 dark:text-white"
                                             for="name">
                                             Nomor Telepon/WhatsApp Murid
@@ -110,7 +112,7 @@
                                             </div>
                                         </a>
                                     </div>
-                                    <div>
+                                    <div class="w-fit">
                                         <label class="mb-2 font-semibold leading-none text-gray-900 dark:text-white"
                                             for="name">
                                             Tanggal Ulang Tahun Murid
@@ -119,7 +121,7 @@
                                             {{$birthday == null ? '' : $birthday->format('d F Y')}}
                                         </div>
                                     </div>
-                                    <div>
+                                    <div class="w-fit">
                                         <label class="mb-2 font-semibold leading-none text-gray-900 dark:text-white"
                                             for="name">
                                             Alamat Murid
@@ -128,7 +130,7 @@
                                             {{$address}}
                                         </div>
                                     </div>
-                                    <div>
+                                    <div class="w-fit">
                                         <label class="mb-2 font-semibold leading-none text-gray-900 dark:text-white"
                                             for="name">
                                             Jenjang Pendidikan Murid
@@ -141,8 +143,8 @@
                             </div>
                             <div class="hidden p-4 bg-white rounded-lg md:p-8 dark:bg-gray-800" id="services"
                                 role="tabpanel" aria-labelledby="services-tab">
-                                <div class="grid grid-col-3 grid-flow-auto gap-4">
-                                    <div>
+                                <div class="grid grid-cols-2 grid-flow-auto gap-4">
+                                    <div class="w-fit">
                                         <label class="mb-2 font-semibold leading-none text-gray-900 dark:text-white"
                                             for="name">
                                             Status Wali Murid
@@ -153,7 +155,7 @@
                                             Murid' : 'Tidak Punya Wali Murid'}}
                                         </div>
                                     </div>
-                                    <div>
+                                    <div class="w-fit">
                                         <label class="mb-2 font-semibold leading-none text-gray-900 dark:text-white"
                                             for="name">
                                             Nama Wali Murid
@@ -162,7 +164,7 @@
                                             {{$guardianName != null && $guardianName != '' ? $guardianName : '-'}}
                                         </div>
                                     </div>
-                                    <div>
+                                    <div class="w-fit">
                                         <label class="mb-2 font-semibold leading-none text-gray-900 dark:text-white"
                                             for="name">
                                             Nomor Telepon/WhatsApp Wali Murid

@@ -30,7 +30,9 @@ class User extends Authenticatable
         'mobile_number',
         'last_login_at',
         'last_active_at',
-        'profile_photo_path'
+        'profile_photo_path',
+        'birthday',
+        'exist_status',
     ];
 
     /**

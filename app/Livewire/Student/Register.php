@@ -12,14 +12,13 @@ use Spatie\Image\Manipulations;
 
 class Register extends Component
 {
-
     use WithFileUploads;
 
     public $email, $whatsapp, $birthday, $name, $avatar, $hasGuardian = false, $showGuardian = false, $guardianName, $guardianWhatsapp, $city, $address, $province, $eduStatus = 'educating', $eduLevel, $workTitle = 'unemployed', $workSite, $eduSite;
 
     public function register()
     {
-        // dd($this->avatar);
+        // dd($this->birthday);
         $data = $this->validate([
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'whatsapp' => ['required', 'numeric', 'unique:users,mobile_number'],
@@ -28,7 +27,7 @@ class Register extends Component
             'guardianName' => ['nullable', 'string'],
             'guardianWhatsapp' => ['nullable', 'numeric'],
             'address' => ['required', 'string', 'max:512'],
-            'avatar' => ['image', 'max:5120'],
+            'avatar' => ['image', 'max:5120', 'nullable'],
 
         ], [
             'email.required' => 'Email tidak boleh kosong',
@@ -40,15 +39,22 @@ class Register extends Component
             'name.required' => 'Nama murid tidak boleh kosong',
         ]);
 
-        Image::load($this->avatar->getRealPath())->fit(Manipulations::FIT_FILL, 1080, 1080)->optimize()->save();
-        $filename = $this->avatar->store('/profile-photos', 'public');
         $base = User::create([
             'email' => $data['email'],
             'name' => $data['name'],
             'password' => Hash::make('BelajarDuluMenginspirasiKemudian'),
             'mobile_number' => $data['whatsapp'],
-            'profile_photo_path' => $filename,
+            'birthday' => $this->birthday,
         ]);
+
+        if ($data['avatar'] != null) {
+            Image::load($this->avatar->getRealPath())->fit(Manipulations::FIT_FILL, 1080, 1080)->optimize()->save();
+            $filename = $this->avatar->store('/profile-photos', 'public');
+            $base->update([
+            'profile_photo_path' => $filename,
+            ]);
+        }
+
         $last_nim = Student::where('nim', 'like', date('Y') . '%')->max('nim');
         if (substr($last_nim, 4, 2) == date('m')) {
             $number = substr($last_nim, 6, 4) + 1;
@@ -136,10 +142,10 @@ class Register extends Component
         ]);
     }
 
-    public function updatedHasGuardian()
+    public function updatedBirthday()
     {
-        // dd($this->hasGuardian);
-        // $this->showGuardian = $this->hasGuardian;
+        // dd($this->birthday);
+
     }
 
     public function updatedAvatar()
