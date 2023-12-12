@@ -141,17 +141,17 @@
                                         <div class="block px-4 py-2 text-xs text-gray-400">
                                             {{ __('Daftar Tutor') }}
                                         </div>
-                                        <x-dropdown-link href="{{ route('profile.show') }}">
+                                        <x-dropdown-link href="{{ route('tutor.active') }}">
                                             {{ __('Daftar Tutor Aktif') }}
                                         </x-dropdown-link>
-                                        <x-dropdown-link href="{{ route('profile.show') }}">
+                                        <x-dropdown-link href="{{ route('tutor.inactive') }}">
                                             {{ __('Daftar Tutor Inaktif') }}
                                         </x-dropdown-link>
 
                                         <div class="block px-4 py-2 text-xs text-gray-400">
                                             {{ __('Manajemen Tutor') }}
                                         </div>
-                                        <x-dropdown-link href="{{ route('profile.show') }}">
+                                        <x-dropdown-link href="{{ route('tutor.register') }}">
                                             {{ __('Registrasi Tutor') }}
                                         </x-dropdown-link>
 

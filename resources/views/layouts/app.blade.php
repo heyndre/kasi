@@ -9,7 +9,7 @@
     <link rel="icon" type="image/png" sizes="32x32" href="{{asset('favicon-32x32.png')}}">
     <link rel="icon" type="image/png" sizes="16x16" href="{{asset('favicon-16x16.png')}}">
     <link rel="manifest" href="{{asset('site.webmanifest')}}">
-    
+
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Fonts -->
@@ -22,8 +22,14 @@
     <!-- Styles -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.0.0/flowbite.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="{{asset('js/calendar-js/calendar.js.css')}}" />
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"
+    integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+    
     @if (isset($style))
-        {{ $style }}
+    {{ $style }}
     @endif
 
     @livewireStyles
@@ -41,9 +47,9 @@
             <div class="max-w-7xl flex justify-between items-center mx-auto py-6 px-4 sm:px-6 lg:px-8">
                 {{ $header }}
                 @if (isset($button))
-                    <div class="flex space-x-2">
-                        {{ $button }}
-                    </div>
+                <div class="flex space-x-2">
+                    {{ $button }}
+                </div>
                 @endif
             </div>
         </header>
@@ -59,6 +65,9 @@
     @stack('modals')
 
     @livewireScripts
+    
+
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.0.0/flowbite.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.1.1/datepicker.min.js"></script>
 

@@ -8,6 +8,13 @@ use App\Livewire\Student\Register as StudentRegister;
 use App\Livewire\Student\Edit as StudentEdit;
 use App\Livewire\Student\Birthday as StudentBirthday;
 
+use App\Livewire\Tutor\Active as TutorActive;
+use App\Livewire\Tutor\Inactive as TutorInactive;
+use App\Livewire\Tutor\Show as TutorShow;
+use App\Livewire\Tutor\Register as TutorRegister;
+use App\Livewire\Tutor\Edit as TutorEdit;
+// use App\Livewire\Tutor\Birthday as TutorBirthday;
+
 use Illuminate\Support\Facades\Route;
 use Spatie\WelcomeNotification\WelcomesNewUsers;
 use App\Http\Controllers\welcomeController;
@@ -47,6 +54,15 @@ Route::middleware([
 
     Route::get('/murid/registrasi', StudentRegister::class)->name('student.register');
     Route::get('/murid/kalender-ulang-tahun', StudentBirthday::class)->name('student.birthday');
+
+    // Tutor Menu
+    Route::get('/tutor/aktif', TutorActive::class)->name('tutor.active');
+    Route::get('/tutor/inaktif', TutorInactive::class)->name('tutor.inactive');
+    Route::get('/tutor/data/{id}', TutorShow::class)->name('tutor.show');
+    Route::get('/tutor/edit/{id}', TutorEdit::class)->name('tutor.edit');
+
+    Route::get('/tutor/registrasi', TutorRegister::class)->name('tutor.register');
+    // Route::get('/tutor/kalender-ulang-tahun', TutorBirthday::class)->name('tutor.birthday');
 });
 
 Route::group(['middleware' => ['web', WelcomesNewUsers::class,]], function () {
