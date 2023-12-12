@@ -21,7 +21,7 @@
         @endphp
         @if ($profile_photo == '')
         <img class="h-14 w-14 rounded-full object-cover"
-            src="https://ui-avatars.com/api/?name={{$acronymPlus}}&color=7F9CF5&background=EBF4FF" alt="{{$acronym}}">
+            src="https://ui-avatars.com/api/?name={{substr($acronymPlus, 0, 3)}}&color=7F9CF5&background=EBF4FF" alt="{{$acronym}}">
         @else
         <img class="w-14 h-14 rounded-full" src="{{asset($profile_photo)}}" alt="{{$acronym}}">
         @endif

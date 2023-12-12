@@ -14,7 +14,7 @@ use Livewire\Component;
 
 class Show extends Component
 {
-    public $status, $nim, $acronym, $photoUrl, $eduLevel, $acronymPlus, $name, $address, $birthday, $whatsapp, $photo, $hasGuardian, $guardianName, $guardianWhatsapp, $registeredAt, $lastLoginAt, $lastActiveAt;
+    public $status, $nim, $acronym, $photoUrl, $eduLevel, $acronymPlus, $name, $address, $birthday, $whatsapp, $photo, $hasGuardian, $guardianName, $guardianWhatsapp, $registeredAt, $lastLoginAt, $lastActiveAt, $eduStatus, $eduSite, $workSite, $workTitle;
 
     public function mount($nim)
     {
@@ -24,6 +24,10 @@ class Show extends Component
         $this->name = $data->userData->name;
         $this->address = $data->address;
         $this->eduLevel = $data->edu_level;
+        $this->eduStatus = $data->edu_status;
+        $this->eduSite = $data->edu_site;
+        $this->workSite = $data->work_site;
+        $this->workTitle = $data->work_title;
         $this->whatsapp = $data->userData->mobile_number;
         $this->photo = $data->userData->profile_photo_path;
         $this->registeredAt = $data->userData->created_at;
@@ -44,7 +48,7 @@ class Show extends Component
         }
 
         if ($this->photo == '') {
-            $this->photoUrl = 'https://ui-avatars.com/api/?name='.$this->acronymPlus.'&color=7F9CF5&background=EBF4FF';
+            $this->photoUrl = 'https://ui-avatars.com/api/?size=512&length=2&name='.substr($this->acronymPlus, 0, 3).'&color=7F9CF5&background=EBF4FF';
         } else {
             $this->photoUrl = asset($this->photo);
         }
