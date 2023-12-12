@@ -17,23 +17,26 @@ class User extends Authenticatable
     use HasProfilePhoto;
     use Notifiable;
     use TwoFactorAuthenticatable;
+    use \Spatie\WelcomeNotification\ReceivesWelcomeNotification;
 
     /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
      */
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-        'mobile_number',
-        'last_login_at',
-        'last_active_at',
-        'profile_photo_path',
-        'birthday',
-        'exist_status',
-    ];
+    // protected $fillable = [
+    //     'name',
+    //     'email',
+    //     'password',
+    //     'mobile_number',
+    //     'last_login_at',
+    //     'last_active_at',
+    //     'profile_photo_path',
+    //     'birthday',
+    //     'exist_status',
+    // ];
+
+    protected $guarded = [];
 
     /**
      * The attributes that should be hidden for serialization.

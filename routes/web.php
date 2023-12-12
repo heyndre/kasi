@@ -9,6 +9,8 @@ use App\Livewire\Student\Edit as StudentEdit;
 use App\Livewire\Student\Birthday as StudentBirthday;
 
 use Illuminate\Support\Facades\Route;
+use Spatie\WelcomeNotification\WelcomesNewUsers;
+use App\Http\Controllers\welcomeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -45,4 +47,9 @@ Route::middleware([
 
     Route::get('/murid/registrasi', StudentRegister::class)->name('student.register');
     Route::get('/murid/kalender-ulang-tahun', StudentBirthday::class)->name('student.birthday');
+});
+
+Route::group(['middleware' => ['web', WelcomesNewUsers::class,]], function () {
+    Route::get('welcome/{user}', [WelcomeController::class, 'showWelcomeForm'])->name('welcome');
+    Route::post('welcome/{user}', [WelcomeController::class, 'savePassword']);
 });

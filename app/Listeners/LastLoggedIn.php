@@ -23,9 +23,9 @@ class LastLoggedIn
      */
     public function handle(Login $event): void
     {
-        $event->user->update([
-            'last_login_at' => Carbon::now()->toDateTimeString(),
-        ]);
+        // $event->user->update([
+        //     'last_login_at' => Carbon::now()->toDateTimeString(),
+        // ]);
 
     }
 }

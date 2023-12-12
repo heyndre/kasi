@@ -9,6 +9,7 @@ use Livewire\Component;
 use Livewire\WithFileUploads;
 use Spatie\Image\Image as Image;
 use Spatie\Image\Manipulations;
+use Illuminate\Support\Str;
 
 class Register extends Component
 {
@@ -42,16 +43,20 @@ class Register extends Component
         $base = User::create([
             'email' => $data['email'],
             'name' => $data['name'],
-            'password' => Hash::make('BelajarDuluMenginspirasiKemudian'),
+            // 'password' => Hash::make('BelajarDuluMenginspirasiKemudian'),
+            'password' => Hash::make(Str::random(8)),
             'mobile_number' => $data['whatsapp'],
             'birthday' => $this->birthday,
         ]);
+
+        $expiresAt = now()->addDay();
+        $base->sendWelcomeNotification($expiresAt);
 
         if ($data['avatar'] != null) {
             Image::load($this->avatar->getRealPath())->fit(Manipulations::FIT_FILL, 1080, 1080)->optimize()->save();
             $filename = $this->avatar->store('/profile-photos', 'public');
             $base->update([
-            'profile_photo_path' => $filename,
+                'profile_photo_path' => $filename,
             ]);
         }
 
