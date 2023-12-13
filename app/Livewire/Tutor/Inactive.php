@@ -2,7 +2,7 @@
 
 namespace App\Livewire\Tutor;
 
-use App\Models\Student;
+use App\Models\Tutor;
 use App\Models\User;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -18,19 +18,15 @@ class Inactive extends Component
     {
         // sleep(1);
         return view('livewire.tutor.inactive', [
-            'students' => Student::with('userData')
-            ->join('users','users.id','=','students.user_id')
-            ->search('nim', $this->search)
-            ->orSearch('users.name', $this->search)
-            ->orSearch('users.mobile_number', $this->search)
-            ->orSearch('users.email', $this->search)
-            ->orSearch('guardian_contact', $this->search)
-            ->orSearch('parent_name', $this->search)
-            ->orderBy('nim', 'asc')
+            'tutors' => Tutor::with('userData')
+            ->join('users as u','u.id','=','tutors.user_id')
+            ->search('tutors.id', $this->search)
+            ->orSearch('u.name', $this->search)
+            ->orSearch('u.mobile_number', $this->search)
+            ->orSearch('u.email', $this->search)
             ->where('exist_status', 'Berhenti Sementara')
             ->orWhere('exist_status', 'Berhenti Permanen')
             ->paginate(50)
-            // 'students' => Student::with('userData')->where('nim', 2023110002)->get()
         ]);
     }
 }

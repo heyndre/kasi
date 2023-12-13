@@ -58,8 +58,8 @@ Route::middleware([
     // Tutor Menu
     Route::get('/tutor/aktif', TutorActive::class)->name('tutor.active');
     Route::get('/tutor/inaktif', TutorInactive::class)->name('tutor.inactive');
-    Route::get('/tutor/data/{id}', TutorShow::class)->name('tutor.show');
-    Route::get('/tutor/edit/{id}', TutorEdit::class)->name('tutor.edit');
+    Route::get('/tutor/data/{slug}', TutorShow::class)->name('tutor.show');
+    Route::get('/tutor/edit/{slug}', TutorEdit::class)->name('tutor.edit');
 
     Route::get('/tutor/registrasi', TutorRegister::class)->name('tutor.register');
     // Route::get('/tutor/kalender-ulang-tahun', TutorBirthday::class)->name('tutor.birthday');

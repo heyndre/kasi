@@ -6,7 +6,7 @@
         <x-page.edit-button>
             Ubah
             <x-slot name='route'>
-                {{route('tutor.edit', ['id' => $id])}}
+                {{route('tutor.edit', ['slug' => $slug])}}
             </x-slot>
         </x-page.edit-button>
         <x-page.back-button>
@@ -56,7 +56,7 @@
                     @if ($status == 'Aktif')
                     <div
                         class="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
-                        Status Murid Aktif
+                        Status Tutor Aktif
                     </div>
                     @elseif ($status == 'Berhenti Sementara')
                     <div
@@ -83,14 +83,14 @@
                                 <button id="about-tab" data-tabs-target="#about" type="button" role="tab"
                                     aria-controls="about" aria-selected="true"
                                     class="inline-block p-4 text-blue-600 rounded-ss-lg hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-blue-500">
-                                    Biodata Murid
+                                    Biodata Tutor
                                 </button>
                             </li>
                             <li class="me-2">
                                 <button id="services-tab" data-tabs-target="#services" type="button" role="tab"
                                     aria-controls="services" aria-selected="false"
                                     class="inline-block p-4 hover:text-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-gray-300">
-                                    Wali Murid
+                                    Informasi Keuangan
                                 </button>
                             </li>
                             <li class="me-2">
@@ -108,7 +108,7 @@
                                     <div class="w-fit">
                                         <label class="mb-2 font-semibold leading-none text-gray-900 dark:text-white"
                                             for="name">
-                                            Nama Murid
+                                            Nama Tutor
                                         </label>
                                         <div class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">
                                             {{$name}}
@@ -117,7 +117,18 @@
                                     <div class="w-fit">
                                         <label class="mb-2 font-semibold leading-none text-gray-900 dark:text-white"
                                             for="name">
-                                            Nomor Telepon/WhatsApp Murid
+                                            Email Tutor
+                                        </label>
+                                        <a href="mailto:{{$email}}" target="_blank">
+                                            <div class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">
+                                                {{$email}}
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div class="w-fit">
+                                        <label class="mb-2 font-semibold leading-none text-gray-900 dark:text-white"
+                                            for="name">
+                                            Nomor Telepon/WhatsApp Tutor
                                         </label>
                                         <a href="https://wa.me/{{$whatsapp}}" target="_blank">
                                             <div class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">
@@ -128,16 +139,7 @@
                                     <div class="w-fit">
                                         <label class="mb-2 font-semibold leading-none text-gray-900 dark:text-white"
                                             for="name">
-                                            Tanggal Ulang Tahun Murid
-                                        </label>
-                                        <div class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">
-                                            {{$birthday == null ? '' : $birthday->format('d F Y')}}
-                                        </div>
-                                    </div>
-                                    <div class="w-fit">
-                                        <label class="mb-2 font-semibold leading-none text-gray-900 dark:text-white"
-                                            for="name">
-                                            Alamat Murid
+                                            Alamat Tutor
                                         </label>
                                         <div class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">
                                             {{$address}}
@@ -146,36 +148,51 @@
                                     <div class="w-fit">
                                         <label class="mb-2 font-semibold leading-none text-gray-900 dark:text-white"
                                             for="name">
-                                            Status Studi Murid
+                                            Tanggal Ulang Tahun Tutor
+                                        </label>
+                                        <div class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">
+                                            {{$birthday == null ? '' : $birthday->format('d F Y')}}
+                                            <p class="italic font-thin">Ulang tahun dalam
+                                                {{$nextAnniversary->diffForHumans(now(),
+                                                Carbon\CarbonInterface::DIFF_ABSOLUTE, false, 2)}}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="w-fit">
+                                        <label class="mb-2 font-semibold leading-none text-gray-900 dark:text-white"
+                                            for="name">
+                                            Status Studi Tutor
                                         </label>
                                         <div class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">
                                             {{$eduStatus}}
                                         </div>
                                     </div>
-                                    @if ($eduStatus == 'Sedang Menempuh Studi')
+                                    {{-- @if ($eduStatus == 'Sedang Menempuh Studi') --}}
                                     <div class="w-fit">
                                         <label class="mb-2 font-semibold leading-none text-gray-900 dark:text-white"
                                             for="name">
-                                            Jenjang Pendidikan Murid
+                                            Jenjang Pendidikan Tutor
                                         </label>
                                         <div class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">
                                             {{$eduLevel}}
                                         </div>
                                     </div>
 
-                                    <label class="mb-2 font-semibold leading-none text-gray-900 dark:text-white"
-                                        for="name">
-                                        Tempat Pendidikan Murid
-                                    </label>
-                                    <div class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">
-                                        {{$eduSite}}
-                                    </div>
-
-                                    @else
                                     <div class="w-fit">
                                         <label class="mb-2 font-semibold leading-none text-gray-900 dark:text-white"
                                             for="name">
-                                            Pekerjaan Murid
+                                            Tempat Pendidikan Tutor
+                                        </label>
+                                        <div class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">
+                                            {{$eduSite}}
+                                        </div>
+                                    </div>
+
+                                    {{-- @else --}}
+                                    <div class="w-fit">
+                                        <label class="mb-2 font-semibold leading-none text-gray-900 dark:text-white"
+                                            for="name">
+                                            Pekerjaan Tutor
                                         </label>
                                         <div class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">
                                             {{$workTitle}}
@@ -186,7 +203,7 @@
                                     <div class="w-fit">
                                         <label class="mb-2 font-semibold leading-none text-gray-900 dark:text-white"
                                             for="name">
-                                            Tempat Bekerja Murid
+                                            Tempat Bekerja Tutor
                                         </label>
                                         <div class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">
                                             {{$workSite}}
@@ -194,7 +211,7 @@
                                     </div>
 
                                     @endif
-                                    @endif
+                                    {{-- @endif --}}
                                 </div>
                             </div>
                         </div>
@@ -204,37 +221,38 @@
                                 <div class="w-fit">
                                     <label class="mb-2 font-semibold leading-none text-gray-900 dark:text-white"
                                         for="name">
-                                        Status Wali Murid
+                                        Status Pembayaran Tutor
                                     </label>
                                     <div class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">
-                                        {{$hasGuardian != null && $hasGuardian != '' && $hasGuardian == 1 ? 'Punya
-                                        Wali
-                                        Murid' : 'Tidak Punya Wali Murid'}}
+
                                     </div>
                                 </div>
                                 <div class="w-fit">
                                     <label class="mb-2 font-semibold leading-none text-gray-900 dark:text-white"
                                         for="name">
-                                        Nama Wali Murid
+                                        Nama Bank Tutor
                                     </label>
                                     <div class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">
-                                        {{$guardianName != null && $guardianName != '' ? $guardianName : '-'}}
+                                        {{$bankName}}
                                     </div>
                                 </div>
                                 <div class="w-fit">
                                     <label class="mb-2 font-semibold leading-none text-gray-900 dark:text-white"
                                         for="name">
-                                        Nomor Telepon/WhatsApp Wali Murid
+                                        Nomor Rekening Tutor
                                     </label>
-                                    <a href="https://wa.me/{{$guardianWhatsapp}}" target="_blank">
-                                        <div class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">
-                                            @if ($guardianWhatsapp != null && $guardianWhatsapp !== '')
-                                            +{{$guardianWhatsapp}}
-                                            @else
-                                            -
-                                            @endif
-                                        </div>
-                                    </a>
+                                    <div class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">
+                                        {{$bankNumber}}
+                                    </div>
+                                </div>
+                                <div class="w-fit">
+                                    <label class="mb-2 font-semibold leading-none text-gray-900 dark:text-white"
+                                        for="name">
+                                        Informasi Tambahan
+                                    </label>
+                                    <div class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">
+                                        {{$bankAdditionalInfo}}
+                                    </div>
                                 </div>
                             </div>
                         </div>

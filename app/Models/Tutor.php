@@ -34,7 +34,7 @@ class Tutor extends Model
         }
     }
 
-    
+
     public function getEduStatusAttribute($value)
     {
         switch ($value) {

@@ -26,7 +26,7 @@
         <img class="w-14 h-14 rounded-full" src="{{asset($profile_photo)}}" alt="{{$acronym}}">
         @endif
         <div class="pl-3 space-y-2">
-            <a href="{{route('tutor.show', ['id' => $id])}}"
+            <a href="{{route('tutor.show', ['slug' => $slug])}}"
                 class="text-base font-semibold bg-sky-100/50 hover:underline rounded-sm px-2 py-1">
                 {{$name}}
             </a>
@@ -49,6 +49,6 @@
     <td class="px-6 py-4">
     </td>
     <td class="px-6 py-4">
-        <a href="{{route('tutor.edit', ['id' => $id])}}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit user</a>
+        <a href="{{route('tutor.edit', ['slug' => $slug])}}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit user</a>
     </td>
 </tr>

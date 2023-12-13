@@ -3,6 +3,7 @@
 namespace App\Livewire\Tutor;
 
 use App\Models\Student;
+use App\Models\Tutor;
 use App\Models\User;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
@@ -14,15 +15,19 @@ use Livewire\Component;
 
 class Show extends Component
 {
-    public $status, $nim, $acronym, $photoUrl, $eduLevel, $acronymPlus, $name, $address, $birthday, $whatsapp, $photo, $hasGuardian, $guardianName, $guardianWhatsapp, $registeredAt, $lastLoginAt, $lastActiveAt, $eduStatus, $eduSite, $workSite, $workTitle;
+    public $email, $whatsapp, $birthday, $name, $photo, $city, $address, $province, $eduStatus = 'educating', $eduLevel, $workTitle = 'unemployed', $workSite, $eduSite, $bankNumber, $bankName, $bankAdditionalInfo, $eduMajor, $religion, $hobbies, $passion, $motto, $teachingExp, $leadershipExp, $competitionExp, $acronym, $acronymPlus, $status, $registeredAt, $lastLoginAt, $lastActiveAt, $photoUrl, $nextAnniversary, $slug;
 
-    public function mount($nim)
+    public function mount($slug)
     {
-        $data = Student::with('userData')->where('nim', $nim)->firstOrFail();
+        $data = Tutor::with('userData')
+            ->whereHas('userData', function ($q) use ($slug) {
+                $q->where('slug', $slug);
+            })->firstOrFail();
         // dd($data);
 
         $this->name = $data->userData->name;
-        $this->address = $data->address;
+        $this->email = $data->userData->email;
+        $this->address = $data->userData->address;
         $this->eduLevel = $data->edu_level;
         $this->eduStatus = $data->edu_status;
         $this->eduSite = $data->edu_site;
@@ -34,10 +39,20 @@ class Show extends Component
         $this->lastLoginAt = $data->userData->last_login_at;
         $this->lastActiveAt = $data->userData->last_active_at;
         $this->birthday = $data->userData->birthday;
-        $this->hasGuardian = $data->has_guardian;
-        $this->guardianName = $data->guardian_name;
-        $this->guardianWhatsapp = $data->guardian_contact;
+        $this->nextAnniversary = $data->userData->nextAnniversary;
+        $this->eduMajor = $data->edu_major;
+        $this->bankName = $data->bank_name;
+        $this->bankNumber = $data->bank_number;
+        $this->bankAdditionalInfo = $data->bank_additional_info;
+        $this->hobbies = $data->hobbies;
+        $this->passion = $data->passion;
+        $this->motto = $data->motto;
+        $this->religion = $data->religion;
+        $this->teachingExp = $data->teaching_experience;
+        $this->leadershipExp = $data->leadership_experience;
+        $this->competitionExp = $data->competition_experience;
         $this->status = $data->userData->exist_status;
+        $this->slug = $data->userData->slug;
 
         $words = preg_split("/\s+/", $this->name);
         $this->acronym = '';
@@ -48,10 +63,12 @@ class Show extends Component
         }
 
         if ($this->photo == '') {
-            $this->photoUrl = 'https://ui-avatars.com/api/?size=512&length=2&name='.substr($this->acronymPlus, 0, 3).'&color=7F9CF5&background=EBF4FF';
+            $this->photoUrl = 'https://ui-avatars.com/api/?size=512&length=2&name=' . substr($this->acronymPlus, 0, 3) . '&color=7F9CF5&background=EBF4FF';
         } else {
             $this->photoUrl = asset($this->photo);
         }
+
+        // dd($this);
     }
 
     public function render()

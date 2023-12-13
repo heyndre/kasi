@@ -20,11 +20,11 @@ class Active extends Component
         // sleep(1);
         return view('livewire.tutor.active', [
             'tutors' => Tutor::with('userData')
-            ->join('users','users.id','=','tutors.user_id')
+            ->join('users as u','u.id','=','tutors.user_id')
             ->search('tutors.id', $this->search)
-            ->orSearch('users.name', $this->search)
-            ->orSearch('users.mobile_number', $this->search)
-            ->orSearch('users.email', $this->search)
+            ->orSearch('u.name', $this->search)
+            ->orSearch('u.mobile_number', $this->search)
+            ->orSearch('u.email', $this->search)
             ->where('exist_status', 'Aktif')
             ->orWhere('exist_status', 'Reaktivasi')
             ->paginate(50)

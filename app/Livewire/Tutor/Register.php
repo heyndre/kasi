@@ -45,13 +45,14 @@ class Register extends Component
             'password' => Hash::make(Str::random(8)),
             'mobile_number' => $data['whatsapp'],
             'birthday' => $this->birthday,
+            'address' => $this->address,
         ]);
 
         $expiresAt = now()->addDay();
         $base->sendWelcomeNotification($expiresAt);
 
         if ($data['avatar'] != null) {
-            Image::load($this->avatar->getRealPath())->fit(Manipulations::FIT_FILL, 1080, 1080)->optimize()->save();
+            Image::load($this->avatar->getRealPath())->fit(Manipulations::FIT_FILL_MAX, 1080, 1080)->optimize()->save();
             $filename = $this->avatar->store('/profile-photos', 'public');
             $base->update([
                 'profile_photo_path' => $filename,
@@ -83,7 +84,6 @@ class Register extends Component
             'leadership_experience' => $this->leadershipExp,
             'competition_experience' => $this->competitionExp,
         ]);
-
 
         session()->flash('success', 'Registrasi tutor baru berhasil.');
         return $this->redirect(route('tutor.active'), navigate: true);

@@ -46,12 +46,12 @@
 
                 <x-slot name="body">
                     @php
-                    // dd($students);
+                    // dd($tutors);
                     @endphp
                     @forelse ($tutors as $item)
                     <x-table.row-tutor-active wire:loading.class.delay.longest='opacity-80'>
-                        <x-slot name="id">
-                            {{$item->id}}
+                        <x-slot name="slug">
+                            {{$item->slug}}
                         </x-slot>
                         <x-slot name="name">
                             {{$item->userData->name}}
@@ -72,7 +72,7 @@
                         @empty
                         <x-table.row-tutor-active
                             wire:loading.class.delay='opacity-50 transition ease-in-out duration-150'>
-                            <x-slot name="nim">
+                            <x-slot name="slug">
                                 N/A
                             </x-slot>
                             <x-slot name="name">

@@ -14,7 +14,7 @@ use Livewire\Component;
 
 class Show extends Component
 {
-    public $status, $nim, $acronym, $photoUrl, $eduLevel, $acronymPlus, $name, $address, $birthday, $whatsapp, $photo, $hasGuardian, $guardianName, $guardianWhatsapp, $registeredAt, $lastLoginAt, $lastActiveAt, $eduStatus, $eduSite, $workSite, $workTitle;
+    public $status, $nim, $acronym, $photoUrl, $eduLevel, $acronymPlus, $name, $address, $birthday, $nextAnniversary, $whatsapp, $photo, $hasGuardian, $guardianName, $guardianWhatsapp, $registeredAt, $lastLoginAt, $lastActiveAt, $eduStatus, $eduSite, $workSite, $workTitle;
 
     public function mount($nim)
     {
@@ -34,6 +34,7 @@ class Show extends Component
         $this->lastLoginAt = $data->userData->last_login_at;
         $this->lastActiveAt = $data->userData->last_active_at;
         $this->birthday = $data->userData->birthday;
+        $this->nextAnniversary = $data->userData->nextAnniversary;
         $this->hasGuardian = $data->has_guardian;
         $this->guardianName = $data->guardian_name;
         $this->guardianWhatsapp = $data->guardian_contact;

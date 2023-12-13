@@ -1,6 +1,6 @@
 <div>
     <x-page.header>
-        Daftar Murid Inaktif
+        Daftar Tutor Inaktif
     </x-page.header>
 
 
@@ -20,9 +20,9 @@
                 </div>
             </div>
             @endif
-            <x-table.student>
+            <x-table.tutor>
                 <x-slot name="title">
-                    Daftar Murid Inaktif KASI ({{$students->count()}})
+                    Daftar Tutor Inaktif KASI ({{$tutors->count()}})
                 </x-slot>
 
                 <x-slot name="caption">
@@ -34,10 +34,10 @@
                         Nama
                     </x-table.head>
                     <x-table.head>
-                        NIM
+                        Bergabung Sejak
                     </x-table.head>
                     <x-table.head>
-                        Wali Murid
+                        Domisili
                     </x-table.head>
                     <x-table.head>
                         Opsi
@@ -46,12 +46,12 @@
 
                 <x-slot name="body">
                     @php
-                    // dd($students);
+                    // dd($tutors);
                     @endphp
-                    @forelse ($students as $item)
-                    <x-table.row-student-active wire:loading.class.delay.longest='opacity-80'>
-                        <x-slot name="nim">
-                            {{$item->nim}}
+                    @forelse ($tutors as $item)
+                    <x-table.row-tutor-active wire:loading.class.delay.longest='opacity-80'>
+                        <x-slot name="slug">
+                            {{$item->slug}}
                         </x-slot>
                         <x-slot name="name">
                             {{$item->userData->name}}
@@ -65,23 +65,14 @@
                         <x-slot name="id">
                             {{$item->userData->id}}
                         </x-slot>
-                        <x-slot name="guardian">
-                            {!!$item->guardian_name!!}
-                        </x-slot>
-                        <x-slot name="guardian_status">
-                            {{$item->has_guardian}}
-                        </x-slot>
-                        <x-slot name="guardian_contact">
-                            {{$item->guardian_contact}}
-                        </x-slot>
                         <x-slot name="profile_photo">
                             {!!$item->userData->profile_photo_path!!}
                         </x-slot>
                         </x-table.row>
                         @empty
-                        <x-table.row-student-active
+                        <x-table.row-tutor-active
                             wire:loading.class.delay='opacity-50 transition ease-in-out duration-150'>
-                            <x-slot name="nim">
+                            <x-slot name="slug">
                                 N/A
                             </x-slot>
                             <x-slot name="name">
@@ -96,22 +87,13 @@
                             <x-slot name="id">
                                 N/A
                             </x-slot>
-                            <x-slot name="guardian">
-                                N/A
-                            </x-slot>
-                            <x-slot name="guardian_status">
-                                N/A
-                            </x-slot>
-                            <x-slot name="guardian_contact">
-                                N/A
-                            </x-slot>
                             <x-slot name="profile_photo">
                             </x-slot>
                             </x-table.row>
                             @endforelse
                 </x-slot>
                 <x-slot name="foot">
-                    {{$students->links()}}
+                    {{$tutors->links()}}
                 </x-slot>
             </x-table.student>
 

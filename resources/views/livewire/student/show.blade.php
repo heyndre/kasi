@@ -132,6 +132,10 @@
                                         </label>
                                         <div class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">
                                             {{$birthday == null ? '' : $birthday->format('d F Y')}}
+                                            <p class="italic font-thin">Ulang tahun dalam 
+                                                {{$nextAnniversary->diffForHumans(now(),
+                                                Carbon\CarbonInterface::DIFF_ABSOLUTE, false, 3)}}
+                                            </p>
                                         </div>
                                     </div>
                                     <div class="w-fit">

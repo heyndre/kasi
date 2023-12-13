@@ -53,7 +53,7 @@ class Register extends Component
         $base->sendWelcomeNotification($expiresAt);
 
         if ($data['avatar'] != null) {
-            Image::load($this->avatar->getRealPath())->fit(Manipulations::FIT_FILL, 1080, 1080)->optimize()->save();
+            Image::load($this->avatar->getRealPath())->fit(Manipulations::FIT_FILL_MAX, 1080, 1080)->optimize()->save();
             $filename = $this->avatar->store('/profile-photos', 'public');
             $base->update([
                 'profile_photo_path' => $filename,

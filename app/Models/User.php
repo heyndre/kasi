@@ -9,6 +9,9 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\Casts\Attribute;
+use Spatie\Sluggable\HasSlug;
+use Spatie\Sluggable\SlugOptions;
 
 class User extends Authenticatable
 {
@@ -18,6 +21,7 @@ class User extends Authenticatable
     use Notifiable;
     use TwoFactorAuthenticatable;
     use \Spatie\WelcomeNotification\ReceivesWelcomeNotification;
+    use HasSlug;
 
     /**
      * The attributes that are mass assignable.
@@ -71,7 +75,46 @@ class User extends Authenticatable
         'profile_photo_url',
     ];
 
-    public function theStudent() {
+    public function theStudent()
+    {
         return $this->hasOne(Student::class, 'user_id', 'id');
+    }
+
+    public function theTutor()
+    {
+        return $this->hasOne(Tutor::class, 'user_id', 'id');
+    }
+
+    public function nextAnniversary(): Attribute
+
+    {
+        return Attribute::make(
+            get: function () {
+                $date = $this->birthday;
+                $date->setYear(now()->year);
+                if ($date->isPast()) {
+                    $date->addYear();
+                }
+                return $date;
+            }
+        );
+    }
+
+    public function getSlugOptions() : SlugOptions
+    {
+        return SlugOptions::create()
+            ->generateSlugsFrom(['name', 'role'])
+            ->saveSlugsTo('slug')
+            ->doNotGenerateSlugsOnUpdate();
+    }
+
+    /**
+     * Get the route key for the model.
+     *
+     * @return string
+     */
+    public function getRouteKeyName()
+    {
+        return 'slug';
     }
 }
