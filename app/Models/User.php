@@ -85,6 +85,11 @@ class User extends Authenticatable
         return $this->hasOne(Tutor::class, 'user_id', 'id');
     }
 
+    public function theGuardian()
+    {
+        return $this->hasOne(Guardian::class, 'user_id', 'id');
+    }
+
     public function nextAnniversary(): Attribute
 
     {

@@ -30,7 +30,7 @@
                 class="text-base font-semibold bg-sky-100/50 hover:underline rounded-sm px-2 py-1">
                 {{$name}}
             </a>
-            <div class="font-normal underline">
+            <div class="font-normal underline px-2 py-1">
                 <a href="mailto:{{$email}}" class="text-gray-700 hover:text-gray-500" target="_blank"
                     rel="noopener noreferrer">
                     {{$email}}

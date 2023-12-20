@@ -16,6 +16,11 @@ class Student extends Model
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
+    public function theGuardian()
+    {
+        return $this->belongsTo(Guardian::class, 'guardian_id', 'id');
+    }
+
     public function getEduLevelAttribute($value)
     {
         switch ($value) {

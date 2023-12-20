@@ -21,12 +21,13 @@
         @endphp
         @if ($profile_photo == '')
         <img class="h-14 w-14 rounded-full object-cover"
-            src="https://ui-avatars.com/api/?name={{substr($acronymPlus, 0, 3)}}&color=7F9CF5&background=EBF4FF" alt="{{$acronym}}">
+            src="https://ui-avatars.com/api/?name={{substr($acronymPlus, 0, 3)}}&color=7F9CF5&background=EBF4FF"
+            alt="{{$acronym}}">
         @else
         <img class="w-14 h-14 rounded-full" src="{{asset($profile_photo)}}" alt="{{$acronym}}">
         @endif
         <div class="pl-3 space-y-2">
-            <a href="{{route('student.show', ['nim' => $nim])}}"
+            <a href="{{route('guardian.show', ['slug' => $slug])}}"
                 class="text-base font-semibold bg-sky-100/50 hover:underline rounded-sm px-2 py-1">
                 {{$name}}
             </a>
@@ -44,29 +45,27 @@
         </div>
     </th>
     <td class="px-6 py-4">
-        {{$nim}}
+        {{$address}}
     </td>
     <td class="px-6 py-4">
-        @if ($guardian_status == '1')
+        @if (count($children) > 0)
         <div class="flex items-center">
-            <div class="h-2.5 w-2.5 rounded-full bg-green-500 mr-2"></div>
-            {{$guardian}}
+            {{-- <div class="h-2.5 w-2.5 rounded-full bg-green-500 mr-2"></div> --}}
+            <ul>
+                @foreach ($children as $item)
+                <li>
+                    {{$item->userData->name}}
+                </li>
+                @endforeach
+            </ul>
 
         </div>
-        <a href="https://wa.me/{{$guardian_contact}}" class="text-green-700 underline hover:text-green-600"
-            target="_blank">
-            WhatsApp : {{$guardian_contact}}
-        </a>
-        {{-- <br>
-        <a href="tel:{{$guardian_contact}}" class="text-sky-700 underline hover:text-sky-600" target="_blank">
-            Telepon {{$guardian_contact}}
-        </a> --}}
         @else
         <div class="h-2.5 w-2.5 rounded-full bg-orange-500 mr-2"></div>
         N/A
         @endif
     </td>
     <td class="px-6 py-4">
-        <a href="{{route('student.edit', ['nim' => $nim])}}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit user</a>
+        <a href="{{route('root')}}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit user</a>
     </td>
 </tr>

@@ -90,7 +90,7 @@
                                 <x-slot name="content">
                                     <!-- Account Management -->
                                     <div class="block px-4 py-2 text-xs text-gray-400">
-                                        {{ __('Daftar Murid') }}
+                                        Daftar Murid
                                     </div>
 
                                     <x-dropdown-link href="{{ route('student.active') }}" wire:navigate>
@@ -102,7 +102,19 @@
                                     </x-dropdown-link>
 
                                     <div class="block px-4 py-2 text-xs text-gray-400">
-                                        {{ __('Manajemen Murid') }}
+                                        Wali Murid
+                                    </div>
+
+                                    <x-dropdown-link href="{{ route('guardian.index') }}" wire:navigate>
+                                        {{ __('Daftar Wali Murid') }}
+                                    </x-dropdown-link>
+
+                                    <x-dropdown-link href="{{ route('student.inactive') }}" wire:navigate>
+                                        {{ __('Registrasi Wali Murid') }}
+                                    </x-dropdown-link>
+
+                                    <div class="block px-4 py-2 text-xs text-gray-400">
+                                        Manajemen Murid
                                     </div>
 
                                     <x-dropdown-link href="{{ route('student.register') }}">
