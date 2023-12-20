@@ -11,7 +11,7 @@ use App\Livewire\Student\Birthday as StudentBirthday;
 use App\Livewire\Guardian\Index as GuardianList;
 use App\Livewire\Guardian\Show as GuardianShow;
 use App\Livewire\Guardian\Register as GuardianRegister;
-// use App\Livewire\Guardian\Edit as StudentEdit;
+use App\Livewire\Guardian\Edit as GuardianEdit;
 
 use App\Livewire\Tutor\Active as TutorActive;
 use App\Livewire\Tutor\Inactive as TutorInactive;
@@ -64,6 +64,7 @@ Route::middleware([
     Route::get('/wali-murid/list', GuardianList::class)->name('guardian.index');
     Route::get('/wali-murid/register', GuardianRegister::class)->name('guardian.register');
     Route::get('/wali-murid/show/{slug}', GuardianShow::class)->name('guardian.show');
+    Route::get('/wali-murid/edit/{slug}', GuardianEdit::class)->name('guardian.edit');
 
 
     // Tutor Menu

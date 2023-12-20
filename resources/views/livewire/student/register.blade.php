@@ -4,6 +4,7 @@
     </x-page.header>
 
     <x-page.style>
+        <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
         <style>
             label {
                 font-weight: 600 !important;
@@ -58,7 +59,7 @@
                             {{$message}}</p>
                         @enderror
                     </label>
-                    <input type="email" id="email" wire:model.live.debounce.500ms='email'
+                    <input type="email" id="email" wire:model.live.debounce='email'
                         class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
                         placeholder="Masukkan email murid untuk login">
                 </div>
@@ -71,7 +72,7 @@
                             {{$message}}</p>
                         @enderror
                     </label>
-                    <input type="tel" id="whatsapp" name="whatsapp" wire:model.live.debounce.500ms='whatsapp'
+                    <input type="tel" id="whatsapp" name="whatsapp" wire:model.live.debounce='whatsapp'
                         class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
                         placeholder="Masukkan nomor whatsapp murid">
                 </div>
@@ -84,16 +85,45 @@
                             {{$message}}</p>
                         @enderror
                     </label>
-                    <input type="text" id="name" name="name" wire:model.live.debounce.500ms='name'
+                    <input type="text" id="name" name="name" wire:model.live.debounce='name'
                         class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
                         placeholder="Masukkan nama murid">
+                </div>
+
+                <div class="mb-6 grid">
+                    <div class="w-full block">
+                        <label for="nickname" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                            Nama Panggilan Murid
+                            @error('nickname')
+                            <p class="mt-2 text-sm text-red-600 dark:text-red-500"><span
+                                    class="font-medium">Oops!</span>
+                                {{$message}}</p>
+                            @enderror
+                        </label>
+                        <input type="text" id="nickname" name="nickname" wire:model.live.debounce='nickname'
+                            class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
+                            placeholder="Masukkan nama panggilan murid">
+                    </div>
+                    <div class="w-full">
+                        <label for="religion" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                            Agama Murid
+                            @error('religion')
+                            <p class="mt-2 text-sm text-red-600 dark:text-red-500"><span
+                                    class="font-medium">Oops!</span>
+                                {{$message}}</p>
+                            @enderror
+                        </label>
+                        <input type="text" id="religion" name="religion" wire:model.live.debounce='religion'
+                            class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
+                            placeholder="Masukkan agama murid">
+                    </div>
                 </div>
 
                 <div class="mb-6">
                     <label for="address" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                         Alamat Murid
                     </label>
-                    <textarea id="address" rows="4" name="address" wire:model.live.debounce.500ms='address'
+                    <textarea id="address" rows="4" name="address" wire:model.live.debounce='address'
                         class="no-resize block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                         placeholder="Masukkan alamat murid"></textarea>
                     @error('address')
@@ -189,8 +219,8 @@
                 <div class="mb-6">
                     <label for="eduSite" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                         Tempat Studi
-                        <input type="text" id="eduSite" wire:model.live.debounce.500ms='eduSite'
-                            class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
+                        <input type="text" id="eduSite" wire:model.live.debounce='eduSite'
+                            class="shadow-sm bg-gray-50 mt-2 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
                             placeholder="Masukkan tempat studi">
                         @error('eduSite')
                         <p class="mt-2 text-sm text-red-600 dark:text-red-500"><span class="font-medium">Oops!</span>
@@ -205,7 +235,7 @@
                 <div class="mb-6">
                     <label for="workSite" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                         Tempat Bekerja
-                        <input type="text" id="workSite" wire:model.live.debounce.500ms='workSite'
+                        <input type="text" id="workSite" wire:model.live.debounce='workSite'
                             class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
                             placeholder="Masukkan tempat bekerja">
                         @error('workSite')
@@ -228,13 +258,23 @@
                         </span>
                     </label>
                 </div>
-
+                
+                <div wire:ignore class="col-span-2">
+                    <select class="w-full" id="guardians">
+                        <option value="">Pilih Wali Murid</option>
+                        @foreach($guardians as $item)
+                        <option value="{{ $item->id }}">{{$item->userData->name}}
+                            ({{$item->userData->mobile_number}})
+                        </option>
+                        @endforeach
+                    </select>
+                </div>
                 @if ($hasGuardian == true)
-                <div class="mb-6">
+                {{-- <div class="mb-6">
                     <label for="guardian_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                         Nama Wali Murid
                     </label>
-                    <input type="text" id="guardian_name" wire:model.live.debounce.500ms='guardianName'
+                    <input type="text" id="guardian_name" wire:model.live.debounce='guardianName'
                         class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
                         placeholder="Masukkan nama wali murid">
                     @error('guardianName')
@@ -247,14 +287,14 @@
                     <label for="guardian_whatsapp" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                         Nomor WhatsApp Wali Murid
                     </label>
-                    <input type="tel" id="guardian_whatsapp" wire:model.live.debounce.500ms='guardianWhatsapp'
+                    <input type="tel" id="guardian_whatsapp" wire:model.live.debounce='guardianWhatsapp'
                         class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
                         placeholder="Masukkan nomor whatsapp wali murid">
                     @error('guardianWhatsapp')
                     <p class="mt-2 text-sm text-red-600 dark:text-red-500"><span class="font-medium">Oops!</span>
                         {{$message}}</p>
                     @enderror
-                </div>
+                </div> --}}
 
                 @endif
                 <div class="block">
@@ -281,11 +321,22 @@
             </form>
         </div>
     </x-page.content-white>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script>
         function callme(field) {
             // alert("field:" + field.value);
             // console.log("field:" + field.value);
             @this.set('birthday', field.value);
         }
+
+        $(document).ready(function () {
+            $('#guardians').select2();
+        });
+
+        $('#guardians').on('change', function (e) {
+            var data = $('#guardians').select2("val");
+            console.log(data);
+            @this.set("guardian", data);
+        });
     </script>
 </div>

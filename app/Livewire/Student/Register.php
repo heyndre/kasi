@@ -4,6 +4,7 @@ namespace App\Livewire\Student;
 
 use App\Models\Student;
 use App\Models\User;
+use App\Models\Guardian;
 use Illuminate\Support\Facades\Hash;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -15,25 +16,27 @@ class Register extends Component
 {
     use WithFileUploads;
 
-    public $email, $whatsapp, $birthday, $name, $avatar, $hasGuardian = false, $showGuardian = false, $guardianName, $guardianWhatsapp, $city, $address, $province, $eduStatus = 'educating', $eduLevel, $workTitle = 'unemployed', $workSite, $eduSite;
+    public $email, $whatsapp, $birthday, $name, $nickname, $avatar, $hasGuardian = false, $showGuardian = false, $guardian, $guardians, $city, $address, $province, $eduStatus = 'educating', $eduLevel, $workTitle = 'unemployed', $workSite, $eduSite;
 
+    public function mount()
+    {
+        $this->guardians = Guardian::with('userData')->get();
+    }
     public function register()
     {
         // dd($this->birthday);
         $data = $this->validate([
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'whatsapp' => ['required', 'numeric', 'unique:users,mobile_number'],
+            'whatsapp' => ['nullable', 'numeric', 'unique:users,mobile_number'],
             'name' => ['required', 'string', 'max:255'],
             'hasGuardian' => ['nullable', 'boolean'],
-            'guardianName' => ['nullable', 'string'],
-            'guardianWhatsapp' => ['nullable', 'numeric'],
             'address' => ['required', 'string', 'max:512'],
             'avatar' => ['image', 'max:5120', 'nullable'],
 
         ], [
             'email.required' => 'Email tidak boleh kosong',
             'email.unique' => 'Email sudah digunakan, silakan gunakan alamat email lain',
-            'whatsapp.required' => 'Nomor Whatsapp murid tidak boleh kosong',
+            // 'whatsapp.required' => 'Nomor Whatsapp murid tidak boleh kosong',
             'whatsapp.unique' => 'Nomor telepon sudah digunakan, silakan gunakan nomor telepon lain',
             'whatsapp.numeric' => 'Nomor telepon tidak valid',
             'address.required' => 'Alamat murid tidak boleh kosong',
@@ -43,6 +46,7 @@ class Register extends Component
         $base = User::create([
             'email' => $data['email'],
             'name' => $data['name'],
+            'nickname' => $this->nickname,
             // 'password' => Hash::make('BelajarDuluMenginspirasiKemudian'),
             'password' => Hash::make(Str::random(8)),
             'mobile_number' => $data['whatsapp'],
@@ -83,8 +87,7 @@ class Register extends Component
             'user_id' => $base->id,
             'nim' => date("Y") . date('m') . '000' . $number,
             'has_guardian' => $data['hasGuardian'],
-            'guardian_name' => $data['guardianName'],
-            'guardian_contact' => $data['guardianWhatsapp'],
+            'guardian_id' => $this->guardian,
             'edu_status' => $eduStatus,
             'edu_level' => $this->eduLevel,
             'edu_site' => $this->eduSite,
@@ -102,6 +105,7 @@ class Register extends Component
         $this->validate([
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
         ], [
+            'email.email' => 'Masukkan alamat email yang valid',
             'email.required' => 'Email tidak boleh kosong',
             'email.unique' => 'Email sudah digunakan, silakan gunakan alamat email lain',
         ]);
@@ -110,9 +114,9 @@ class Register extends Component
     public function updatedWhatsapp()
     {
         $this->validate([
-            'whatsapp' => ['required', 'numeric', 'unique:users,mobile_number'],
+            'whatsapp' => ['nullable', 'numeric', 'unique:users,mobile_number'],
         ], [
-            'whatsapp.required' => 'Nomor Whatsapp murid tidak boleh kosong',
+            // 'whatsapp.required' => 'Nomor Whatsapp murid tidak boleh kosong',
             'whatsapp.unique' => 'Nomor telepon sudah digunakan, silakan gunakan nomor telepon lain',
         ]);
     }

@@ -61,11 +61,10 @@
 
         </div>
         @else
-        <div class="h-2.5 w-2.5 rounded-full bg-orange-500 mr-2"></div>
         N/A
         @endif
     </td>
     <td class="px-6 py-4">
-        <a href="{{route('root')}}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit user</a>
+        <a href="{{route('guardian.edit', ['slug' => $slug])}}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit user</a>
     </td>
 </tr>

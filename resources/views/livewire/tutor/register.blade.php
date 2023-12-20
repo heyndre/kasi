@@ -62,7 +62,7 @@
                             {{$message}}</p>
                         @enderror
                     </label>
-                    <input type="email" id="email" wire:model.live.debounce.500ms='email'
+                    <input type="email" id="email" wire:model.live.debounce='email'
                         class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
                         placeholder="Masukkan email tutor untuk login">
                 </div>
@@ -75,7 +75,7 @@
                             {{$message}}</p>
                         @enderror
                     </label>
-                    <input type="tel" id="whatsapp" name="whatsapp" wire:model.live.debounce.500ms='whatsapp'
+                    <input type="tel" id="whatsapp" name="whatsapp" wire:model.live.debounce='whatsapp'
                         class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
                         placeholder="Masukkan nomor whatsapp tutor">
                 </div>
@@ -88,7 +88,7 @@
                             {{$message}}</p>
                         @enderror
                     </label>
-                    <input type="text" id="name" name="name" wire:model.live.debounce.500ms='name'
+                    <input type="text" id="name" name="name" wire:model.live.debounce='name'
                         class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
                         placeholder="Masukkan nama tutor">
                 </div>
@@ -99,7 +99,7 @@
                         <label for="address" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                             Alamat Tutor
                         </label>
-                        <textarea id="address" rows="4" name="address" wire:model.live.debounce.500ms='address'
+                        <textarea id="address" rows="4" name="address" wire:model.live.debounce='address'
                             class="no-resize block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                             placeholder="Masukkan alamat tutor"></textarea>
                         @error('address')
@@ -141,7 +141,7 @@
                                 {{$message}}</p>
                             @enderror
                         </label>
-                        <input type="text" id="religion" name="religion" wire:model.live.debounce.500ms='religion'
+                        <input type="text" id="religion" name="religion" wire:model.live.debounce='religion'
                             class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
                             placeholder="Masukkan agama tutor">
                     </div>
@@ -158,7 +158,7 @@
                                 {{$message}}</p>
                             @enderror
                         </label>
-                        <input type="text" id="hobbies" name="hobbies" wire:model.live.debounce.500ms='hobbies'
+                        <input type="text" id="hobbies" name="hobbies" wire:model.live.debounce='hobbies'
                             class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
                             placeholder="Masukkan hobi tutor, gunakan tanda koma untuk memasukkan banyak hobi">
                     </div>
@@ -172,7 +172,7 @@
                                 {{$message}}</p>
                             @enderror
                         </label>
-                        <input type="text" id="passion" name="passion" wire:model.live.debounce.500ms='passion'
+                        <input type="text" id="passion" name="passion" wire:model.live.debounce='passion'
                             class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
                             placeholder="Masukkan passion tutor, gunakan tanda koma untuk memasukkan banyak passion">
                     </div>
@@ -186,7 +186,7 @@
                                 {{$message}}</p>
                             @enderror
                         </label>
-                        <input type="text" id="motto" name="motto" wire:model.live.debounce.500ms='motto'
+                        <input type="text" id="motto" name="motto" wire:model.live.debounce='motto'
                             class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
                             placeholder="Masukkan motto tutor">
                     </div>
@@ -255,7 +255,7 @@
                                 {{$message}}</p>
                             @enderror
                         </label>
-                        <input type="text" id="bank_name" name="bankName" wire:model.live.debounce.500ms='bankName'
+                        <input type="text" id="bank_name" name="bankName" wire:model.live.debounce='bankName'
                             class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
                             placeholder="Masukkan nama bank tutor">
                     </div>
@@ -270,7 +270,7 @@
                             @enderror
                         </label>
                         <input type="text" id="bank_account" name="bankAccount"
-                            wire:model.live.debounce.500ms='bankAccount'
+                            wire:model.live.debounce='bankAccount'
                             class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
                             placeholder="Masukkan nomor rekening tutor">
                     </div>
@@ -281,7 +281,7 @@
                         Info Tambahan Mengenai Data Bank Tutor
                     </label>
                     <textarea id="bank_info" rows="4" name="bankAdditionalInfo"
-                        wire:model.live.debounce.500ms='bankAdditionalInfo'
+                        wire:model.live.debounce='bankAdditionalInfo'
                         class="no-resize block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                         placeholder="Masukkan data tambahan jika tersedia"></textarea>
                     @error('bankAdditionalInfo')
@@ -329,7 +329,7 @@
                     <label for="eduSite" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                         Tempat Studi
                     </label>
-                    <input type="text" id="eduSite" wire:model.live.debounce.500ms='eduSite'
+                    <input type="text" id="eduSite" wire:model.live.debounce='eduSite'
                         class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
                         placeholder="Masukkan tempat studi">
                     @error('eduSite')
@@ -341,7 +341,7 @@
                     <label for="eduMajor" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                         Jurusan Studi
                     </label>
-                    <input type="text" id="eduMajor" wire:model.live.debounce.500ms='eduMajor'
+                    <input type="text" id="eduMajor" wire:model.live.debounce='eduMajor'
                         class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
                         placeholder="Masukkan jurusan studi">
                     @error('eduMajor')
@@ -378,7 +378,7 @@
                     <label for="workSite" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                         Tempat Bekerja
                     </label>
-                    <input type="text" id="workSite" wire:model.live.debounce.500ms='workSite'
+                    <input type="text" id="workSite" wire:model.live.debounce='workSite'
                         class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
                         placeholder="Masukkan tempat bekerja">
                     @error('workSite')

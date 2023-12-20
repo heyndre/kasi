@@ -119,11 +119,15 @@
                                             for="name">
                                             Nomor Telepon/WhatsApp Murid
                                         </label>
-                                        <a href="https://wa.me/{{$whatsapp}}" target="_blank">
-                                            <div class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">
-                                                +{{$whatsapp}}
-                                            </div>
-                                        </a>
+                                        <div class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">
+                                            @if ($whatsapp != null && $whatsapp !== '')
+                                            <a href="https://wa.me/{{$whatsapp}}" target="_blank">
+                                                +{{$wWhatsapp}}
+                                            </a>
+                                            @else
+                                            -
+                                            @endif
+                                        </div>
                                     </div>
                                     <div class="w-fit">
                                         <label class="mb-2 font-semibold leading-none text-gray-900 dark:text-white"
@@ -132,7 +136,7 @@
                                         </label>
                                         <div class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">
                                             {{$birthday == null ? '' : $birthday->format('d F Y')}}
-                                            <p class="italic font-thin">Ulang tahun dalam 
+                                            <p class="italic font-thin">Ulang tahun dalam
                                                 {{$nextAnniversary->diffForHumans(now(),
                                                 Carbon\CarbonInterface::DIFF_ABSOLUTE, false, 3)}}
                                             </p>
@@ -230,15 +234,15 @@
                                         for="name">
                                         Nomor Telepon/WhatsApp Wali Murid
                                     </label>
-                                    <a href="https://wa.me/{{$guardianWhatsapp}}" target="_blank">
-                                        <div class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">
-                                            @if ($guardianWhatsapp != null && $guardianWhatsapp !== '')
+                                    <div class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">
+                                        @if ($guardianWhatsapp != null && $guardianWhatsapp !== '')
+                                        <a href="https://wa.me/{{$guardianWhatsapp}}" target="_blank">
                                             +{{$guardianWhatsapp}}
-                                            @else
-                                            -
-                                            @endif
-                                        </div>
-                                    </a>
+                                        </a>
+                                        @else
+                                        -
+                                        @endif
+                                    </div>
                                 </div>
                             </div>
                         </div>

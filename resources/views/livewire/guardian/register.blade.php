@@ -1,6 +1,6 @@
 <div>
     <x-page.header>
-        Registrasi Wali Wali Murid Baru
+        Registrasi Wali Murid Baru
     </x-page.header>
 
     <x-page.style>
@@ -13,12 +13,15 @@
                 resize: none !important;
             }
         </style>
-
+        {{--
+        <link rel="stylesheet" type="text/css" href="https://unpkg.com/trix@2.0.0/dist/trix.css">
+        <script type="text/javascript" src="https://unpkg.com/trix@2.0.0/dist/trix.umd.min.js"></script> --}}
     </x-page.style>
 
     <x-page.content-white>
         <div class="px-4 py-2">
             <form wire:submit.prevent='register' class="grid grid-cols-2 gap-4">
+                {{-- Photo --}}
                 <div class="mb-6">
                     <div x-data="{photoName: null, photoPreview: null}" class="col-span-6 sm:col-span-4">
                         <!-- Profile Photo File Input -->
@@ -50,19 +53,20 @@
                         @enderror
                     </div>
                 </div>
+                {{-- Email --}}
                 <div class="mb-6">
                     <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                        Email Wali Murid
+                        Email wali murid
                         @error('email')
                         <p class="mt-2 text-sm text-red-600 dark:text-red-500"><span class="font-medium">Oops!</span>
                             {{$message}}</p>
                         @enderror
                     </label>
-                    <input type="email" id="email" wire:model.live.debounce.500ms='email'
+                    <input type="email" id="email" wire:model.live.debounce='email'
                         class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
-                        placeholder="Masukkan email Wali Murid untuk login">
+                        placeholder="Masukkan email wali murid untuk login">
                 </div>
-
+                {{-- WhatsApp --}}
                 <div class="mb-6">
                     <label for="whatsapp" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                         Nomor WhatsApp Wali Murid
@@ -71,11 +75,11 @@
                             {{$message}}</p>
                         @enderror
                     </label>
-                    <input type="tel" id="whatsapp" name="whatsapp" wire:model.live.debounce.500ms='whatsapp'
+                    <input type="tel" id="whatsapp" name="whatsapp" wire:model.live.debounce='whatsapp'
                         class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
-                        placeholder="Masukkan nomor whatsapp Wali Murid">
+                        placeholder="Masukkan nomor whatsapp wali murid">
                 </div>
-
+                {{-- Name --}}
                 <div class="mb-6">
                     <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                         Nama Wali Murid
@@ -84,42 +88,40 @@
                             {{$message}}</p>
                         @enderror
                     </label>
-                    <input type="text" id="name" name="name" wire:model.live.debounce.500ms='name'
+                    <input type="text" id="name" name="name" wire:model.live.debounce='name'
                         class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
-                        placeholder="Masukkan nama Wali Murid">
+                        placeholder="Masukkan nama wali murid">
                 </div>
 
+                {{-- Address --}}
                 <div class="mb-6">
                     <label for="address" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                         Alamat Wali Murid
                     </label>
-                    <textarea id="address" rows="4" name="address" wire:model.live.debounce.500ms='address'
+                    <textarea id="address" rows="4" name="address" wire:model.live.debounce='address'
                         class="no-resize block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        placeholder="Masukkan alamat Wali Murid"></textarea>
+                        placeholder="Masukkan alamat wali murid"></textarea>
                     @error('address')
                     <p class="mt-2 text-sm text-red-600 dark:text-red-500"><span class="font-medium">Oops!</span>
                         {{$message}}</p>
                     @enderror
                 </div>
-
+                {{-- Religion --}}
                 <div class="mb-6">
-                    <label for="birthday" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                        Ulang Tahun Wali Murid
-                        @error('birthday')
+                    <label for="religion" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                        Agama Wali Murid
+                        @error('religion')
                         <p class="mt-2 text-sm text-red-600 dark:text-red-500"><span class="font-medium">Oops!</span>
                             {{$message}}</p>
                         @enderror
                     </label>
-                    <div class="relative max-w-sm">
-                        <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
-                        </div>
-                        <input datepicker datepicker-format="yyyy-mm-dd" type="text" name="birthday"
-                            wire:model.live='birthday'
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                            placeholder="Pilih tanggal ulang tahun Wali Murid" id="birthday" onblur="callme(this);">
-                    </div>
+                    <input type="text" id="religion" name="religion" wire:model.live.debounce='religion'
+                        class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
+                        placeholder="Masukkan agama wali murid">
                 </div>
 
+                <hr class="col-span-2">
+                {{-- Study and Work Status --}}
                 <div class="mb-6">
                     <label for="eduStatus" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                         Status Studi
@@ -135,10 +137,9 @@
                     </select>
                 </div>
 
-                @if ($eduStatus == 'educating')
                 <div class="mb-6">
                     <label for="eduLevel" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                        Jenjang pendidikan yang sedang ditempuh
+                        Jenjang pendidikan yang sedang/terakhir ditempuh
                         @error('eduLevel')
                         <p class="mt-2 text-sm text-red-600 dark:text-red-500"><span class="font-medium">Oops!</span>
                             {{$message}}</p>
@@ -147,9 +148,6 @@
                     <select wire:model.live='eduLevel' id="eduLevel"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                         <option value="" disabled>Pilih jenjang pendidikan</option>
-                        <option value="tk">Taman Kanak-Kanak</option>
-                        <option value="sd">Sekolah Dasar</option>
-                        <option value="smp">Sekolah Menengah Pertama/Ekuivalen</option>
                         <option value="sma">Sekolah Menengah Atas/Ekuivalen</option>
                         <option value="smk">Sekolah Menengah Kejuruan/Ekuivalen</option>
                         <option value="s1">Studi S1</option>
@@ -157,7 +155,33 @@
                         <option value="s3">Studi S3</option>
                     </select>
                 </div>
-                @elseif ($eduStatus == 'finished')
+                <div class="mb-6">
+                    <label for="eduSite" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                        Tempat Studi
+                    </label>
+                    <input type="text" id="eduSite" wire:model.live.debounce='eduSite'
+                        class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
+                        placeholder="Masukkan tempat studi">
+                    @error('eduSite')
+                    <p class="mt-2 text-sm text-red-600 dark:text-red-500"><span class="font-medium">Oops!</span>
+                        {{$message}}</p>
+                    @enderror
+                </div>
+                <div class="mb-6">
+                    <label for="eduMajor" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                        Jurusan Studi
+                    </label>
+                    <input type="text" id="eduMajor" wire:model.live.debounce='eduMajor'
+                        class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
+                        placeholder="Masukkan jurusan studi">
+                    @error('eduMajor')
+                    <p class="mt-2 text-sm text-red-600 dark:text-red-500"><span class="font-medium">Oops!</span>
+                        {{$message}}</p>
+                    @enderror
+                </div>
+                {{-- <div class=""></div> --}}
+
+
                 <div class="mb-6">
                     <label for="workTitle" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                         Status Pekerjaan
@@ -178,41 +202,24 @@
                         <option value="other">Lain-lain</option>
                     </select>
                 </div>
-                @endif
 
-                @if ($eduStatus == 'educating')
-                <div class="mb-6">
-                    <label for="eduSite" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                        Tempat Studi
-                        <input type="text" id="eduSite" wire:model.live.debounce.500ms='eduSite'
-                            class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
-                            placeholder="Masukkan tempat studi">
-                        @error('eduSite')
-                        <p class="mt-2 text-sm text-red-600 dark:text-red-500"><span class="font-medium">Oops!</span>
-                            {{$message}}</p>
-                        @enderror
-                    </label>
-
-                </div>
-                @endif
-
-                @if ($eduStatus == 'finished' && ($workTitle != 'unemployed' && $workTitle != 'housewife'))
+                @if ($workTitle != 'unemployed' && $workTitle != 'housewife')
                 <div class="mb-6">
                     <label for="workSite" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                         Tempat Bekerja
-                        <input type="text" id="workSite" wire:model.live.debounce.500ms='workSite'
-                            class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
-                            placeholder="Masukkan tempat bekerja">
-                        @error('workSite')
-                        <p class="mt-2 text-sm text-red-600 dark:text-red-500"><span class="font-medium">Oops!</span>
-                            {{$message}}</p>
-                        @enderror
                     </label>
+                    <input type="text" id="workSite" wire:model.live.debounce='workSite'
+                        class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
+                        placeholder="Masukkan tempat bekerja">
+                    @error('workSite')
+                    <p class="mt-2 text-sm text-red-600 dark:text-red-500"><span class="font-medium">Oops!</span>
+                        {{$message}}</p>
+                    @enderror
 
                 </div>
                 @endif
-                
-                <div class="block">
+
+                <div class="block col-span-2">
                     <button type="submit"
                         class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center me-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                         <svg class="w-3.5 h-3.5 me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
@@ -223,7 +230,7 @@
                         Simpan
                         {{-- <input wire:click='' type="submit" value="" class="hidden"> --}}
                     </button>
-                    <a href="{{route('student.active')}}" wire:navigate
+                    <a href="{{route('guardian.index')}}" wire:navigate
                         class="text-white bg-yellow-500 hover:bg-yellow-800 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center me-2 dark:bg-yellow-600 dark:hover:bg-yellow-700 dark:focus:ring-yellow-800">
                         <svg class="w-3.5 h-3.5 me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
                             viewBox="0 0 18 15">
@@ -236,11 +243,17 @@
             </form>
         </div>
     </x-page.content-white>
+    <script src="{{asset('tinymce/js/tinymce/tinymce.min.js')}}"></script>
+
     <script>
         function callme(field) {
             // alert("field:" + field.value);
             // console.log("field:" + field.value);
             @this.set('birthday', field.value);
         }
+
+        $(document).ready( function () {
+           
+        });
     </script>
 </div>

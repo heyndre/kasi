@@ -1,18 +1,17 @@
 <div>
     <x-page.header>
-        Ubah Detail Murid - {{$nim}}
+        Ubah Detail Wali Murid - {{$name}}
     </x-page.header>
     <x-slot name='button'>
         <x-page.back-button>
             Kembali
             <x-slot name='route'>
-                {{route('student.show', ['nim' => $nim])}}
+                {{route('guardian.show', ['slug' => $slug])}}
             </x-slot>
         </x-page.back-button>
     </x-slot>
 
     <x-page.style>
-        <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
         <style>
             label {
                 font-weight: 600 !important;
@@ -29,7 +28,7 @@
         <div class="px-4 py-2">
             <form wire:submit="update" class="grid grid-cols-2 gap-4">
                 <!-- Profile Photo -->
-                <div x-data="{photoName: null, photoPrview: null}" class="">
+                <div x-data="{photoName: null, photoPreview: null}" class="">
                     <!-- Profile Photo File Input -->
                     <input type="file" id="photo" class="hidden" wire:model.live="photo" x-ref="photo" x-on:change="
                                                 photoName = $refs.photo.files[0].name;
@@ -84,19 +83,23 @@
                     </button>
                 </div>
 
-                <!-- Email -->
+                {{-- Email --}}
                 <div class="mb-6">
-                    <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="email">
-                        Email
+                    <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                        Email tutor
+                        @error('email')
+                        <p class="mt-2 text-sm text-red-600 dark:text-red-500"><span class="font-medium">Oops!</span>
+                            {{$message}}</p>
+                        @enderror
                     </label>
-                    <input
+                    <input type="email" id="email" wire:model.live.debounce='email'
                         class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
-                        id="email" type="email" wire:model="email" required="required" autocomplete="username">
+                        placeholder="Masukkan email tutor untuk login">
                 </div>
-
+                {{-- WhatsApp --}}
                 <div class="mb-6">
                     <label for="whatsapp" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                        Nomor WhatsApp Murid
+                        Nomor WhatsApp Wali Murid
                         @error('whatsapp')
                         <p class="mt-2 text-sm text-red-600 dark:text-red-500"><span class="font-medium">Oops!</span>
                             {{$message}}</p>
@@ -104,12 +107,12 @@
                     </label>
                     <input type="tel" id="whatsapp" name="whatsapp" wire:model.live.debounce='whatsapp'
                         class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
-                        placeholder="Masukkan nomor whatsapp murid">
+                        placeholder="Masukkan nomor whatsapp tutor">
                 </div>
-
+                {{-- Name --}}
                 <div class="mb-6">
                     <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                        Nama Murid
+                        Nama Wali Murid
                         @error('name')
                         <p class="mt-2 text-sm text-red-600 dark:text-red-500"><span class="font-medium">Oops!</span>
                             {{$message}}</p>
@@ -117,62 +120,39 @@
                     </label>
                     <input type="text" id="name" name="name" wire:model.live.debounce='name'
                         class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
-                        placeholder="Masukkan nama murid">
+                        placeholder="Masukkan nama tutor">
                 </div>
 
+                {{-- Address --}}
                 <div class="mb-6">
                     <label for="address" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                        Alamat Murid
+                        Alamat Wali Murid
                     </label>
                     <textarea id="address" rows="4" name="address" wire:model.live.debounce='address'
                         class="no-resize block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        placeholder="Masukkan alamat murid"></textarea>
+                        placeholder="Masukkan alamat tutor"></textarea>
                     @error('address')
                     <p class="mt-2 text-sm text-red-600 dark:text-red-500"><span class="font-medium">Oops!</span>
                         {{$message}}</p>
                     @enderror
                 </div>
-
+                {{-- Religion --}}
                 <div class="mb-6">
-                    <label for="birthday" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                        Ulang Tahun Murid
-                        @error('birthday')
+                    <label for="religion" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                        Agama Wali Murid
+                        @error('religion')
                         <p class="mt-2 text-sm text-red-600 dark:text-red-500"><span class="font-medium">Oops!</span>
                             {{$message}}</p>
                         @enderror
                     </label>
-                    <div class="relative max-w-sm">
-                        <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
-                            {{-- <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
-                                xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                                <path
-                                    d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
-                            </svg> --}}
-                        </div>
-                        <input datepicker datepicker-format="yyyy-mm-dd" type="text" name="birthday"
-                            wire:model='birthday'
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                            placeholder="Pilih tanggal ulang tahun murid" onblur="callme(this);">
-                    </div>
-                </div>
-                <div class="mb-6">
-                    <label for="existStatus" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                        Status Murid
-                        @error('existStatus')
-                        <p class="mt-2 text-sm text-red-600 dark:text-red-500"><span class="font-medium">Oops!</span>
-                            {{$message}}</p>
-                        @enderror
-                    </label>
-                    <select wire:model.live='existStatus' id="existStatus"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                        <option value="Aktif">Aktif</option>
-                        <option value="Reaktivasi">Reaktivasi</option>
-                        <option value="Berhenti Sementara">Berhenti Sementara</option>
-                        <option value="Berhenti Permanen">Berhenti Permanen</option>
-                    </select>
+                    <input type="text" id="religion" name="religion" wire:model.live.debounce='religion'
+                        class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
+                        placeholder="Masukkan agama tutor">
                 </div>
 
-                <div class="mb-6 col-span-2">
+                <hr class="col-span-2">
+                {{-- Study and Work Status --}}
+                <div class="mb-6">
                     <label for="eduStatus" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                         Status Studi
                         @error('eduStatus')
@@ -182,31 +162,14 @@
                     </label>
                     <select wire:model.live='eduStatus' id="eduStatus"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                        <option value="1">Sedang Menempuh Studi</option>
-                        <option value="0">Sudah Menyelesaikan Studi</option>
+                        <option value="educating">Sedang Menempuh Studi</option>
+                        <option value="finished">Sudah Menyelesaikan Studi</option>
                     </select>
                 </div>
 
-                <div wire:loading wire:target="eduStatus">
-                    <div role="status">
-                        <svg aria-hidden="true"
-                            class="inline w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-yellow-400"
-                            viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path
-                                d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
-                                fill="currentColor" />
-                            <path
-                                d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
-                                fill="currentFill" />
-                        </svg>
-                        <span class="sr-only">Loading...</span>
-                    </div>
-                </div>
-
-                @if ($eduStatus == '1')
                 <div class="mb-6">
                     <label for="eduLevel" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                        Jenjang pendidikan yang sedang ditempuh
+                        Jenjang pendidikan yang sedang/terakhir ditempuh
                         @error('eduLevel')
                         <p class="mt-2 text-sm text-red-600 dark:text-red-500"><span class="font-medium">Oops!</span>
                             {{$message}}</p>
@@ -215,9 +178,6 @@
                     <select wire:model.live='eduLevel' id="eduLevel"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                         <option value="" disabled>Pilih jenjang pendidikan</option>
-                        <option value="tk">Taman Kanak-Kanak</option>
-                        <option value="sd">Sekolah Dasar</option>
-                        <option value="smp">Sekolah Menengah Pertama/Ekuivalen</option>
                         <option value="sma">Sekolah Menengah Atas/Ekuivalen</option>
                         <option value="smk">Sekolah Menengah Kejuruan/Ekuivalen</option>
                         <option value="s1">Studi S1</option>
@@ -225,7 +185,33 @@
                         <option value="s3">Studi S3</option>
                     </select>
                 </div>
-                @elseif ($eduStatus == '0')
+                <div class="mb-6">
+                    <label for="eduSite" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                        Tempat Studi
+                    </label>
+                    <input type="text" id="eduSite" wire:model.live.debounce='eduSite'
+                        class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
+                        placeholder="Masukkan tempat studi">
+                    @error('eduSite')
+                    <p class="mt-2 text-sm text-red-600 dark:text-red-500"><span class="font-medium">Oops!</span>
+                        {{$message}}</p>
+                    @enderror
+                </div>
+                <div class="mb-6">
+                    <label for="eduMajor" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                        Jurusan Studi
+                    </label>
+                    <input type="text" id="eduMajor" wire:model.live.debounce='eduMajor'
+                        class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
+                        placeholder="Masukkan jurusan studi">
+                    @error('eduMajor')
+                    <p class="mt-2 text-sm text-red-600 dark:text-red-500"><span class="font-medium">Oops!</span>
+                        {{$message}}</p>
+                    @enderror
+                </div>
+                {{-- <div class=""></div> --}}
+
+
                 <div class="mb-6">
                     <label for="workTitle" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                         Status Pekerjaan
@@ -246,30 +232,13 @@
                         <option value="other">Lain-lain</option>
                     </select>
                 </div>
-                @endif
 
-                @if ($eduStatus == '1')
-                <div class="mb-6">
-                    <label for="eduSite" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                        Tempat Studi
-                    </label>
-                    <input type="text" id="eduSite" wire:model.live.debounce='eduSite'
-                        class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
-                        placeholder="Masukkan tempat studi">
-                    @error('eduSite')
-                    <p class="mt-2 text-sm text-red-600 dark:text-red-500"><span class="font-medium">Oops!</span>
-                        {{$message}}</p>
-                    @enderror
-
-                </div>
-                @endif
-
-                @if ($eduStatus == '0' && ($workTitle != 'unemployed' && $workTitle != 'housewife'))
+                @if ($workTitle != 'unemployed' && $workTitle != 'housewife')
                 <div class="mb-6">
                     <label for="workSite" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                         Tempat Bekerja
                     </label>
-                    <input type="text" id="workSite" wire:model.live.debounce='workSite'
+                    <input type="text" id="workSite" wire:model.live='workSite'
                         class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
                         placeholder="Masukkan tempat bekerja">
                     @error('workSite')
@@ -279,56 +248,23 @@
 
                 </div>
                 @endif
-                <div class="col-span-2">
-                    <label class="relative inline-flex items-center mb-5 cursor-pointer">
-                        <input wire:model.live='hasGuardian' type="checkbox" class="sr-only peer" name="has_guardian">
-                        <div
-                            class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:w-5 after:h-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600">
-                        </div>
-                        <span class="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">
-                            Punya Wali Murid
-                        </span>
-                    </label>
-                </div>
-                <div wire:loading wire:target="hasGuardian">
-                    <div role="status">
-                        <svg aria-hidden="true"
-                            class="inline w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-yellow-400"
-                            viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path
-                                d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
-                                fill="currentColor" />
-                            <path
-                                d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
-                                fill="currentFill" />
-                        </svg>
-                        <span class="sr-only">Loading...</span>
-                    </div>
-                </div>
 
-                @if ($hasGuardian == true)
-                <div wire:ignore class="">
-                    <select class="w-full" id="guardians">
-                        <option value="">Pilih Wali Murid</option>
-                        @foreach($guardians as $item)
-                        <option value="{{ $item->id }}">{{$item->userData->name}}
-                            ({{$item->userData->mobile_number}})
-                        </option>
-                        @endforeach
-                    </select>
-                </div>
-
-                @endif
-
-                <!--[if BLOCK]><![endif]-->
                 <div
                     class="col-span-2 flex items-center justify-end px-4 py-3 bg-gray-50 text-end sm:px-6 shadow sm:rounded-bl-md sm:rounded-br-md">
-                    <div x-data="{ shown: false, timeout: null }"
-                        x-init="window.Livewire.find('AUDFuqdDyOf3RHmA7y7x').on('saved', () => { clearTimeout(timeout); shown = true; timeout = setTimeout(() => { shown = false }, 2000); })"
-                        x-show.transition.out.opacity.duration.1500ms="shown"
-                        x-transition:leave.opacity.duration.1500ms="" style="display: none;"
-                        class="text-sm text-gray-600 me-3">
-                        Saved.
+                    <div wire:loading wire:target="update" class="mr-4">
+                        <div role="status">
+                            <svg aria-hidden="true"
+                                class="inline w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-yellow-400"
+                                viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                                    fill="currentColor" />
+                                <path
+                                    d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                                    fill="currentFill" />
+                            </svg>
+                            <span class="sr-only">Loading...</span>
+                        </div>
                     </div>
 
                     <button type="submit"
@@ -341,23 +277,13 @@
             </form>
         </div>
     </x-page.content-white>
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="{{asset('tinymce/js/tinymce/tinymce.min.js')}}"></script>
+
     <script>
         function callme(field) {
             // alert("field:" + field.value);
             // console.log("field:" + field.value);
             @this.set('birthday', field.value);
         }
-
-        $(document).ready(function () {
-            $('#guardians').select2();
-            $('#guardians').val({{$guardian}}).trigger('change');
-        });
-
-        $('#guardians').on('change', function (e) {
-            var data = $('#guardians').select2("val");
-            console.log(data);
-            @this.set("guardian", data);
-        });
     </script>
 </div>

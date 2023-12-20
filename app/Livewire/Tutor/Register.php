@@ -94,6 +94,7 @@ class Register extends Component
         $this->validate([
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
         ], [
+            'email.email' => 'Masukkan alamat email yang valid',
             'email.required' => 'Email tidak boleh kosong',
             'email.unique' => 'Email sudah digunakan, silakan gunakan alamat email lain',
         ]);

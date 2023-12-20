@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Livewire\Student;
+namespace App\Livewire\Guardian;
 
-use App\Models\Student;
 use App\Models\Guardian;
+use App\Models\User;
 use Livewire\Component;
 use Illuminate\Validation\Rule;
 use Livewire\Features\SupportFileUploads\WithFileUploads as SupportFileUploadsWithFileUploads;
@@ -16,7 +16,7 @@ class Edit extends Component
 {
     use SupportFileUploadsWithFileUploads;
 
-    public $userID, $email, $whatsapp, $photo, $birthday, $name, $nickname, $nim, $user, $services = [], $avatar, $hasGuardian, $guardians, $guardianName, $guardianWhatsapp, $guardian, $city, $address, $province, $eduStatus, $eduLevel, $workTitle, $workSite, $eduSite, $existStatus;
+    public $email, $whatsapp, $birthday, $name, $photo, $city, $address, $province, $eduStatus = 'educating', $eduLevel, $workTitle = 'unemployed', $workSite, $eduSite, $bankNumber, $bankName, $bankAdditionalInfo, $eduMajor, $religion, $hobbies, $passion, $motto, $teachingExp, $leadershipExp, $competitionExp, $acronym, $acronymPlus, $status, $registeredAt, $lastLoginAt, $lastActiveAt, $photoUrl, $nextAnniversary, $slug, $user;
 
     protected $rules = [
         'name' => ['required', 'string'],
@@ -25,43 +25,45 @@ class Edit extends Component
         'email' => ['required', 'string'],
     ];
 
-    public function mount($nim)
+    public function mount($slug)
     {
-        $data = Student::with('userData')->where('nim', $nim)->first();
-        $this->nim = $nim;
+        $data = Guardian::with('userData')
+            ->whereHas('userData', function ($q) use ($slug) {
+                $q->where('slug', $slug);
+            })->firstOrFail();
         $this->user = $data;
-        $this->email = $data->userData->email;
         $this->name = $data->userData->name;
-        $this->address = $data->address;
-        $this->hasGuardian = boolval($data->has_guardian);
-        $this->guardian = $data->guardian_id;
-        $this->guardianWhatsapp = $data->theGuardian->userData->mobile_number;
-        $this->guardianName = $data->theGuardian->userData->name;
-        $this->eduStatus = $data->getRawOriginal('edu_status');
-        $this->eduLevel = $data->getRawOriginal('edu_level');
-        $this->workTitle = $data->getRawOriginal('work_title');
-        $this->workSite = $data->work_site;
+        $this->email = $data->userData->email;
+        $this->address = $data->userData->address;
+        $this->eduLevel = $data->edu_level;
+        $this->religion = $data->religion;
+        $this->eduStatus = $data->edu_status;
         $this->eduSite = $data->edu_site;
+        $this->workSite = $data->work_site;
+        $this->workTitle = $data->getRawOriginal('work_title');
         $this->whatsapp = $data->userData->mobile_number;
-        $this->birthday = $data->userData->birthday->format('Y-m-d');
-        $this->existStatus = $data->userData->exist_status;
-        $this->guardians = Guardian::with('userData')->get();
-
-        // dd($this->hasGuardian);
+        $this->photo = $data->userData->profile_photo_path;
+        $this->registeredAt = $data->userData->created_at;
+        $this->lastLoginAt = $data->userData->last_login_at;
+        $this->lastActiveAt = $data->userData->last_active_at;
+        $this->eduMajor = $data->edu_major;
+        $this->status = $data->userData->exist_status;
+        $this->slug = $data->userData->slug;
+        // dd($this);
     }
 
     public function render()
     {
         // dd($this);
-        return view('livewire.student.edit');
+        return view('livewire.guardian.edit');
     }
 
     public function updatedPhoto()
     {
         // dd($this->photo);
-        $this->validate(['photo' => ['image', 'max:5120']], [
-            'avatar.image' => 'Silakan masukkan file gambar',
-            'avatar.max' => 'Ukuran file maksimal 5 MB',
+        $this->validate(['photo' => ['required', 'image', 'max:5120']], [
+            'photo.image' => 'Silakan masukkan file gambar',
+            'photo.max' => 'Ukuran file maksimal 5 MB',
         ]);
         if ($this->user->userData->profile_photo_path != null || $this->user->userData->profile_photo_path != '') {
             if (File::exists(public_path('profile-photos/' . $this->user->userData->profile_photo_path))) {
@@ -69,7 +71,7 @@ class Edit extends Component
                 File::delete(public_path('profile-photos/' . $this->user->userData->profile_photo_path));
             }
         }
-        Image::load($this->photo->getRealPath())->fit(Manipulations::FIT_FILL, 1080, 1080)->optimize()->save();
+        Image::load($this->photo->getRealPath())->fit(Manipulations::FIT_FILL_MAX, 1080, 1080)->optimize()->save();
         $filename = $this->photo->store('/profile-photos', 'public');
         $this->user->userData->update([
             'profile_photo_path' => $filename,
@@ -79,60 +81,49 @@ class Edit extends Component
 
     public function update()
     {
-        // dd($this);
         $data = $this->validate([
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email,' . $this->user->userData->id],
-            'whatsapp' => ['nullable', 'numeric', 'unique:users,mobile_number,' . $this->user->userData->id],
+            'whatsapp' => ['required', 'numeric', 'unique:users,mobile_number,' . $this->user->userData->id],
             'name' => ['required', 'string', 'max:255'],
-            'hasGuardian' => ['nullable', 'boolean'],
-            // 'guardianName' => ['nullable', 'string'],
-            // 'guardianWhatsapp' => ['nullable', 'numeric'],
             'address' => ['required', 'string', 'max:512'],
-            'photo' => ['image', 'max:5120', 'nullable'],
-
         ], [
             'email.required' => 'Email tidak boleh kosong',
             'email.unique' => 'Email sudah digunakan, silakan gunakan alamat email lain',
-            // 'whatsapp.required' => 'Nomor Whatsapp murid tidak boleh kosong',
+            'whatsapp.required' => 'Nomor Whatsapp tutor tidak boleh kosong',
             'whatsapp.unique' => 'Nomor telepon sudah digunakan, silakan gunakan nomor telepon lain',
             'whatsapp.numeric' => 'Nomor telepon tidak valid',
-            'address.required' => 'Alamat murid tidak boleh kosong',
-            'name.required' => 'Nama murid tidak boleh kosong',
+            'address.required' => 'Alamat tutor tidak boleh kosong',
+            'name.required' => 'Nama tutor tidak boleh kosong',
         ]);
 
+        // dd($this);
         $this->user->userData->update([
             'email' => $data['email'],
             'name' => $data['name'],
-            'nickname' => $this->nickname,
             // 'password' => Hash::make('BelajarDuluMenginspirasiKemudian'),
+            // 'password' => Hash::make(Str::random(8)),
             'mobile_number' => $data['whatsapp'],
-            'birthday' => $this->birthday,
-            'exist_status' => $this->existStatus,
+            'address' => $this->address,
         ]);
-
-
-
-        if ($data['hasGuardian'] == true) {
-            $data['hasGuardian'] = 1;
+        
+        if ($this->eduStatus = 'educating') {
+            $eduStatus = 1;
         } else {
-            $data['hasGuardian'] = 0;
+            $eduStatus = 0;
         }
 
         $this->user->update([
-            'has_guardian' => $data['hasGuardian'],
-            'guardian_id' => $this->guardian,
-            'edu_status' => $this->eduStatus,
+            'edu_status' => $eduStatus,
             'edu_level' => $this->eduLevel,
+            'religion' => $this->religion,
             'edu_site' => $this->eduSite,
             'work_title' => $this->workTitle,
             'work_site' => $this->workSite,
+            'edu_major' => $this->eduMajor,
         ]);
 
-        // $this->user->push();
-
-
-        session()->flash('success', 'Pembaruan data murid berhasil.');
-        return $this->redirect(route('student.show', ['nim' => $this->user->nim]), navigate: false);
+        session()->flash('success', 'Pembaruan data wali murid berhasil.');
+        return $this->redirect(route('guardian.show', ['slug' => $this->user->userData->slug]), navigate: false);
     }
 
     public function deleteProfilePhoto()

@@ -106,11 +106,11 @@
                                     </div>
 
                                     <x-dropdown-link href="{{ route('guardian.index') }}" wire:navigate>
-                                        {{ __('Daftar Wali Murid') }}
+                                        Daftar Wali Murid
                                     </x-dropdown-link>
 
-                                    <x-dropdown-link href="{{ route('student.inactive') }}" wire:navigate>
-                                        {{ __('Registrasi Wali Murid') }}
+                                    <x-dropdown-link href="{{ route('guardian.register') }}" wire:navigate>
+                                        Registrasi Wali Murid
                                     </x-dropdown-link>
 
                                     <div class="block px-4 py-2 text-xs text-gray-400">

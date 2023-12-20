@@ -2,7 +2,7 @@
 
 namespace App\Livewire\Guardian;
 
-use App\Models\Student;
+use App\Models\Guardian;
 use App\Models\User;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
@@ -14,15 +14,21 @@ use Livewire\Component;
 
 class Show extends Component
 {
-    public $status, $nim, $acronym, $photoUrl, $eduLevel, $acronymPlus, $name, $address, $birthday, $nextAnniversary, $whatsapp, $photo, $hasGuardian, $guardianName, $guardianWhatsapp, $registeredAt, $lastLoginAt, $lastActiveAt, $eduStatus, $eduSite, $workSite, $workTitle;
+    public $status, $slug, $acronym, $photoUrl, $eduLevel, $acronymPlus, $name, $address, $birthday, $nextAnniversary, $whatsapp, $photo, $childrens, $religion, $guardianWhatsapp, $registeredAt, $lastLoginAt, $lastActiveAt, $eduStatus, $eduSite, $workSite, $workTitle;
 
-    public function mount($nim)
+    public function mount($slug)
     {
-        $data = Student::with('userData')->where('nim', $nim)->firstOrFail();
+        $data = Guardian::with('userData', 'theChildren')
+        ->whereHas('userData', function($q) use ($slug) {
+            $q->search('slug', $slug);
+        })
+        ->firstOrFail();
         // dd($data);
-
+        $this->childrens = $data->theChildren;
+        $this->religion = $data->religion;
+        $this->slug = $data->userData->slug;
         $this->name = $data->userData->name;
-        $this->address = $data->address;
+        $this->address = $data->userData->address;
         $this->eduLevel = $data->edu_level;
         $this->eduStatus = $data->edu_status;
         $this->eduSite = $data->edu_site;
@@ -33,11 +39,6 @@ class Show extends Component
         $this->registeredAt = $data->userData->created_at;
         $this->lastLoginAt = $data->userData->last_login_at;
         $this->lastActiveAt = $data->userData->last_active_at;
-        $this->birthday = $data->userData->birthday;
-        $this->nextAnniversary = $data->userData->nextAnniversary;
-        $this->hasGuardian = $data->has_guardian;
-        $this->guardianName = $data->guardian_name;
-        $this->guardianWhatsapp = $data->guardian_contact;
         $this->status = $data->userData->exist_status;
 
         $words = preg_split("/\s+/", $this->name);
