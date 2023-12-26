@@ -27,6 +27,11 @@
     <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"
     integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+    <link href="{{asset('lightbox2-2.11.4/dist/css/lightbox.css')}}" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+    <script src="{{asset('lightbox2-2.11.4/dist/js/lightbox.js')}}"></script>
+    <link href="{{asset('woocommerce-FlexSlider-690832b/flexslider.css')}}" rel="stylesheet" />
+    <script src="{{asset('woocommerce-FlexSlider-690832b/jquery.flexslider.js')}}"></script>
     
     @if (isset($style))
     {{ $style }}

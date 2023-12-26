@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\FileAccessController;
 use App\Livewire\Student\Active as StudentActive;
 use App\Livewire\Student\Inactive as StudentInactive;
 use App\Livewire\Student\Show as StudentShow;
@@ -55,6 +56,8 @@ Route::middleware([
         return view('dashboard');
     })->name('dashboard');
 
+    // File Access
+    Route::get('/file/access/class/photo/{file}', [FileAccessController::class, 'accessClassPhoto'])->name('file.class.photo');
 
     // Student Menu
     Route::get('/murid/aktif', StudentActive::class)->name('student.active');

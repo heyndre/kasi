@@ -13,6 +13,9 @@ class Course extends Model
 
     protected $casts = [
         'date_of_event' => 'datetime',
+        'student_attendance' => 'datetime',
+        'tutor_attendance' => 'datetime',
+        // 'additional_links' => 'array',
     ];
     public function theTutor()
     {

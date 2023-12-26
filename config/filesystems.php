@@ -35,6 +35,12 @@ return [
             'root' => storage_path('app'),
             'throw' => false,
         ],
+        'class-photo' => [
+            'driver' => 'local',
+            'root' => storage_path('app/classes/photo'),
+            'throw' => false,
+            'visibility' => 'private',
+        ],
 
         'public' => [
             'driver' => 'local',
@@ -76,6 +82,7 @@ return [
 
     'links' => [
         public_path('storage') => storage_path('app/public'),
+        // public_path('class-photo') => storage_path('app/classes/photo'),
     ],
 
 ];

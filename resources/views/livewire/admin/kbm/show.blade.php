@@ -1,18 +1,18 @@
 <div>
     <x-page.header>
-        Detail Tutor
+        Detail Kelas
     </x-page.header>
     <x-slot name='button'>
         <x-page.edit-button>
             Ubah
             <x-slot name='route'>
-                {{route('tutor.edit', ['slug' => $slug])}}
+                {{route('kbm.edit', ['id' => $course->id])}}
             </x-slot>
         </x-page.edit-button>
         <x-page.back-button>
             Kembali
             <x-slot name='route'>
-                {{route('tutor.active')}}
+                {{route('kbm.index')}}
             </x-slot>
         </x-page.back-button>
     </x-slot>
@@ -49,29 +49,90 @@
             <div
                 class=" min-h-[100vh] flex flex-col w-full gap-4 p-4 bg-white border border-gray-200 rounded-lg md:flex-row dark:border-gray-700 dark:bg-gray-800">
                 <div class="w-1/3 p-6">
-                    <img class="object-cover w-full rounded-2xl h-96 md:h-auto drop-shadow-2xl" src="{{$photoUrl}}"
-                        alt="">
+                    <div class="text-2xl font-bold">
+                        Data Kelas
+                    </div>
+                    <div class="grid">
+                        <div class="border-b-1">
+                            Pelaksanaan Kelas
+                            <div class="font-thin">
+                                {{$course->date_of_event->format('l d M Y H:i T')}}
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="border-b-1">
+                            Kehadiran Murid
+                            <div class="font-thin">
+                                @if ($course->student_attendance !== null)
+                                {{$course->student_attendance->format('l d M Y H:i T')}}
+                                <p class="italic font-thin">
+                                    {{$course->student_attendance->diffForHumans($course->date_of_event,
+                                    Carbon\CarbonInterface::DIFF_RELATIVE_AUTO, false, 2)}}
+                                </p>
+                                @else
+                                <p class="italic font-thin">
+                                    Tidak ada data
+                                </p>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="border-b-1">
+                            Kehadiran Tutor
+                            <div class="font-thin">
+                                @if ($course->tutor_attendance !== null)
+                                {{$course->tutor_attendance->format('l d M Y H:i T')}}
+                                <p class="italic font-thin">
+                                    {{$course->tutor_attendance->diffForHumans($course->date_of_event,
+                                    Carbon\CarbonInterface::DIFF_RELATIVE_AUTO, false, 2)}}
+                                </p>
+                                @else
+                                <p class="italic font-thin">
+                                    Tidak ada data
+                                </p>
+                                @endif
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="border-b-1">
+                            Status Billing
+                            <div class="font-thin">
+                                {{$course->date_of_event->format('l d M Y H:i T')}}
+                            </div>
+                        </div>
+                        <div class="border-b-1">
+                            Status Pembayaran dari Murid
+                            <div class="font-thin">
+                                {{$course->date_of_event->format('l d M Y H:i T')}}
+                            </div>
+                        </div>
+                        <div class="border-b-1">
+                            Status Pembayaran Ke Tutor
+                            <div class="font-thin">
+                                {{$course->date_of_event->format('l d M Y H:i T')}}
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="flex flex-col  leading-normal w-2/3">
-                    @if ($status == 'Aktif')
-                    <div
-                        class="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
-                        Status Tutor Aktif
-                    </div>
-                    @elseif ($status == 'Berhenti Sementara')
-                    <div
-                        class="text-white bg-gradient-to-r from-purple-500 to-pink-500 hover:bg-gradient-to-l focus:ring-4 focus:outline-none focus:ring-purple-200 dark:focus:ring-purple-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
-                        Berhenti Sementara
-                    </div>
-                    @elseif ($status == 'Berhenti Permanen')
-                    <div
-                        class="text-white bg-gradient-to-br from-pink-500 to-orange-400 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-pink-200 dark:focus:ring-pink-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
-                        Berhenti Permanen
-                    </div>
-                    @elseif ($status == 'Reaktivasi')
+                    @if ($course->tutor_attendance !== null && $course->student_attendance !== null)
                     <div
                         class="text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
-                        Aktif Kembali
+                        Kehadiran Lengkap
+                    </div>
+                    @elseif ($course->tutor_attendance == null && $course->student_attendance !== null)
+                    <div
+                        class="text-white bg-gradient-to-r from-purple-500 to-pink-500 hover:bg-gradient-to-l focus:ring-4 focus:outline-none focus:ring-purple-200 dark:focus:ring-purple-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
+                        Murid sudah hadir, tutor belum hadir
+                    </div>
+                    @elseif ($course->tutor_attendance !== null && $course->student_attendance == null)
+                    <div
+                        class="text-white bg-gradient-to-r from-purple-500 to-pink-500 hover:bg-gradient-to-l focus:ring-4 focus:outline-none focus:ring-purple-200 dark:focus:ring-purple-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
+                        Murid belum hadir, tutor sudah hadir
+                    </div>
+                    @elseif ($course->tutor_attendance == null && $course->student_attendance == null)
+                    <div
+                        class="text-white bg-gradient-to-br from-pink-500 to-orange-400 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-pink-200 dark:focus:ring-pink-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
+                        Belum ada kehadiran
                     </div>
                     @else
                     @endif
@@ -83,21 +144,21 @@
                                 <button id="about-tab" data-tabs-target="#about" type="button" role="tab"
                                     aria-controls="about" aria-selected="true"
                                     class="inline-block p-4 text-blue-600 rounded-ss-lg hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-blue-500">
-                                    Biodata Tutor
+                                    Informasi Kelas
                                 </button>
                             </li>
                             <li class="me-2">
                                 <button id="services-tab" data-tabs-target="#services" type="button" role="tab"
                                     aria-controls="services" aria-selected="false"
                                     class="inline-block p-4 hover:text-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-gray-300">
-                                    Informasi Keuangan
+                                    Informasi Murid
                                 </button>
                             </li>
                             <li class="me-2">
                                 <button id="statistics-tab" data-tabs-target="#statistics" type="button" role="tab"
                                     aria-controls="statistics" aria-selected="false"
                                     class="inline-block p-4 hover:text-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-gray-300">
-                                    Informasi Akun
+                                    Informasi Tutor
                                 </button>
                             </li>
                         </ul>
@@ -108,110 +169,79 @@
                                     <div class="w-fit">
                                         <label class="mb-2 font-semibold leading-none text-gray-900 dark:text-white"
                                             for="name">
-                                            Nama Tutor
+                                            Bidang Pelajaran
                                         </label>
                                         <div class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">
-                                            {{$name}}
+                                            {{$course->theCourse->name}}
                                         </div>
                                     </div>
                                     <div class="w-fit">
                                         <label class="mb-2 font-semibold leading-none text-gray-900 dark:text-white"
                                             for="name">
-                                            Email Tutor
+                                            Topik Bahasan
                                         </label>
-                                        <a href="mailto:{{$email}}" target="_blank">
+                                        <a href="mailto:" target="_blank">
                                             <div class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">
-                                                {{$email}}
+                                                {{$course->topic}}
                                             </div>
                                         </a>
                                     </div>
-                                    <div class="w-fit">
+                                    <div class="w-fit col-span-2">
                                         <label class="mb-2 font-semibold leading-none text-gray-900 dark:text-white"
                                             for="name">
-                                            Nomor Telepon/WhatsApp Tutor
-                                        </label>
-                                        <a href="https://wa.me/{{$whatsapp}}" target="_blank">
-                                            <div class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">
-                                                +{{$whatsapp}}
-                                            </div>
-                                        </a>
-                                    </div>
-                                    <div class="w-fit">
-                                        <label class="mb-2 font-semibold leading-none text-gray-900 dark:text-white"
-                                            for="name">
-                                            Alamat Tutor
+                                            Materi Pelajaran
                                         </label>
                                         <div class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">
-                                            {{$address}}
+                                            {!!$course->lesson_matter!!}
                                         </div>
                                     </div>
                                     <div class="w-fit">
                                         <label class="mb-2 font-semibold leading-none text-gray-900 dark:text-white"
                                             for="name">
-                                            Tanggal Ulang Tahun Tutor
+                                            Catatan Tutor
                                         </label>
                                         <div class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">
-                                            {{$birthday == null ? '' : $birthday->format('d F Y')}}
-                                            <p class="italic font-thin">Ulang tahun dalam
-                                                {{$nextAnniversary->diffForHumans(now(),
-                                                Carbon\CarbonInterface::DIFF_ABSOLUTE, false, 2)}}
-                                            </p>
+                                            {{$course->tutor_notes}}
                                         </div>
                                     </div>
                                     <div class="w-fit">
                                         <label class="mb-2 font-semibold leading-none text-gray-900 dark:text-white"
                                             for="name">
-                                            Status Studi Tutor
+                                            Referensi Tambahan
                                         </label>
                                         <div class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">
-                                            {{$eduStatus}}
+                                            <ul>
+                                                @foreach (json_decode($course->additional_links) as $item)
+                                                <li>
+                                                    <a href="{{$item}}">
+                                                        {{$item}}
+                                                    </a>
+                                                </li>
+                                                @endforeach
+                                            </ul>
                                         </div>
                                     </div>
-                                    {{-- @if ($eduStatus == 'Sedang Menempuh Studi') --}}
                                     <div class="w-fit">
                                         <label class="mb-2 font-semibold leading-none text-gray-900 dark:text-white"
                                             for="name">
-                                            Jenjang Pendidikan Tutor
+                                            Rekaman Kelas
                                         </label>
                                         <div class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">
-                                            {{$eduLevel}}
+                                            <a href="{{$course->recording}}"></a>
                                         </div>
                                     </div>
-
                                     <div class="w-fit">
                                         <label class="mb-2 font-semibold leading-none text-gray-900 dark:text-white"
                                             for="name">
-                                            Tempat Pendidikan Tutor
+                                            Foto Kelas
                                         </label>
                                         <div class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">
-                                            {{$eduSite}}
+                                            <a class="example-image-link" href="{{route('file.class.photo', ['file' => $course->photo])}}"
+                                                data-lightbox="foto-pelaksanaan-kelas" data-title="">
+                                            <img src="{{route('file.class.photo', ['file' => $course->photo])}}" alt="">
+                                            </a>
                                         </div>
                                     </div>
-
-                                    {{-- @else --}}
-                                    <div class="w-fit">
-                                        <label class="mb-2 font-semibold leading-none text-gray-900 dark:text-white"
-                                            for="name">
-                                            Pekerjaan Tutor
-                                        </label>
-                                        <div class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">
-                                            {{$workTitle}}
-                                        </div>
-                                    </div>
-
-                                    @if ($workTitle != 'Ibu Rumah Tangga' && $workTitle != 'Tidak Memiliki Pekerjaan')
-                                    <div class="w-fit">
-                                        <label class="mb-2 font-semibold leading-none text-gray-900 dark:text-white"
-                                            for="name">
-                                            Tempat Bekerja Tutor
-                                        </label>
-                                        <div class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">
-                                            {{$workSite}}
-                                        </div>
-                                    </div>
-
-                                    @endif
-                                    {{-- @endif --}}
                                 </div>
                             </div>
                         </div>
@@ -233,7 +263,6 @@
                                         Nama Bank Tutor
                                     </label>
                                     <div class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">
-                                        {{$bankName}}
                                     </div>
                                 </div>
                                 <div class="w-fit">
@@ -242,7 +271,6 @@
                                         Nomor Rekening Tutor
                                     </label>
                                     <div class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">
-                                        {{$bankNumber}}
                                     </div>
                                 </div>
                                 <div class="w-fit">
@@ -251,7 +279,6 @@
                                         Informasi Tambahan
                                     </label>
                                     <div class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">
-                                        {{$bankAdditionalInfo}}
                                     </div>
                                 </div>
                             </div>
@@ -261,22 +288,17 @@
                             <dl
                                 class="flex justify-between w-full grid-cols-2 gap-8 p-4 mx-auto text-gray-900 sm:grid-cols-3 xl:grid-cols-6 dark:text-white sm:p-8">
                                 <div class="flex flex-col">
-                                    <dt class="mb-2 text-3xl font-extrabold">{{$registeredAt->format('d-m-Y H:i:s
-                                        T')}}</dt>
+
                                     <dd class="text-gray-500 dark:text-gray-400">Registrasi sejak</dd>
                                 </div>
                                 <div class="flex flex-col">
-                                    <dt class="mb-2 text-3xl font-extrabold">{{$lastLoginAt == null ? 'Belum Login'
-                                        : $lastLoginAt->format('d-m-Y H:i:s
-                                        T')}}</dt>
+
                                     <dd class="text-gray-500 dark:text-gray-400">
                                         Login Terakhir
                                     </dd>
                                 </div>
                                 <div class="flex flex-col">
-                                    <dt class="mb-2 text-3xl font-extrabold">{{$lastActiveAt == null ? 'Belum Aktif'
-                                        : $lastActiveAt->format('d-m-Y H:i:s
-                                        T')}}</dt>
+
                                     <dd class="text-gray-500 dark:text-gray-400">Aktivitas Terakhir</dd>
                                 </div>
                             </dl>
