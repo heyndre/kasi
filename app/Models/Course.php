@@ -27,6 +27,11 @@ class Course extends Model
         return $this->belongsTo(Student::class, 'student_id', 'id');
     }
 
+    public function theBilling()
+    {
+        return $this->belongsTo(Billing::class, 'id', 'class_id');
+    }
+
     public function theCourse()
     {
         return $this->hasOneThrough(CourseBase::class, CoursePivot::class, 'id', 'id', 'course_id', 'skill_id');

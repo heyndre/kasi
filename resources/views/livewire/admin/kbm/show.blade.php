@@ -3,12 +3,24 @@
         Detail Kelas
     </x-page.header>
     <x-slot name='button'>
+        @if ($billingStatus == 'Belum ditagih')
         <x-page.edit-button>
-            Ubah
+            Masukkan ke billing
+            <x-slot name='route'>
+                {{route('billing.add', ['id' => $course->id])}}
+            </x-slot>
+        </x-page.edit-button>
+        @endif
+        
+        @if ($billingStatus == 'Ditagih')
+        <x-page.edit-button>
+            Cek Pembayaran
             <x-slot name='route'>
                 {{route('kbm.edit', ['id' => $course->id])}}
             </x-slot>
         </x-page.edit-button>
+        @endif
+
         <x-page.back-button>
             Kembali
             <x-slot name='route'>
@@ -52,14 +64,14 @@
                     <div class="text-2xl font-bold">
                         Data Kelas
                     </div>
-                    <div class="grid">
+                    <div class="grid gap-y-2">
                         <div class="border-b-1">
                             Pelaksanaan Kelas
                             <div class="font-thin">
                                 {{$course->date_of_event->format('l d M Y H:i T')}}
                             </div>
                         </div>
-                        <hr>
+                        <hr class="p-3">
                         <div class="border-b-1">
                             Kehadiran Murid
                             <div class="font-thin">
@@ -92,23 +104,29 @@
                                 @endif
                             </div>
                         </div>
-                        <hr>
+                        <hr class="p-3">
                         <div class="border-b-1">
                             Status Billing
                             <div class="font-thin">
-                                {{$course->date_of_event->format('l d M Y H:i T')}}
+                                <a href="">
+                                    {{$billingStatus}}
+                                </a>
                             </div>
                         </div>
                         <div class="border-b-1">
                             Status Pembayaran dari Murid
                             <div class="font-thin">
-                                {{$course->date_of_event->format('l d M Y H:i T')}}
+                                <a href="">
+                                    {{$studentPayment}}
+                                </a>
                             </div>
                         </div>
                         <div class="border-b-1">
                             Status Pembayaran Ke Tutor
                             <div class="font-thin">
-                                {{$course->date_of_event->format('l d M Y H:i T')}}
+                                <a href="">
+                                    {{$tutorPayment}}
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -236,10 +254,14 @@
                                             Foto Kelas
                                         </label>
                                         <div class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">
+                                            @if ($course->photo)
                                             <a class="example-image-link" href="{{route('file.class.photo', ['file' => $course->photo])}}"
                                                 data-lightbox="foto-pelaksanaan-kelas" data-title="">
                                             <img src="{{route('file.class.photo', ['file' => $course->photo])}}" alt="">
                                             </a>
+                                            @else
+                                                Tidak ada foto kelas.
+                                            @endif
                                         </div>
                                     </div>
                                 </div>

@@ -16,6 +16,11 @@ class Tutor extends Model
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
+    public function thePayment()
+    {
+        return $this->hasMany(TutorPayment::class, 'tutor_id', 'id');
+    }
+
     public function getEduLevelAttribute($value)
     {
         switch ($value) {

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BillingController;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\FileAccessController;
 use App\Livewire\Student\Active as StudentActive;
@@ -78,6 +79,9 @@ Route::middleware([
     Route::get('/kelas/list', KBMList::class)->name('kbm.index');
     Route::get('/kelas/detail/{id}', KBMShow::class)->name('kbm.show');
     Route::get('/kelas/edit/{id}', KBMEdit::class)->name('kbm.edit');
+
+    Route::get('kelas/billing/tambah/{id}', [BillingController::class, 'addBilling'])->name('billing.add');
+    Route::get('kelas/billing/ubah/{id}', [BillingController::class, 'updatePrice'])->name('billing.edit');
 
     // Tutor Menu
     Route::get('/tutor/aktif', TutorActive::class)->name('tutor.active');
