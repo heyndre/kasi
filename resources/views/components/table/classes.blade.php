@@ -1,4 +1,4 @@
-<div class="relative overflow-x-auto sm:rounded-lg p-2 space-y-2">
+<div class="relative overflow-x-auto sm:rounded-lg p-2 space-y-2 min-h-screen">
     <div class="flex items-center justify-between bg-white dark:bg-gray-900">
         <div class="w-full grid justify-items-end">
 
@@ -13,7 +13,7 @@
                 </div>
                 <input type="text" id="table-search-users"
                     class="block p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="Cari kelas" wire:model.live.debounce.500ms="search">
+                    placeholder="Cari kelas" wire:model.live.debounce.500ms="searchToday">
             </div>
         </div>
     </div>

@@ -95,7 +95,7 @@
                 <x-slot name="foot">
                     {{$tutors->links()}}
                 </x-slot>
-            </x-table.student>
+            </x-table.tutor>
 
         </div>
     </x-page.content-white>

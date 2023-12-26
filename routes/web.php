@@ -13,6 +13,11 @@ use App\Livewire\Guardian\Show as GuardianShow;
 use App\Livewire\Guardian\Register as GuardianRegister;
 use App\Livewire\Guardian\Edit as GuardianEdit;
 
+use App\Livewire\Admin\KBM\Index as KBMList;
+use App\Livewire\Admin\KBM\Show as KBMShow;
+use App\Livewire\Admin\KBM\Edit as KBMEdit;
+
+
 use App\Livewire\Tutor\Active as TutorActive;
 use App\Livewire\Tutor\Inactive as TutorInactive;
 use App\Livewire\Tutor\Show as TutorShow;
@@ -66,6 +71,10 @@ Route::middleware([
     Route::get('/wali-murid/show/{slug}', GuardianShow::class)->name('guardian.show');
     Route::get('/wali-murid/edit/{slug}', GuardianEdit::class)->name('guardian.edit');
 
+    // KBM Menu
+    Route::get('/kelas/list', KBMList::class)->name('kbm.index');
+    Route::get('/kelas/detail/{id}', KBMShow::class)->name('kbm.show');
+    Route::get('/kelas/edit/{id}', KBMEdit::class)->name('kbm.edit');
 
     // Tutor Menu
     Route::get('/tutor/aktif', TutorActive::class)->name('tutor.active');

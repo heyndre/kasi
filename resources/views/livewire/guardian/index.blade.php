@@ -73,7 +73,8 @@
                         </x-slot>
                     </x-table.row-guardians>
                     @empty
-                    <x-table.row-guardians :children="$item->theChildren" wire:loading.class.delay='opacity-50 transition ease-in-out duration-150'>
+                    <x-table.row-guardians :children="$item->theChildren"
+                        wire:loading.class.delay='opacity-50 transition ease-in-out duration-150'>
                         <x-slot name="slug">
                             N/A
                         </x-slot>

@@ -197,7 +197,7 @@
                                             {{ __('Pembelajaran') }}
                                         </div>
 
-                                        <x-dropdown-link href="{{ route('profile.show') }}">
+                                        <x-dropdown-link href="{{ route('kbm.index') }}">
                                             {{ __('Jadwal Kelas') }}
                                         </x-dropdown-link>
 
