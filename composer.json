@@ -15,6 +15,8 @@
         "laravel/sanctum": "^3.3",
         "laravel/tinker": "^2.8",
         "livewire/livewire": "^3.0",
+        "riskihajar/terbilang": "^2.0",
+        "spatie/browsershot": "^3.61",
         "spatie/image": "^2.2",
         "spatie/laravel-db-snapshots": "^2.5",
         "spatie/laravel-sluggable": "^3.5",
