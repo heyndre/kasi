@@ -9,12 +9,12 @@
                 {{route('student.edit', ['nim' => $nim])}}
             </x-slot>
         </x-page.edit-button>
-        <x-page.back-button>
+        {{-- <x-page.back-button>
             Kembali
             <x-slot name='route'>
                 {{route('student.active')}}
             </x-slot>
-        </x-page.back-button>
+        </x-page.back-button> --}}
     </x-slot>
 
     <x-page.style>

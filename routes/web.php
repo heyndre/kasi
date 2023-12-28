@@ -3,6 +3,7 @@
 use App\Http\Controllers\BillingController;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\FileAccessController;
+
 use App\Livewire\Student\Active as StudentActive;
 use App\Livewire\Student\Inactive as StudentInactive;
 use App\Livewire\Student\Show as StudentShow;
@@ -18,7 +19,10 @@ use App\Livewire\Guardian\Edit as GuardianEdit;
 use App\Livewire\Admin\KBM\Index as KBMList;
 use App\Livewire\Admin\KBM\Show as KBMShow;
 use App\Livewire\Admin\KBM\Edit as KBMEdit;
+use App\Livewire\Admin\KBM\StatusIndex as KBMStatusIndex;
 
+use App\Livewire\Admin\Keuangan\PembayaranMuridStatus as StatusPembayaranMurid;
+use App\Livewire\Admin\Keuangan\BillingIndex as BillingIndex;
 
 use App\Livewire\Tutor\Active as TutorActive;
 use App\Livewire\Tutor\Inactive as TutorInactive;
@@ -47,6 +51,8 @@ Route::get('/', function () {
 })->name('root');
 
 Route::get('/test', [Controller::class, 'test']);
+
+Route::view('default-billing', 'billing.default');
 
 Route::middleware([
     'auth:sanctum',
@@ -77,11 +83,21 @@ Route::middleware([
 
     // KBM Menu
     Route::get('/kelas/list', KBMList::class)->name('kbm.index');
+    Route::get('/kelas/status/billing', KBMStatusIndex::class)->name('kbm.billing.status');
     Route::get('/kelas/detail/{id}', KBMShow::class)->name('kbm.show');
     Route::get('/kelas/edit/{id}', KBMEdit::class)->name('kbm.edit');
 
     Route::get('kelas/billing/tambah/{id}', [BillingController::class, 'addBilling'])->name('billing.add');
     Route::get('kelas/billing/ubah/{id}', [BillingController::class, 'updatePrice'])->name('billing.edit');
+    Route::get('kelas/billing/unduh/{id}', [BillingController::class, 'generateInvoice'])->name('billing.download');
+    
+    Route::get('keuangan/status/{id}', StatusPembayaranMurid::class)->name('payment.student.status');
+    Route::get('keuangan/billing/', BillingIndex::class)->name('payment.student.billing');
+    
+
+
+    Route::get('tes-pdf', [BillingController::class, 'testPDF'])->name('test.pdf');
+
 
     // Tutor Menu
     Route::get('/tutor/aktif', TutorActive::class)->name('tutor.active');

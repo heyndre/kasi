@@ -23,14 +23,14 @@ class Show extends Component
 
     public function mount($id)
     {
-        $this->course = Course::with('theTutor', 'theStudent', 'theCourse')
+        $this->course = Course::with('theTutor', 'theStudent', 'theCourse', 'theBilling', )
             ->where('id', $id)
             ->firstOrFail();
-        $this->billing = Billing::where('class_id', $id)->first();
-        if ($this->billing) {
+        $this->billing = $this->course->theBilling;
+        if ($this->course->theBilling) {
             $this->billingDate = $this->billing->bill_date->format('d M Y H:i T');
             $this->billingStatus = 'Ditagih';
-            $this->invoiceNumber = $this->billing->invoice_id;
+            $this->invoiceNumber = str_pad($this->billing->invoice_id, 5, '0', STR_PAD_LEFT);
 
             $this->payment = Payment::where('billing_id', $this->billing->id)->first();
             $this->tutorSharing = TutorPayment::where('billing_id', $this->billing->id)->first();

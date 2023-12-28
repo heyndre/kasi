@@ -38,7 +38,18 @@
 
                                 <x-slot name="content">
                                     <div class="block px-4 py-2 text-xs text-gray-400">
-                                        {{ __('Pembayaran') }}
+                                        Billing
+                                    </div>
+                                    <x-dropdown-link href="{{ route('payment.student.billing') }}">
+                                        Daftar Billing
+                                    </x-dropdown-link>
+
+                                    <x-dropdown-link href="{{ route('api-tokens.index') }}">
+                                        {{ __('Konfirmasi Pembayaran') }}
+                                    </x-dropdown-link>
+
+                                    <div class="block px-4 py-2 text-xs text-gray-400">
+                                        Pembayaran
                                     </div>
 
                                     <x-dropdown-link href="{{ route('profile.show') }}">
@@ -63,6 +74,60 @@
                                         {{ __('Transaksi') }}
                                     </x-dropdown-link>
 
+
+                                </x-slot>
+                            </x-dropdown>
+                        </div>
+                    </div>
+
+                    <div class="hidden sm:flex sm:items-center sm:ms-6">
+                        <div class="ms-3 relative">
+                            <x-dropdown align="right" width="48">
+                                <x-slot name="trigger">
+                                    <span class="inline-flex rounded-md">
+                                        <button type="button"
+                                            class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-5 font-medium rounded-md text-gray-900 bg-white hover:text-gray-700 hover:bg-gray-50 focus:outline-none focus:bg-gray-50 active:bg-gray-50 transition ease-in-out duration-150">
+                                            KBM
+                                            <svg class="ms-2 -me-0.5 h-4 w-4" xmlns="http://www.w3.org/2000/svg"
+                                                fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                                stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                                            </svg>
+                                        </button>
+                                    </span>
+                                </x-slot>
+
+                                <x-slot name="content">
+                                    <div class="block px-4 py-2 text-xs text-gray-400">
+                                        {{ __('Pembelajaran') }}
+                                    </div>
+
+                                    <x-dropdown-link href="{{ route('kbm.index') }}">
+                                        {{ __('Jadwal Kelas') }}
+                                    </x-dropdown-link>
+
+                                    <x-dropdown-link href="{{ route('kbm.billing.status') }}">
+                                        Status Billing Kelas
+                                    </x-dropdown-link>
+
+                                    <x-dropdown-link href="{{ route('api-tokens.index') }}">
+                                        {{ __('Laporan Kelas') }}
+                                    </x-dropdown-link>
+
+                                    <div class="block px-4 py-2 text-xs text-gray-400">
+                                        {{ __('Evaluasi') }}
+                                    </div>
+
+                                    <x-dropdown-link href="{{ route('profile.show') }}">
+                                        {{ __('Jadwal Evaluasi') }}
+                                    </x-dropdown-link>
+
+                                    <x-dropdown-link href="{{ route('profile.show') }}">
+                                        {{ __('Status Evaluasi') }}
+                                    </x-dropdown-link>
+
+                                    <div class="border-t border-gray-200"></div>
 
                                 </x-slot>
                             </x-dropdown>
@@ -174,59 +239,7 @@
                             </div>
                         </div>
 
-                        <div class="hidden sm:flex sm:items-center sm:ms-6">
-                            <div class="ms-3 relative">
-                                <x-dropdown align="right" width="48">
-                                    <x-slot name="trigger">
-                                        <span class="inline-flex rounded-md">
-                                            <button type="button"
-                                                class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-5 font-medium rounded-md text-gray-900 bg-white hover:text-gray-700 hover:bg-gray-50 focus:outline-none focus:bg-gray-50 active:bg-gray-50 transition ease-in-out duration-150">
-                                                KBM
-                                                <svg class="ms-2 -me-0.5 h-4 w-4" xmlns="http://www.w3.org/2000/svg"
-                                                    fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                                    stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
-                                                </svg>
-                                            </button>
-                                        </span>
-                                    </x-slot>
 
-                                    <x-slot name="content">
-                                        <div class="block px-4 py-2 text-xs text-gray-400">
-                                            {{ __('Pembelajaran') }}
-                                        </div>
-
-                                        <x-dropdown-link href="{{ route('kbm.index') }}">
-                                            {{ __('Jadwal Kelas') }}
-                                        </x-dropdown-link>
-
-                                        <x-dropdown-link href="{{ route('profile.show') }}">
-                                            {{ __('Status Kelas') }}
-                                        </x-dropdown-link>
-
-                                        <x-dropdown-link href="{{ route('api-tokens.index') }}">
-                                            {{ __('Laporan Kelas') }}
-                                        </x-dropdown-link>
-
-                                        <div class="block px-4 py-2 text-xs text-gray-400">
-                                            {{ __('Evaluasi') }}
-                                        </div>
-
-                                        <x-dropdown-link href="{{ route('profile.show') }}">
-                                            {{ __('Jadwal Evaluasi') }}
-                                        </x-dropdown-link>
-
-                                        <x-dropdown-link href="{{ route('profile.show') }}">
-                                            {{ __('Status Evaluasi') }}
-                                        </x-dropdown-link>
-
-                                        <div class="border-t border-gray-200"></div>
-
-                                    </x-slot>
-                                </x-dropdown>
-                            </div>
-                        </div>
 
 
                     </div>

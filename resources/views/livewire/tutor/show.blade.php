@@ -9,11 +9,11 @@
                 {{route('tutor.edit', ['slug' => $slug])}}
             </x-slot>
         </x-page.edit-button>
-        <x-page.back-button>
+        {{-- <x-page.back-button>
             Kembali
             <x-slot name='route'>
                 {{route('tutor.active')}}
-            </x-slot>
+            </x-slot> --}}
         </x-page.back-button>
     </x-slot>
 

@@ -14,7 +14,7 @@ class Billing extends Model
     protected $casts = [
         'bill_date' => 'datetime',
         'due_date' => 'datetime',
-
+        'deadline' => 'datetime',
     ];
 
     public function theStudent()
@@ -22,8 +22,18 @@ class Billing extends Model
         return $this->belongsTo(Student::class, 'student_id', 'id');
     }
 
+    public function theStudentData()
+    {
+        return $this->hasOneThrough(User::class, Student::class, 'id', 'id', 'student_id', 'user_id');
+    }
+
     public function theClass()
     {
-        return $this->hasMany(Course::class, 'class_id', 'id');
+        return $this->hasMany(Course::class, 'billing_id', 'id');
+    }
+
+    public function thePayment()
+    {
+        return $this->hasOne(Payment::class, 'billing_id', 'id');
     }
 }

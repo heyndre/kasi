@@ -29,7 +29,7 @@ class Course extends Model
 
     public function theBilling()
     {
-        return $this->belongsTo(Billing::class, 'id', 'class_id');
+        return $this->belongsTo(Billing::class, 'billing_id', 'id');
     }
 
     public function theCourse()

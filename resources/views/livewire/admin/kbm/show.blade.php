@@ -3,30 +3,33 @@
         Detail Kelas
     </x-page.header>
     <x-slot name='button'>
+        {{-- <button type="button" wire:click='addToBilling' wire:confirm='Konfirmasi penambahan kelas ke billing?'>
+            Tambah ke billing
+        </button> --}}
         @if ($billingStatus == 'Belum ditagih')
-        <x-page.edit-button>
+        <x-page.button-with-confirm confirmMessage='Konfirmasi penambahan kelas ke billing?'>
             Masukkan ke billing
             <x-slot name='route'>
                 {{route('billing.add', ['id' => $course->id])}}
             </x-slot>
-        </x-page.edit-button>
+        </x-page.button-with-confirm>
         @endif
         
         @if ($billingStatus == 'Ditagih')
         <x-page.edit-button>
             Cek Pembayaran
             <x-slot name='route'>
-                {{route('kbm.edit', ['id' => $course->id])}}
+                {{route('payment.student.status', ['id' => $billing->id])}}
             </x-slot>
         </x-page.edit-button>
         @endif
 
-        <x-page.back-button>
+        {{-- <x-page.back-button>
             Kembali
             <x-slot name='route'>
                 {{route('kbm.index')}}
             </x-slot>
-        </x-page.back-button>
+        </x-page.back-button> --}}
     </x-slot>
 
     <x-page.style>
@@ -69,6 +72,18 @@
                             Pelaksanaan Kelas
                             <div class="font-thin">
                                 {{$course->date_of_event->format('l d M Y H:i T')}}
+                            </div>
+                        </div>
+                        <div class="border-b-1">
+                            Durasi Kelas
+                            <div class="font-thin">
+                                {{$course->length}} menit
+                            </div>
+                        </div>
+                        <div class="border-b-1">
+                            Biaya Kelas per 60 menit
+                            <div class="font-thin">
+                                {{number_format($course->price, 2, ',', '.')}}
                             </div>
                         </div>
                         <hr class="p-3">

@@ -25,7 +25,7 @@
             </div>
             @endif
             {{-- Today Classes --}}
-            <x-table.classes>
+            <x-table.classes search='true'>
                 <x-slot name="title">
                     Jadwal Kelas Hari Ini ({{$today->count()}})
                 </x-slot>
@@ -147,7 +147,7 @@
                     if ($i == 0) {
                     $color = 'rgba('.$r. ','. $g. ','. $b. ',.1)';
                     } else {
-                        if ($today[$i-1]->date_of_event == $item->date_of_event) {
+                        if ($tomorrow[$i-1]->date_of_event == $item->date_of_event) {
                             $color = $lastColor;
                         } else {
                             while ($lastColor == $color) {
@@ -217,10 +217,11 @@
 
                 <x-slot name="body">
                     @php
-                    // dd($today);
+                    // dd($past);
                     @endphp
                     @forelse ($past as $i => $item)
                     @php
+                    // dd($i);
                     $hash = md5(Str::random(25));
                     $r = hexdec(substr($hash, 0, 2)); // r
                     $g = hexdec(substr($hash, 2, 2)); // g
@@ -229,7 +230,7 @@
                     if ($i == 0) {
                     $color = 'rgba('.$r. ','. $g. ','. $b. ',.1)';
                     } else {
-                        if ($today[$i-1]->date_of_event == $item->date_of_event) {
+                        if ($past[$i-1]->date_of_event == $item->date_of_event) {
                             $color = $lastColor;
                         } else {
                             while ($lastColor == $color) {

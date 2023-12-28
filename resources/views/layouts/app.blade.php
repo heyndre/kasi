@@ -26,13 +26,13 @@
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css">
     <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"
-    integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+        integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
     <link href="{{asset('lightbox2-2.11.4/dist/css/lightbox.css')}}" rel="stylesheet" />
     <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
     <script src="{{asset('lightbox2-2.11.4/dist/js/lightbox.js')}}"></script>
     <link href="{{asset('woocommerce-FlexSlider-690832b/flexslider.css')}}" rel="stylesheet" />
     <script src="{{asset('woocommerce-FlexSlider-690832b/jquery.flexslider.js')}}"></script>
-    
+
     @if (isset($style))
     {{ $style }}
     @endif
@@ -66,11 +66,22 @@
             {{ $slot }}
         </main>
     </div>
+    <div class="p-4 text-gray-800 text-sm flex justify-between items-center">
+        <span class="font-bold text-2xl text-amber-500/40 italic text-right">
+            Belajar Dulu, Menginspirasi Kemudian!
+        </span>
 
+        @php
+        $whatsapp = \App\Models\Setting::where('key', 'whatsapp')->value('value');
+        @endphp
+        <a href="https://wa.me/{{$whatsapp}}?text=Halo%2C saya butuh bantuan tentang Portal KASI" class="hover:underline" target="_blank">
+            Butuh bantuan? Hubungi Admin KASI via WhatsApp
+        </a>
+    </div>
     @stack('modals')
 
     @livewireScripts
-    
+
 
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.0.0/flowbite.min.js"></script>

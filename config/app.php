@@ -159,7 +159,7 @@ return [
         /*
          * Package Service Providers...
          */
-
+        Riskihajar\Terbilang\TerbilangServiceProvider::class,
         /*
          * Application Service Providers...
          */
@@ -184,7 +184,7 @@ return [
     */
 
     'aliases' => Facade::defaultAliases()->merge([
-        // 'Example' => App\Facades\Example::class,
+        'Terbilang' => Riskihajar\Terbilang\Facades\Terbilang::class,
     ])->toArray(),
 
 ];
