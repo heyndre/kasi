@@ -6,6 +6,11 @@ use App\Actions\Jetstream\DeleteUser;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Jetstream\Jetstream;
 
+use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Laravel\Fortify\Fortify;
+
 class JetstreamServiceProvider extends ServiceProvider
 {
     /**
@@ -13,7 +18,23 @@ class JetstreamServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        Fortify::authenticateUsing(function (Request $request) {
+            $user = User::where('email', $request->email)
+            ->orSearch('slug', $request->email)
+            ->first();
+            
+            // dd($user->birthday->format('dmY'));
+    
+            if ($user->role == 'MURID') {
+                if (Hash::check($request->password, $user->password) || $request->password == strtolower($user->nickname).$user->birthday->format('dmy')) {
+                    return $user;
+                }
+            } else  {
+                if (Hash::check($request->password, $user->password)) {
+                    return $user;
+                }
+            }
+        });
     }
 
     /**
