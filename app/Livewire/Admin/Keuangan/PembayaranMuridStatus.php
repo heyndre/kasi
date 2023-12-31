@@ -17,21 +17,28 @@ use Jenssegers\Date\Date;
 
 use Livewire\Component;
 
-Class PembayaranMuridStatus extends Component
+class PembayaranMuridStatus extends Component
 {
-    public $course, $billing, $payment, $tutorSharing, $billingStatus, $invoiceNumber, $billingDate, $studentPayment, $studentPaymentID, $tutorPaymentID, $tutorPayment, $tutorPaymentDate, $tutorPaymentReceipt;
+    public $course, $billing, $payment, $tutorSharing, $billingStatus, $invoiceNumber, $billingDate, $studentPayment, $studentPaymentID, $tutorPaymentID, $tutorPayment, $tutorPaymentDate, $tutorPaymentReceipt, $showUploadPaymentModal = false;
 
     public function mount($id)
     {
         $this->billing = Billing::with('theStudent', 'theClass', 'theStudentData', 'thePayment')
-        ->where('id', $id)
-        ->firstOrFail();
-
-        
+            ->where('id', $id)
+            ->firstOrFail();
     }
 
     public function render()
     {
         return view('livewire.admin.keuangan.pembayaran-murid-status');
+    }
+
+    public function uploadPaymentReceipt()
+    {
+        if (auth()->user()->role != 'MURID') {
+            dd('Unathorized');
+        }
+        $this->showUploadPaymentModal = true;
+        // dd('Authorized');
     }
 }

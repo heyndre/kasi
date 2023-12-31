@@ -3,6 +3,7 @@
         Status Billing
     </x-page.header>
     <x-slot name='button'>
+        @if (auth()->user()->role == 'ADMIN' || auth()->user()->role == 'SUPERADMIN')
         @if ($studentPayment == 'Belum lunas')
         <x-page.edit-button>
             Hubungi Murid/Wali Murid
@@ -11,22 +12,18 @@
             </x-slot>
         </x-page.edit-button>
         @endif
-
-        @if ($billingStatus == 'Lunas')
-        <x-page.edit-button>
-            Konfirmasi Pembayaran
-            <x-slot name='route'>
-                {{route('kbm.edit', ['id' => $course->id])}}
-            </x-slot>
-        </x-page.edit-button>
         @endif
 
-        {{-- <x-page.back-button>
-            Kembali
+        @if (auth()->user()->role == 'MURID' || auth()->user()->role == 'WALI MURID')
+        @if ($studentPayment == null)
+        <x-page.edit-button>
+            Unggah Bukti Pembayaran
             <x-slot name='route'>
-                {{route('kbm.index')}}
+                {{route('student.billing.upload', ['id' => $billing->id])}}
             </x-slot>
-        </x-page.back-button> --}}
+        </x-page.edit-button> 
+        @endif
+        @endif
     </x-slot>
 
     <x-page.style>
@@ -86,8 +83,9 @@
                         </x-flowbite.timeline-vertical-item>
 
                         <x-flowbite.timeline-vertical-item title=' Billing ditagihkan' :latest='false'
-                            :time='$billing->bill_date' description='Klik tombol untuk mengunduh tagihan' target='_blank'
-                            link='{{route("billing.download", ["id" => $billing->id])}}' linkDesc='Unduh Tagihan'>
+                            :time='$billing->bill_date' description='Klik tombol untuk mengunduh tagihan'
+                            target='_blank' link='{{route("billing.download", ["id" => $billing->id])}}'
+                            linkDesc='Unduh Tagihan'>
                         </x-flowbite.timeline-vertical-item>
                         @endisset
 
@@ -141,8 +139,11 @@
                             </li>
                         </ul>
                         <div id="defaultTabContent">
-                            <div class="hidden p-4 bg-white rounded-lg dark:bg-gray-800 w-full" id="about"
-                                role="tabpanel" aria-labelledby="about-tab">
+                            <div class="px-4 pt-4 w-full">
+
+                            </div>
+                            <div class="hidden bg-white rounded-lg dark:bg-gray-800 w-full" id="about" role="tabpanel"
+                                aria-labelledby="about-tab" wire:ignore>
                                 {{-- Today Classes --}}
                                 <x-table.classes search='false'>
                                     <x-slot name="title">
@@ -264,9 +265,5 @@
                 </div>
             </div>
         </div>
-
-
-
-</div>
-</x-page.content-white>
+    </x-page.content-white>
 </div>

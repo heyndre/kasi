@@ -265,8 +265,8 @@
                                     <div class="block px-4 py-2 text-xs text-gray-400">
                                         Billing & Pembayaran
                                     </div>
-                                    <x-dropdown-link href="{{ route('payment.student.billing') }}">
-                                        Billing Saya
+                                    <x-dropdown-link href="{{ route('student.billing.index') }}">
+                                        Tagihan Saya
                                     </x-dropdown-link>
 
                                     <x-dropdown-link href="{{ route('api-tokens.index') }}">

@@ -42,6 +42,13 @@ return [
             'visibility' => 'private',
         ],
 
+        'student-payment' => [
+            'driver' => 'local',
+            'root' => storage_path('app/billing/student-payment-receipt'),
+            'throw' => false,
+            'visibility' => 'private',
+        ],
+
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),

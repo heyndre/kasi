@@ -24,6 +24,9 @@ use App\Livewire\Admin\KBM\StatusIndex as KBMStatusIndex;
 use App\Livewire\Admin\Keuangan\PembayaranMuridStatus as StatusPembayaranMurid;
 use App\Livewire\Admin\Keuangan\BillingIndex as BillingIndex;
 
+use App\Livewire\Student\Keuangan\BillingIndex as StudentBillingIndex;
+use App\Livewire\Student\Keuangan\UploadPayment as StudentUploadPayment;
+
 use App\Livewire\Tutor\Active as TutorActive;
 use App\Livewire\Tutor\Inactive as TutorInactive;
 use App\Livewire\Tutor\Show as TutorShow;
@@ -90,10 +93,10 @@ Route::middleware([
     Route::get('kelas/billing/tambah/{id}', [BillingController::class, 'addBilling'])->name('billing.add');
     Route::get('kelas/billing/ubah/{id}', [BillingController::class, 'updatePrice'])->name('billing.edit');
     Route::get('kelas/billing/unduh/{id}', [BillingController::class, 'generateInvoice'])->name('billing.download');
-    
+
     Route::get('keuangan/status/{id}', StatusPembayaranMurid::class)->name('payment.student.status');
     Route::get('keuangan/billing/', BillingIndex::class)->name('payment.student.billing');
-    
+
 
 
     Route::get('tes-pdf', [BillingController::class, 'testPDF'])->name('test.pdf');
@@ -107,6 +110,12 @@ Route::middleware([
 
     Route::get('/tutor/registrasi', TutorRegister::class)->name('tutor.register');
     // Route::get('/tutor/kalender-ulang-tahun', TutorBirthday::class)->name('tutor.birthday');
+
+    // Student group
+    Route::prefix('murid')->group(function () {
+        Route::get('keuangan/tagihan/', StudentBillingIndex::class)->name('student.billing.index');
+        Route::get('keuangan/tagihan/unggah-pembayaran/{id}', StudentUploadPayment::class)->name('student.billing.upload');
+    });
 });
 
 Route::group(['middleware' => ['web', WelcomesNewUsers::class,]], function () {
