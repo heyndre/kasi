@@ -38,7 +38,8 @@ class UploadPayment extends Component
 
         if ($this->receipt != null) {
             Image::load($this->receipt->getRealPath())->fit(Manipulations::FIT_FILL_MAX, 1080, 1920)->optimize()->save();
-            $filename = $this->receipt->storeAs($billing->theStudent->nim, $billing->inovice_id . '-' . now()->format('Ymd His') . '.' . pathinfo($this->receipt->getFilename(), PATHINFO_EXTENSION), 'student-payment');
+            $name = str_pad($billing->invoice_id, 5, '0', STR_PAD_LEFT) . '-' . now()->format('Ymd His') . '.' . pathinfo($this->receipt->getFilename(), PATHINFO_EXTENSION);
+            $filename = $this->receipt->storeAs($billing->theStudent->nim, $name, 'student-payment');
         } else {
             return;
         }
@@ -76,7 +77,7 @@ class UploadPayment extends Component
             }
         }
 
-        return $this->redirect(route('payment.student.status', ['id' => $billing->id]));
+        return $this->redirect(route('student.billing.status', ['id' => $billing->id]));
     }
 
     public function updatedReceipt()

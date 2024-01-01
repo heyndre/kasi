@@ -75,6 +75,10 @@ class User extends Authenticatable
         'profile_photo_url',
     ];
 
+    // public function getRoleAttribute() {
+    //     return $this->role;
+    // }
+
     public function theStudent()
     {
         return $this->hasOne(Student::class, 'user_id', 'id');
@@ -105,7 +109,7 @@ class User extends Authenticatable
         );
     }
 
-    public function getSlugOptions() : SlugOptions
+    public function getSlugOptions(): SlugOptions
     {
         return SlugOptions::create()
             ->generateSlugsFrom(['name', 'role'])
@@ -121,5 +125,54 @@ class User extends Authenticatable
     public function getRouteKeyName()
     {
         return 'slug';
+    }
+
+    public function isAdmin()
+    {
+        if ($this->role == 'ADMIN') {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    
+    public function isSuperAdmin()
+    {
+        if ($this->role == 'SUPERADMIN') {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    
+    public function isStudent()
+    {
+        if ($this->role == 'MURID') {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    
+    public function isTutor()
+    {
+        if ($this->role == 'Tutor') {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    
+    public function isGuardian()
+    {
+        if ($this->role == 'WALI MURID') {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

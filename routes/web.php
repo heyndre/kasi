@@ -68,53 +68,62 @@ Route::middleware([
 
     // File Access
     Route::get('/file/access/class/photo/{file}', [FileAccessController::class, 'accessClassPhoto'])->name('file.class.photo');
+    Route::get('/file/access/payment/student/{nim}/{filename?}', [FileAccessController::class, 'accessStudentReceipt'])->name('file.payment.student');
 
-    // Student Menu
-    Route::get('/murid/aktif', StudentActive::class)->name('student.active');
-    Route::get('/murid/inaktif', StudentInactive::class)->name('student.inactive');
-    Route::get('/murid/data/{nim}', StudentShow::class)->name('student.show');
-    Route::get('/murid/edit/{nim}', StudentEdit::class)->name('student.edit');
+    Route::middleware('role:ADMIN,SUPERADMIN')->group(function () {
 
-    Route::get('/murid/registrasi', StudentRegister::class)->name('student.register');
-    Route::get('/murid/kalender-ulang-tahun', StudentBirthday::class)->name('student.birthday');
+        // Student Menu
+        Route::get('/murid/aktif', StudentActive::class)->name('student.active');
+        Route::get('/murid/inaktif', StudentInactive::class)->name('student.inactive');
+        Route::get('/murid/data/{nim}', StudentShow::class)->name('student.show');
+        Route::get('/murid/edit/{nim}', StudentEdit::class)->name('student.edit');
 
-    // Wali Murid / Guardian Menu
-    Route::get('/wali-murid/list', GuardianList::class)->name('guardian.index');
-    Route::get('/wali-murid/register', GuardianRegister::class)->name('guardian.register');
-    Route::get('/wali-murid/show/{slug}', GuardianShow::class)->name('guardian.show');
-    Route::get('/wali-murid/edit/{slug}', GuardianEdit::class)->name('guardian.edit');
+        Route::get('/murid/registrasi', StudentRegister::class)->name('student.register');
+        Route::get('/murid/kalender-ulang-tahun', StudentBirthday::class)->name('student.birthday');
 
-    // KBM Menu
-    Route::get('/kelas/list', KBMList::class)->name('kbm.index');
-    Route::get('/kelas/status/billing', KBMStatusIndex::class)->name('kbm.billing.status');
-    Route::get('/kelas/detail/{id}', KBMShow::class)->name('kbm.show');
-    Route::get('/kelas/edit/{id}', KBMEdit::class)->name('kbm.edit');
+        // Wali Murid / Guardian Menu
+        Route::get('/wali-murid/list', GuardianList::class)->name('guardian.index');
+        Route::get('/wali-murid/register', GuardianRegister::class)->name('guardian.register');
+        Route::get('/wali-murid/show/{slug}', GuardianShow::class)->name('guardian.show');
+        Route::get('/wali-murid/edit/{slug}', GuardianEdit::class)->name('guardian.edit');
 
-    Route::get('kelas/billing/tambah/{id}', [BillingController::class, 'addBilling'])->name('billing.add');
-    Route::get('kelas/billing/ubah/{id}', [BillingController::class, 'updatePrice'])->name('billing.edit');
-    Route::get('kelas/billing/unduh/{id}', [BillingController::class, 'generateInvoice'])->name('billing.download');
+        // KBM Menu
+        Route::get('/kelas/list', KBMList::class)->name('kbm.index');
+        Route::get('/kelas/status/billing', KBMStatusIndex::class)->name('kbm.billing.status');
+        Route::get('/kelas/detail/{id}', KBMShow::class)->name('kbm.show');
+        Route::get('/kelas/edit/{id}', KBMEdit::class)->name('kbm.edit');
 
-    Route::get('keuangan/status/{id}', StatusPembayaranMurid::class)->name('payment.student.status');
-    Route::get('keuangan/billing/', BillingIndex::class)->name('payment.student.billing');
+        Route::get('kelas/billing/tambah/{id}', [BillingController::class, 'addBilling'])->name('billing.add');
+        Route::get('kelas/billing/konfirmasi/{id}', [BillingController::class, 'confirmBilling'])->name('billing.confirm');
+        Route::get('kelas/billing/ubah/{id}', [BillingController::class, 'updatePrice'])->name('billing.edit');
+        Route::get('kelas/billing/unduh/{id}', [BillingController::class, 'generateInvoice'])->name('billing.download');
+
+        Route::get('keuangan/status/{id}', StatusPembayaranMurid::class)->name('payment.student.status');
+        Route::get('keuangan/billing/', BillingIndex::class)->name('payment.student.billing');
 
 
 
-    Route::get('tes-pdf', [BillingController::class, 'testPDF'])->name('test.pdf');
+        Route::get('tes-pdf', [BillingController::class, 'testPDF'])->name('test.pdf');
 
 
-    // Tutor Menu
-    Route::get('/tutor/aktif', TutorActive::class)->name('tutor.active');
-    Route::get('/tutor/inaktif', TutorInactive::class)->name('tutor.inactive');
-    Route::get('/tutor/data/{slug}', TutorShow::class)->name('tutor.show');
-    Route::get('/tutor/edit/{slug}', TutorEdit::class)->name('tutor.edit');
+        // Tutor Menu
+        Route::get('/tutor/aktif', TutorActive::class)->name('tutor.active');
+        Route::get('/tutor/inaktif', TutorInactive::class)->name('tutor.inactive');
+        Route::get('/tutor/data/{slug}', TutorShow::class)->name('tutor.show');
+        Route::get('/tutor/edit/{slug}', TutorEdit::class)->name('tutor.edit');
 
-    Route::get('/tutor/registrasi', TutorRegister::class)->name('tutor.register');
-    // Route::get('/tutor/kalender-ulang-tahun', TutorBirthday::class)->name('tutor.birthday');
+        Route::get('/tutor/registrasi', TutorRegister::class)->name('tutor.register');
+        // Route::get('/tutor/kalender-ulang-tahun', TutorBirthday::class)->name('tutor.birthday');
+    });
 
     // Student group
-    Route::prefix('murid')->group(function () {
+    Route::prefix('murid')->middleware('role:MURID')->group(function () {
         Route::get('keuangan/tagihan/', StudentBillingIndex::class)->name('student.billing.index');
         Route::get('keuangan/tagihan/unggah-pembayaran/{id}', StudentUploadPayment::class)->name('student.billing.upload');
+
+        Route::get('keuangan/tagihan/unduh/{id}', [BillingController::class, 'generateInvoice'])->name('student.billing.download');
+
+        Route::get('keuangan/status/{id}', StatusPembayaranMurid::class)->name('student.billing.status');
     });
 });
 

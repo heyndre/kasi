@@ -28,17 +28,31 @@ class BillingIndex extends Component
         // dd($billings);
 
         $key = $this->searchActive;
-        $active = Billing::with('theClass', 'theStudent', 'theStudentData', 'thePayment')
-        ->whereHas('theStudentData', function($q) use ($key) {
-            $q->search('name', $key)
-            ->orderBy('name', 'asc');
+        // $active = Billing::with('theClass', 'theStudent', 'theStudentData', 'thePayment')
+        // ->whereHas('theStudentData', function($q) use ($key) {
+        //     $q->search('name', $key)
+        //     ->orderBy('name', 'asc');
+        // })
+        // // ->selectRaw('*, sum(amount) as total_price, max(due_date) as deadline')
+        // ->whereNotIn('id', $billings)
+        // ->where('student_id', $studentID)
+        // ->orderBy('created_at')
+        // // ->groupBy('student_id')
+        // ->paginate(10);
+
+        $confirm = Billing::with('theClass', 'theStudent.theGuardian', 'theClass', 'thePayment', 'theStudentData')
+        ->whereHas('thePayment', function($q) {
+            $q->whereNull('confirm_date');
         })
-        // ->selectRaw('*, sum(amount) as total_price, max(due_date) as deadline')
-        ->whereNotIn('id', $billings)
         ->where('student_id', $studentID)
-        ->orderBy('created_at')
-        // ->groupBy('student_id')
-        ->paginate(10);
+        ->orderBy('created_at', 'desc')
+        ->paginate(15);
+
+        $active = Billing::with('theClass', 'theStudent.theGuardian', 'theClass', 'thePayment', 'theStudentData')
+        ->whereDoesntHave('thePayment')
+        ->where('student_id', $studentID)
+        ->orderBy('created_at', 'desc')
+        ->paginate(15);
 
         // dd($active);
 
@@ -50,18 +64,16 @@ class BillingIndex extends Component
             $q->search('name', $key)
             ->orderBy('name', 'asc');
         })
-        ->selectRaw('*, sum(amount) as total_price, max(due_date) as deadline')
-        ->whereIn('id', $billings)
         ->where('student_id', $studentID)
         ->orderBy('created_at', 'desc')
-        ->groupBy('student_id')
         ->paginate(15);
 
         // dd($paid);
 
         return view('livewire.student.keuangan.billing-index', [
             'active' => $active,
-            'paid' => $paid
+            'paid' => $paid,
+            'confirm' => $confirm,
         ]);
     }
 }

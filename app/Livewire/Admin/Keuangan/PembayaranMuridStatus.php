@@ -19,26 +19,29 @@ use Livewire\Component;
 
 class PembayaranMuridStatus extends Component
 {
-    public $course, $billing, $payment, $tutorSharing, $billingStatus, $invoiceNumber, $billingDate, $studentPayment, $studentPaymentID, $tutorPaymentID, $tutorPayment, $tutorPaymentDate, $tutorPaymentReceipt, $showUploadPaymentModal = false;
+    public $billing, $diff = 0;
 
     public function mount($id)
     {
         $this->billing = Billing::with('theStudent', 'theClass', 'theStudentData', 'thePayment')
             ->where('id', $id)
             ->firstOrFail();
+
+        if ($this->billing->thePayment != null) {
+            $this->diff = $this->billing->amount - $this->billing->thePayment->whereNotNull('confirm_date')->sum('amount');
+
+            if ($this->diff == 0 && $this->billing->thePayment != null) {
+                session()->flash('success0', 'Tagihan lunas');
+            } elseif ($this->diff > 0) {
+                session()->flash('fail0', 'Tagihan belum lunas dengan jumlah kekurangan Rp.' . number_format($this->diff, 2, ',', '.'));
+            } else {
+                session()->flash('warning0', 'Tagihan lunas dengan jumlah kelebihan Rp.' . number_format($this->diff * -1, 2, ',', '.'));
+            }
+        }
     }
 
     public function render()
     {
         return view('livewire.admin.keuangan.pembayaran-murid-status');
-    }
-
-    public function uploadPaymentReceipt()
-    {
-        if (auth()->user()->role != 'MURID') {
-            dd('Unathorized');
-        }
-        $this->showUploadPaymentModal = true;
-        // dd('Authorized');
     }
 }

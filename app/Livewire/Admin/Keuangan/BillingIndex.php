@@ -27,8 +27,23 @@ class BillingIndex extends Component
             $q->search('name', $key)
             ->orderBy('name', 'asc');
         })
+        ->whereDoesntHave('thePayment')
         // ->selectRaw('*, sum(amount) as total_price, max(due_date) as deadline')
-        ->whereNotIn('id', $billings)
+        // ->whereNotIn('id', $billings)
+        ->orderBy('created_at')
+        // ->groupBy('student_id')
+        ->paginate(10);
+
+        $confirm = Billing::with('theClass', 'theStudent', 'theStudentData', 'thePayment')
+        ->whereHas('theStudentData', function($q) use ($key) {
+            $q->search('name', $key)
+            ->orderBy('name', 'asc');
+        })
+        ->whereHas('thePayment', function($q) {
+            $q->whereNull('confirm_date');
+        })
+        // ->selectRaw('*, sum(amount) as total_price, max(due_date) as deadline')
+        // ->whereNotIn('id', $billings)
         ->orderBy('created_at')
         // ->groupBy('student_id')
         ->paginate(10);
@@ -43,17 +58,18 @@ class BillingIndex extends Component
             $q->search('name', $key)
             ->orderBy('name', 'asc');
         })
-        ->selectRaw('*, sum(amount) as total_price, max(due_date) as deadline')
-        ->whereIn('id', $billings)
+        // ->selectRaw('*, sum(amount) as total_price, max(due_date) as deadline')
+        // ->whereIn('id', $billings)
         ->orderBy('created_at', 'desc')
-        ->groupBy('student_id')
+        // ->groupBy('student_id')
         ->paginate(15);
 
         // dd($paid);
 
         return view('livewire.admin.keuangan.billing-index', [
             'active' => $active,
-            'paid' => $paid
+            'paid' => $paid,
+            'confirm' => $confirm,
         ]);
     }
 }

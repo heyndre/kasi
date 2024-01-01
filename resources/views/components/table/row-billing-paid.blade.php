@@ -80,10 +80,10 @@
         </div>
     </td>
     <td>
-        Rp.{{number_format($item->total_price, 0, ',', '.')}}
-        <p class="italic">({{Terbilang::make($item->total_price, ' rupiah')}})</p>
+        Rp.{{number_format($item->amount, 0, ',', '.')}}
+        <p class="italic">({{Terbilang::make($item->amount, ' rupiah')}})</p>
         <p>Tanggal penagihan: {{$item->bill_date->format('d-m-Y')}}</p>
-        <p>Tenggat pembayaran: {{$item->deadline->format('d-m-Y')}}</p>
+        <p>Tenggat pembayaran: {{$item->due_date->format('d-m-Y')}}</p>
     </td>
 
     <td>

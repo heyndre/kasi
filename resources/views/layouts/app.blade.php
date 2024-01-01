@@ -74,8 +74,12 @@
         @php
         $whatsapp = \App\Models\Setting::where('key', 'whatsapp')->value('value');
         @endphp
-        <a href="https://wa.me/{{$whatsapp}}?text=Halo%2C saya butuh bantuan tentang Portal KASI" class="hover:underline" target="_blank">
-            Butuh bantuan? Hubungi Admin KASI via WhatsApp
+        <a href="https://wa.me/{{$whatsapp}}?text=Halo%2C saya butuh bantuan tentang Portal KASI"
+            class="" target="_blank">
+            Butuh bantuan?
+            <span class="p-1 bg-amber-600 text-white rounded-md hover:bg-amber-800 transition">
+                Hubungi Admin KASI via WhatsApp
+            </span>
         </a>
     </div>
     @stack('modals')

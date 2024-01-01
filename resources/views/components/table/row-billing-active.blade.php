@@ -91,14 +91,21 @@
         // dd($item);
         @endphp
         @if ($item->thePayment)
-        Pembayaran sudah dilakukan pada {{$item->thePayment->pay_date->format('d-m-Y H:i T')}}, menunggu konfirmasi
+        Menunggu <b>konfirmasi</b>
+        <br>
+        Pembayaran {{$item->thePayment->pay_date->format('d-m-Y H:i T')}}
         @else
-        Menunggu pembayaran
+        Menunggu <b>pembayaran</b>
         @endif
     </td>
 
     <td class="px-6 py-4">
+        @if (auth()->user()->role == 'MURID' || auth()->user()->role == 'WALI MURID')
+        <a href="{{route('student.billing.status', ['id' => $item->id])}}"
+            class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Lihat rincian</a>
+        @else
         <a href="{{route('payment.student.status', ['id' => $item->id])}}"
             class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Lihat rincian</a>
+        @endif
     </td>
 </tr>

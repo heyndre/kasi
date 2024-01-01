@@ -73,6 +73,59 @@
                 </x-slot>
             </x-table.billing>
 
+            {{-- Need Confirmation billings --}}
+            <x-table.billing model='searchConfirm'>
+                <x-slot name="title">
+                    Daftar Tagihan Menunggu Konfirmasi Pembayaran ({{$confirm->count()}})
+                </x-slot>
+
+                <x-slot name="caption">
+                    Per {{date('d F Y H:i T')}}
+                </x-slot>
+
+                <x-slot name="head">
+                    <x-table.head>
+                        Nomor
+                    </x-table.head>
+                    <x-table.head>
+                        Identitas Murid
+                    </x-table.head>
+                    <x-table.head>
+                        Identitas Wali Murid
+                    </x-table.head>
+                    <x-table.head>
+                        Nominal
+                    </x-table.head>
+                    <x-table.head>
+                        Status
+                    </x-table.head>
+                    <x-table.head>
+                        Opsi
+                    </x-table.head>
+                </x-slot>
+
+                <x-slot name="body">
+                    @php
+                    // dd($today);
+                    @endphp
+                    @forelse ($confirm as $i => $item)
+                    <x-table.row-billing-active wire:loading.class.delay.longest='opacity-80' :item='$item'>
+                        <x-slot name="sequence">
+                            {{$i+1}}
+                        </x-slot>
+                    </x-table.row-billing-active>
+                    @empty
+                    <tr>
+                        <td colspan="5" class="px-2 py-3 italic">
+                            Tidak ada data
+                        </td>
+                    </tr>
+                    @endforelse
+                </x-slot>
+                <x-slot name="foot">
+                    {{$confirm->links()}}
+                </x-slot>
+            </x-table.billing>
             
             {{-- Past Classes --}}
             <x-table.billing model='searchPaid'>
@@ -98,7 +151,7 @@
                         Nominal
                     </x-table.head>
                     <x-table.head>
-                        Tanggal Pembayaran
+                        Pembayaran
                     </x-table.head>
                     <x-table.head>
                         Opsi

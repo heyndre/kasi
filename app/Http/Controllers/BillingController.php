@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Billing;
+use App\Models\Payment;
 use App\Models\Course;
 use App\Models\CourseBase;
 use App\Models\Setting;
@@ -99,6 +100,38 @@ class BillingController extends Controller
         //     echo $file;
         // }, $filename, ['Content-Type: image/png']);
         return Response::download(storage_path("app/billing/" . $filename . '.png'), $filename);
+    }
+
+    public function confirmBilling($id) {
+        // dd($id);
+        $billing = Billing::with('thePayment', 'theStudent')
+        ->where('id', $id)
+        ->whereHas('thePayment')
+        ->first();
+
+        if ($billing == null) {
+            session()->flash('fail', 'Pembayaran tidak ditemukan, tagihan tidak diproses');
+        } else {
+            $payments = Payment::where('billing_id', $billing->id)->get();
+            if ($payments->sum('amount') == $billing->amount) {
+                foreach ($payments as $item) {
+                    $item->update(['confirm_date' => now(), 'confirmed_by' => auth()->user()->id]);
+                }
+                session()->flash('success', 'Pembayaran terkonfirmasi, tagihan lunas');
+            } elseif ($payments->sum('amount') > $billing->amount) {
+                foreach ($payments as $item) {
+                    $item->update(['confirm_date' => now(), 'confirmed_by' => auth()->user()->id]);
+                }
+                session()->flash('warning', 'Pembayaran terkonfirmasi, tagihan lunas dengan kelebihan Rp.'. number_format($payments->sum('amount') - $billing->amount, 2, ',', '.'));
+            } else {
+                foreach ($payments as $item) {
+                    $item->update(['confirm_date' => now(), 'confirmed_by' => auth()->user()->id]);
+                }
+                session()->flash('warning', 'Pembayaran terkonfirmasi, tagihan belum lunas dengan sisa kekurangan Rp.'. number_format($billing->amount - $payments->sum('amount'), 2, ',', '.'));
+            }
+        }
+
+        return redirect(route('payment.student.status', ['id' => $billing->id]));
     }
 
     public function testPDF()

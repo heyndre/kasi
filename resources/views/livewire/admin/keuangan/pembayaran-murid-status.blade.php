@@ -4,25 +4,41 @@
     </x-page.header>
     <x-slot name='button'>
         @if (auth()->user()->role == 'ADMIN' || auth()->user()->role == 'SUPERADMIN')
-        @if ($studentPayment == 'Belum lunas')
+        @if ($billing->thePayment == null)
         <x-page.edit-button>
             Hubungi Murid/Wali Murid
             <x-slot name='route'>
-                {{route('billing.add', ['id' => $course->id])}}
+
             </x-slot>
         </x-page.edit-button>
+        @elseif ($billing->thePayment->confirm_date == null)
+        <x-page.button-with-confirm confirmMessage='Konfirmasi pembayaran tagihan?'>
+            Konfirmasi Pembayaran
+            <x-slot name='route'>
+                {{route('billing.confirm', ['id' => $billing->id])}}
+            </x-slot>
+        </x-page.button-with-confirm>
         @endif
         @endif
 
         @if (auth()->user()->role == 'MURID' || auth()->user()->role == 'WALI MURID')
-        @if ($studentPayment == null)
+        @if ($billing->thePayment == null)
         <x-page.edit-button>
             Unggah Bukti Pembayaran
             <x-slot name='route'>
                 {{route('student.billing.upload', ['id' => $billing->id])}}
             </x-slot>
-        </x-page.edit-button> 
+        </x-page.edit-button>
+        @elseif ($billing->thePayment->confirm_date == null)
+        <x-page.edit-button target='_blank'>
+            Inquiry Konfirmasi Pembayaran
+            <x-slot name='route'>
+                https://wa.me/6285179824064?text=Inquiry Konfirmasi Pembayaran Invoice nomor
+                {{str_pad($billing->invoice_id, 5, '0', STR_PAD_LEFT)}}
+            </x-slot>
+        </x-page.edit-button>
         @endif
+
         @endif
     </x-slot>
 
@@ -41,20 +57,9 @@
 
     <x-page.content-white>
         <div class="px-4 py-2">
-            @if(session()->has('success'))
-            <div class="flex items-center p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400"
-                role="alert">
-                <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                    fill="currentColor" viewBox="0 0 20 20">
-                    <path
-                        d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
-                </svg>
-                <span class="sr-only">Info</span>
-                <div>
-                    <span class="font-medium">INFO</span> {{session('success')}}
-                </div>
-            </div>
-            @endif
+            <x-page.notification />
+
+            <x-page.notification0 />
             <div
                 class=" min-h-[100vh] flex flex-col w-full gap-4 p-4 bg-white border border-gray-200 rounded-lg md:flex-row dark:border-gray-700 dark:bg-gray-800">
                 <div class="w-1/3 p-6">
@@ -63,18 +68,18 @@
                     </div>
 
                     <ol class="relative border-s border-gray-200 dark:border-gray-700 mt-6">
-                        @isset($course)
+                        {{-- @isset($billing->theClass)
                         <x-flowbite.timeline-vertical-item title='Kelas dijadwalkan' :latest='false'
                             :time='$course->created_at' description='' :link="route('kbm.show', ['id' => $course->id])"
                             linkDesc='Detail Kelas'>
                         </x-flowbite.timeline-vertical-item>
                         @endisset
 
-                        @isset($course->tutor_attendance)
+                        @isset($billing->tutor_attendance)
                         <x-flowbite.timeline-vertical-item title='Kelas dilaksanakan' :latest='false'
                             :time='$course->date_of_event' description='' link='haha' linkDesc='Detail Kelas'>
                         </x-flowbite.timeline-vertical-item>
-                        @endisset
+                        @endisset --}}
 
                         @isset($billing)
                         <x-flowbite.timeline-vertical-item title='Billing dibuat' :latest='false'
@@ -89,17 +94,19 @@
                         </x-flowbite.timeline-vertical-item>
                         @endisset
 
-                        @isset($payment)
+                        @isset($billing->thePayment)
                         <x-flowbite.timeline-vertical-item title='Billing dibayar' :latest='false'
-                            :time='$payment->pay_date' description='' link='haha' linkDesc='Bukti Pembayaran'>
+                            :time='$billing->thePayment->pay_date'
+                            description="Nomor Pembayaran {{str_pad($billing->thePayment->id, 5, '0', STR_PAD_LEFT)}}"
+                            link="{{route('file.payment.student', ['nim' => $billing->thePayment->payment_file])}}"
+                            linkDesc='Bukti Pembayaran'>
                         </x-flowbite.timeline-vertical-item>
 
-                        @isset($payment->pay_date)
+                        @isset($billing->thePayment->confirm_date)
                         <x-flowbite.timeline-vertical-item title='Pembayaran dikonfirmasi' :latest='false'
-                            :time='$payment->confirm_date' description='' link='' linkDesc=''>
+                            :time='$billing->thePayment->confirm_date' description='' link='' linkDesc=''>
                         </x-flowbite.timeline-vertical-item>
                         @endisset
-
                         @endisset
 
                         @isset($tutorPayment)

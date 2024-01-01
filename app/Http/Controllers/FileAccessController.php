@@ -16,6 +16,13 @@ class FileAccessController extends Controller
         // header('Content-Type:' . $type);
         // header('Content-Length: ' . filesize($path));
         ob_end_clean();
-        return response()->file(storage_path('app/classes/photo/'.$file));
+        return response()->file(storage_path('app/classes/photo/' . $file));
+    }
+
+    public function accessStudentReceipt($nim, $filename)
+    {
+        // return storage_path('app/billing/student-payment-receipt/'.$file);
+        ob_end_clean();
+        return response()->file(storage_path('app/billing/student-payment-receipt/' . $nim . '/' . $filename));
     }
 }
