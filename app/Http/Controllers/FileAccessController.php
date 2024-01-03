@@ -25,4 +25,11 @@ class FileAccessController extends Controller
         ob_end_clean();
         return response()->file(storage_path('app/billing/student-payment-receipt/' . $nim . '/' . $filename));
     }
+
+    public function accessStudentRefund($file, $name)
+    {
+        // return storage_path('app/billing/student-payment-receipt/'.$file);
+        ob_end_clean();
+        return response()->file(storage_path('app/billing/student-refund-receipt/' . $file . '/' . $name));
+    }
 }

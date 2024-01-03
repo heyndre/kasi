@@ -110,11 +110,11 @@
                     // dd($today);
                     @endphp
                     @forelse ($confirm as $i => $item)
-                    <x-table.row-billing-active wire:loading.class.delay.longest='opacity-80' :item='$item'>
+                    <x-table.row-billing-confirm wire:loading.class.delay.longest='opacity-80' :item='$item'>
                         <x-slot name="sequence">
                             {{$i+1}}
                         </x-slot>
-                    </x-table.row-billing-active>
+                    </x-table.row-billing-confirm>
                     @empty
                     <tr>
                         <td colspan="5" class="px-2 py-3 italic">
@@ -131,7 +131,7 @@
             {{-- Past Classes --}}
             <x-table.billing model='searchPaid'>
                 <x-slot name="title">
-                    Daftar Biling Lunas ({{$paid->count()}})
+                    Daftar Biling Dibayar ({{$paid->count()}})
                 </x-slot>
 
                 <x-slot name="caption">
@@ -164,7 +164,7 @@
                     @php
                     // dd($item);
                     @endphp
-                    <x-table.row-billing-paid wire:loading.class.delay.longest='opacity-80' :item='$item'>
+                    <x-table.row-billing-paid wire:loading.class.delay.longest='opacity-80' :item='$item' class='{{$item->amount > $item->thePayment->sum("amount") ? "bg-red-100" : "bg-green-100"}}'>
                         <x-slot name="sequence">
                             {{$i+1}}
                         </x-slot>

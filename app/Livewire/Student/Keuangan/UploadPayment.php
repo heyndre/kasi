@@ -14,12 +14,13 @@ use Livewire\WithFileUploads;
 use Spatie\Image\Image as Image;
 use Spatie\Image\Manipulations;
 use Illuminate\Support\Str;
+use Spatie\Browsershot\Browsershot;
 
 class UploadPayment extends Component
 {
     use WithFileUploads;
 
-    public $receipt, $payMethod = 'bank_transfer', $packageData, $theBillData;
+    public $receipt, $payMethod = 'waiting', $packageData, $theBillData;
 
     public function mount($id)
     {
@@ -34,6 +35,7 @@ class UploadPayment extends Component
     public function uploadPayment()
     {
         // dd(pathinfo($this->receipt->getFilename(), PATHINFO_EXTENSION));
+        // dd($this->payMethod);
         $billing = $this->theBillData;
 
         if ($this->receipt != null) {
@@ -41,20 +43,24 @@ class UploadPayment extends Component
             $name = str_pad($billing->invoice_id, 5, '0', STR_PAD_LEFT) . '-' . now()->format('Ymd His') . '.' . pathinfo($this->receipt->getFilename(), PATHINFO_EXTENSION);
             $filename = $this->receipt->storeAs($billing->theStudent->nim, $name, 'student-payment');
         } else {
-            return;
+            if ($this->payMethod == 'bank_transfer' || $this->payMethod == 'other') {
+                session()->flash('receipt', 'Pilih file untuk diunggah');
+                return;
+            }
         }
 
         if ($this->payMethod == 'bank_transfer' || $this->payMethod == 'other') {
             $payment = Payment::create([
                 'billing_id' => $billing->id,
                 'pay_date' => now(),
-                'amount' => $billing->amount,
+                // 'amount' => $billing->amount,
                 'pay_method' => $this->payMethod,
                 'payment_file' => $filename,
             ]);
 
             session()->flash('success', 'Unggah bukti pembayaran berhasil - Bukti Pembayaran #' . str_pad($payment->id, 5, '0', STR_PAD_LEFT));
         } else {
+            // dd('package');
             $package = Package::where('student_id', $billing->student_id)
                 ->firstOrFail();
 
@@ -62,19 +68,60 @@ class UploadPayment extends Component
                 $payment = Payment::create([
                     'billing_id' => $billing->id,
                     'pay_date' => now(),
+                    'confirm_date' => now(),
                     'amount' => $billing->length / 60 * $package->price_per_unit,
                     'pay_method' => $this->payMethod,
                     'package_id' => $package->id,
+                    'confirmed_by' => 1,
                 ]);
+                $package->update([
+                    'remaining' => $package->remaining - $billing->length,
+                ]);
+                session()->flash('success', 'Pembayaran menggunakan paket berhasil dengan bukti pembayaran #' . str_pad($payment->id, 5, '0', STR_PAD_LEFT));
             } else {
                 $payment = Payment::create([
                     'billing_id' => $billing->id,
                     'pay_date' => now(),
+                    'confirm_date' => now(),
                     'amount' => ($billing->length - $package->remaining) / 60 * $package->price_per_unit,
                     'pay_method' => $this->payMethod,
                     'package_id' => $package->id,
+                    'confirmed_by' => 1,
                 ]);
+                $package->update([
+                    'remaining' => 0,
+                ]);
+
+                // $newbilling = Billing::create([
+                //     'bill_date' => now()->addMonth()->startOfMonth(),
+                //     'due_date' => now()->addMonth()->startOfMonth()->addDays(10),
+                //     'amount' => ($billing->length - $package->remanining) / 60 * $package->price_per_unit,
+                //     'invoice_id' => Billing::max('invoice_id') + 1,
+                //     'student_id' => $billing->student_id,
+                //     'length' => $billing->length - $package->remanining,
+                // ]);
+
+                session()->flash('warning', 'Pembayaran menggunakan paket berhasil dengan kekurangan, bukti pembayaran #' . str_pad($payment->id, 5, '0', STR_PAD_LEFT));
             }
+
+            $filename = $billing->theStudent->nim . '/SIPAKA-' . str_pad($payment->id, 5, '0', STR_PAD_LEFT) . '.png';
+            // dd($billing->theClass[0]);
+            $image = Browsershot::html(view('billing.package-payment', ['billing' => $billing, 'package' => $package])->render())
+                ->waitUntilNetworkIdle()
+                ->newHeadless()
+                ->usePipe()
+                ->mobile()
+                ->fullPage()
+                ->deviceScaleFactor(2)
+                ->disableJavascript()
+                ->device('iPhone 13 Mini landscape')
+                // ->base64Screenshot();
+                ->save(storage_path("app/billing/student-payment-receipt/" . $filename));
+            ob_end_clean();
+
+            $payment->update([
+                'payment_file' => $filename
+            ]);
         }
 
         return $this->redirect(route('student.billing.status', ['id' => $billing->id]));

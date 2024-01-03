@@ -35,10 +35,12 @@ class Show extends Component
         $this->lastActiveAt = $data->userData->last_active_at;
         $this->birthday = $data->userData->birthday;
         $this->nextAnniversary = $data->userData->nextAnniversary;
-        $this->hasGuardian = $data->has_guardian;
-        $this->guardianName = $data->theGuardian->userData->name;
-        $this->guardianWhatsapp = $data->theGuardian->userData->mobile_number;
         $this->status = $data->userData->exist_status;
+        $this->hasGuardian = $data->has_guardian;
+        if ($this->hasGuardian == true) {
+            $this->guardianName = $data->theGuardian->userData->name;
+            $this->guardianWhatsapp = $data->theGuardian->userData->mobile_number;
+        }
 
         $words = preg_split("/\s+/", $this->name);
         $this->acronym = '';

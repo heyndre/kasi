@@ -43,12 +43,18 @@
             </a>
         </div>
     </td>
-    <td class="px-6 py-4  whitespace-nowrap dark:text-white">
+    <td class="px-6 py-4 dark:text-white">
         {{$topic}}
     </td>
 
     <td class="px-6 py-4">
+        @if (auth()->user()->role == 'ADMIN' || auth()->user()->role == 'SUPERADMIN')
         <a href="{{route('kbm.show', ['id' => $id])}}"
             class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Lihat rincian</a>
+        @elseif (auth()->user()->role == 'MURID' || auth()->user()->role == 'WALI MURID')
+        <a href="{{route('student.classes.show', ['id' => $id])}}"
+            class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Lihat rincian</a>
+        @elseif (auth()->user()->role == 'TUTOR')
+        @endif
     </td>
 </tr>

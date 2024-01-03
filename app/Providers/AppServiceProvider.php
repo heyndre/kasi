@@ -4,7 +4,9 @@ namespace App\Providers;
 
 // use Illuminate\Contracts\Database\Eloquent\Builder;
 
+use App\Models\Setting;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -29,6 +31,8 @@ class AppServiceProvider extends ServiceProvider
         Builder::macro('orSearch', function ($field, $string) {
             return $string ? $this->orWhere($field, 'like', '%' . $string . '%') : $this;
         });
+
+        View::share('setting', Setting::all());
 
         // Builder
     }

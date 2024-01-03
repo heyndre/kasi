@@ -8,6 +8,7 @@ use App\Models\Payment;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class BillingIndex extends Component
 {
@@ -25,30 +26,26 @@ class BillingIndex extends Component
         })
         ->get()
         ->pluck('billing_id');
-        // dd($billings);
 
         $key = $this->searchActive;
-        // $active = Billing::with('theClass', 'theStudent', 'theStudentData', 'thePayment')
-        // ->whereHas('theStudentData', function($q) use ($key) {
-        //     $q->search('name', $key)
-        //     ->orderBy('name', 'asc');
-        // })
-        // // ->selectRaw('*, sum(amount) as total_price, max(due_date) as deadline')
-        // ->whereNotIn('id', $billings)
-        // ->where('student_id', $studentID)
-        // ->orderBy('created_at')
-        // // ->groupBy('student_id')
-        // ->paginate(10);
 
         $confirm = Billing::with('theClass', 'theStudent.theGuardian', 'theClass', 'thePayment', 'theStudentData')
         ->whereHas('thePayment', function($q) {
             $q->whereNull('confirm_date');
         })
+        // ->where('amount', '>=',$this->thePayment->sum('amount'))
         ->where('student_id', $studentID)
         ->orderBy('created_at', 'desc')
         ->paginate(15);
 
         $active = Billing::with('theClass', 'theStudent.theGuardian', 'theClass', 'thePayment', 'theStudentData')
+        // ->withSum('thePayment', 'amount')
+        // ->where('amount', '>', 'the_payment_sum_amount')
+        // ->whereHas('thePayment', function ($q) {
+        //     $q->selectRaw('SUM(payments.amount) < billings.amount')
+        //     ->whereNotNull('confirm_date');
+        //     // ->sum('amount');
+        // })
         ->whereDoesntHave('thePayment')
         ->where('student_id', $studentID)
         ->orderBy('created_at', 'desc')

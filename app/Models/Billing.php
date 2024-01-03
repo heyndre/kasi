@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 
 class Billing extends Model
 {
@@ -34,6 +35,22 @@ class Billing extends Model
 
     public function thePayment()
     {
-        return $this->hasOne(Payment::class, 'billing_id', 'id');
+        return $this->hasMany(Payment::class, 'billing_id', 'id');
+    }
+
+    public function theRefund()
+    {
+        return $this->hasMany(Expense::class, 'billing_id', 'id');
+    }
+
+    public function scopeBillBetween($query, array $dates)
+    {
+        $start = ($dates[0] instanceof Carbon) ? $dates[0] : Carbon::parse($dates[0]);
+        $end   = ($dates[1] instanceof Carbon) ? $dates[1] : Carbon::parse($dates[1]);
+
+        return $query->whereBetween('bill_date', [
+            $start->startOfDay(),
+            $end->endOfDay()
+        ]);
     }
 }

@@ -27,7 +27,7 @@
             {{-- Today Classes --}}
             <x-table.classes search='true'>
                 <x-slot name="title">
-                    Daftar Kelas Non-billing ({{$unbilled->count()}})
+                    Daftar Kelas Belum Masuk Billing ({{$unbilled->count()}})
                 </x-slot>
 
                 <x-slot name="caption">

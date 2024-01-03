@@ -3,18 +3,7 @@
 namespace App\Livewire\Admin\Keuangan;
 
 use App\Models\Billing;
-use App\Models\Course;
-use App\Models\Payment;
-use App\Models\Student;
-use App\Models\Tutor;
-use App\Models\TutorPayment;
-use App\Models\User;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rule;
-use Illuminate\Http\Request;
-use Jenssegers\Date\Date;
-
-
+use App\Models\Expense;
 use Livewire\Component;
 
 class PembayaranMuridStatus extends Component
@@ -23,12 +12,18 @@ class PembayaranMuridStatus extends Component
 
     public function mount($id)
     {
-        $this->billing = Billing::with('theStudent', 'theClass', 'theStudentData', 'thePayment')
+        $this->billing = Billing::with('theStudent', 'theClass', 'theStudentData', 'thePayment', 'theRefund')
             ->where('id', $id)
             ->firstOrFail();
 
         if ($this->billing->thePayment != null) {
             $this->diff = $this->billing->amount - $this->billing->thePayment->whereNotNull('confirm_date')->sum('amount');
+
+            if (isset($this->billing->theRefund)) {
+                // dd($this->billing->theRefund->sum('amount'));
+                $this->diff += $this->billing->theRefund->sum('amount');
+                // dd($this->diff);
+            }
 
             if ($this->diff == 0 && $this->billing->thePayment != null) {
                 session()->flash('success0', 'Tagihan lunas');
@@ -38,6 +33,19 @@ class PembayaranMuridStatus extends Component
                 session()->flash('warning0', 'Tagihan lunas dengan jumlah kelebihan Rp.' . number_format($this->diff * -1, 2, ',', '.'));
             }
         }
+    }
+
+    public function makeRefund()
+    {
+        $refund = Expense::create([
+            'due_date' => $this->billing->thePayment->max('pay_date')->addDays(10),
+            'information' => 'Pengembalian dana billing #'.str_pad($this->billing->invoice_id, 5, '0', STR_PAD_LEFT),
+            'amount' => $this->diff * -1,
+            'billing_id' => $this->billing->id
+        ]);
+        session()->flash('success', 'Entri pengembalian dana berhasil dibuat');
+        return $this->redirect(route('payment.student.status', ['id' => $this->billing->id]));
+
     }
 
     public function render()

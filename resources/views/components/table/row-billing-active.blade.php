@@ -88,15 +88,10 @@
 
     <td>
         @php
-        // dd($item);
+        // $payment = $item->whereHas('thePayment', function ($q) {$q->whereNull('confirm_date');})->with('thePayment')->first();
+        // dd($payment);
         @endphp
-        @if ($item->thePayment)
-        Menunggu <b>konfirmasi</b>
-        <br>
-        Pembayaran {{$item->thePayment->pay_date->format('d-m-Y H:i T')}}
-        @else
         Menunggu <b>pembayaran</b>
-        @endif
     </td>
 
     <td class="px-6 py-4">

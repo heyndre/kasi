@@ -22,7 +22,7 @@
         {{$time->format('d M Y H:i T')}}
     </time>
     <p class="mb-4 text-base font-normal text-gray-500 text-sm dark:text-gray-400">
-        {{$description}}
+        {!!$description!!}
     </p>
     @if ($link != null && $link != '')
     <a href="{{$link}}" {{isset($target) ? 'target="'.$target.'"' : ''}}

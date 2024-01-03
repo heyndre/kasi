@@ -27,6 +27,7 @@ Class StatusIndex extends Component
             ->orderBy('name', 'asc');
         })
         ->whereNull('billing_id')
+        ->whereNot('status', 'CANCELLED')
         // ->orWhereHas('theTutor', function($q) use ($key) {
         //     $q->search('name', $key)
         //     ->orderBy('name', 'asc');

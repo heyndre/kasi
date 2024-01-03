@@ -22,10 +22,13 @@ use App\Livewire\Admin\KBM\Edit as KBMEdit;
 use App\Livewire\Admin\KBM\StatusIndex as KBMStatusIndex;
 
 use App\Livewire\Admin\Keuangan\PembayaranMuridStatus as StatusPembayaranMurid;
+use App\Livewire\Admin\Keuangan\KonfirmasiPayment as KonfirmasiStatusPembayaranMurid;
+use App\Livewire\Admin\Keuangan\Refund\UploadReceipt as KonfirmasiRefundPembayaranMurid;
 use App\Livewire\Admin\Keuangan\BillingIndex as BillingIndex;
 
 use App\Livewire\Student\Keuangan\BillingIndex as StudentBillingIndex;
 use App\Livewire\Student\Keuangan\UploadPayment as StudentUploadPayment;
+use App\Livewire\Student\Kelas\Index as StudentClasses;
 
 use App\Livewire\Tutor\Active as TutorActive;
 use App\Livewire\Tutor\Inactive as TutorInactive;
@@ -67,8 +70,9 @@ Route::middleware([
     })->name('dashboard');
 
     // File Access
-    Route::get('/file/access/class/photo/{file}', [FileAccessController::class, 'accessClassPhoto'])->name('file.class.photo');
+    Route::get('/file/access/class/photo/{file?}', [FileAccessController::class, 'accessClassPhoto'])->name('file.class.photo');
     Route::get('/file/access/payment/student/{nim}/{filename?}', [FileAccessController::class, 'accessStudentReceipt'])->name('file.payment.student');
+    Route::get('/file/access/payment/refund/{file}/{name?}', [FileAccessController::class, 'accessStudentRefund'])->name('file.payment.refund');
 
     Route::middleware('role:ADMIN,SUPERADMIN')->group(function () {
 
@@ -98,7 +102,13 @@ Route::middleware([
         Route::get('kelas/billing/ubah/{id}', [BillingController::class, 'updatePrice'])->name('billing.edit');
         Route::get('kelas/billing/unduh/{id}', [BillingController::class, 'generateInvoice'])->name('billing.download');
 
-        Route::get('keuangan/status/{id}', StatusPembayaranMurid::class)->name('payment.student.status');
+
+        // Finance Menu
+        Route::get('keuangan/billing/status/{id}', StatusPembayaranMurid::class)->name('payment.student.status');
+        Route::get('keuangan/billing/payment/confirm/{id}', KonfirmasiStatusPembayaranMurid::class)->name('payment.student.confirm');
+        Route::get('keuangan/billing/payment/confirm/refund/{id}', KonfirmasiRefundPembayaranMurid::class)->name('payment.student.confirm.refund');
+        // Route::get('keuangan/billing/konfirmasi/{id}', [BillingController::class, 'confirmBillPayment'])->name('payment.student.confirm');
+        // Route::post('keuangan/billing/validasi/', [BillingController::class, 'submitBillPayment'])->name('payment.student.submit');
         Route::get('keuangan/billing/', BillingIndex::class)->name('payment.student.billing');
 
 
@@ -124,6 +134,14 @@ Route::middleware([
         Route::get('keuangan/tagihan/unduh/{id}', [BillingController::class, 'generateInvoice'])->name('student.billing.download');
 
         Route::get('keuangan/status/{id}', StatusPembayaranMurid::class)->name('student.billing.status');
+
+        Route::get('/profil/murid/data/{nim}', StudentShow::class)->name('student.profile.show');
+        Route::get('/profil/wali-murid/show/{slug}', GuardianShow::class)->name('student.guardian.show');
+
+        Route::get('/kelas/list', StudentClasses::class)->name('student.classes');
+        Route::get('/kelas/status/billing', KBMStatusIndex::class)->name('student.classes.billing.status');
+        Route::get('/kelas/detail/{id}', KBMShow::class)->name('student.classes.show');
+
     });
 });
 

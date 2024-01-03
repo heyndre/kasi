@@ -122,7 +122,7 @@
                                         <div class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">
                                             @if ($whatsapp != null && $whatsapp !== '')
                                             <a href="https://wa.me/{{$whatsapp}}" target="_blank">
-                                                +{{$wWhatsapp}}
+                                                +{{$whatsapp}}
                                             </a>
                                             @else
                                             -

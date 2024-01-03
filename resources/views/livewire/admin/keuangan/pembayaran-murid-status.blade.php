@@ -4,39 +4,42 @@
     </x-page.header>
     <x-slot name='button'>
         @if (auth()->user()->role == 'ADMIN' || auth()->user()->role == 'SUPERADMIN')
-        @if ($billing->thePayment == null)
+        @php
+        // dd($billing->theStudent->theGuardian);
+        @endphp
+        @if ($billing->thePayment->isEmpty())
         <x-page.edit-button>
-            Hubungi Murid/Wali Murid
+            @if (!isset($billing->theStudent->theGuardian))
+            Hubungi Murid
             <x-slot name='route'>
-
+                https://wa.me/{{$billing->theStudent->userData->mobile_number}}
             </x-slot>
+            @else
+            Hubungi Wali Murid
+            <x-slot name='route'>
+                https://wa.me/{{$billing->theStudent->theGuardian->userData->mobile_number}}
+            </x-slot>
+            @endif
         </x-page.edit-button>
-        @elseif ($billing->thePayment->confirm_date == null)
-        <x-page.button-with-confirm confirmMessage='Konfirmasi pembayaran tagihan?'>
-            Konfirmasi Pembayaran
-            <x-slot name='route'>
-                {{route('billing.confirm', ['id' => $billing->id])}}
-            </x-slot>
-        </x-page.button-with-confirm>
         @endif
         @endif
 
         @if (auth()->user()->role == 'MURID' || auth()->user()->role == 'WALI MURID')
-        @if ($billing->thePayment == null)
+        @if ($billing->thePayment->isEmpty() || $diff > 0)
         <x-page.edit-button>
             Unggah Bukti Pembayaran
             <x-slot name='route'>
                 {{route('student.billing.upload', ['id' => $billing->id])}}
             </x-slot>
         </x-page.edit-button>
-        @elseif ($billing->thePayment->confirm_date == null)
+        {{-- @elseif ($billing->thePayment->confirm_date == null)
         <x-page.edit-button target='_blank'>
             Inquiry Konfirmasi Pembayaran
             <x-slot name='route'>
                 https://wa.me/6285179824064?text=Inquiry Konfirmasi Pembayaran Invoice nomor
                 {{str_pad($billing->invoice_id, 5, '0', STR_PAD_LEFT)}}
             </x-slot>
-        </x-page.edit-button>
+        </x-page.edit-button> --}}
         @endif
 
         @endif
@@ -83,30 +86,66 @@
 
                         @isset($billing)
                         <x-flowbite.timeline-vertical-item title='Billing dibuat' :latest='false'
-                            :time='$billing->created_at' description='' link='#'
-                            linkDesc="# {{str_pad($billing->invoice_id, 5, '0', STR_PAD_LEFT)}}">
+                            :time='$billing->created_at'
+                            description="Tagihan #{{str_pad($billing->invoice_id, 5, '0', STR_PAD_LEFT)}} <br> Total Rp.{{number_format($billing->amount, 2, ',', '.')}}"
+                            link='' linkDesc="">
                         </x-flowbite.timeline-vertical-item>
 
+                        @if (auth()->user()->role == 'ADMIN' || auth()->user()->role == 'SUPERADMIN')
                         <x-flowbite.timeline-vertical-item title=' Billing ditagihkan' :latest='false'
                             :time='$billing->bill_date' description='Klik tombol untuk mengunduh tagihan'
                             target='_blank' link='{{route("billing.download", ["id" => $billing->id])}}'
-                            linkDesc='Unduh Tagihan'>
+                            linkDesc='Unduh Tagihan #{{str_pad($billing->invoice_id, 5, "0", STR_PAD_LEFT)}}'>
                         </x-flowbite.timeline-vertical-item>
+                        @elseif (auth()->user()->role == 'MURID' || auth()->user()->role == 'WALI MURID')
+                        <x-flowbite.timeline-vertical-item title=' Billing ditagihkan' :latest='false'
+                            :time='$billing->bill_date' description='Klik tombol untuk mengunduh tagihan'
+                            target='_blank' link='{{route("student.billing.download", ["id" => $billing->id])}}'
+                            linkDesc='Unduh Tagihan #{{str_pad($billing->invoice_id, 5, "0", STR_PAD_LEFT)}}'>
+                        </x-flowbite.timeline-vertical-item>
+                        @endif
                         @endisset
 
                         @isset($billing->thePayment)
+                        @foreach ($billing->thePayment as $item)
+                        @if (auth()->user()->role == 'ADMIN' || auth()->user()->role == 'SUPERADMIN')
                         <x-flowbite.timeline-vertical-item title='Billing dibayar' :latest='false'
-                            :time='$billing->thePayment->pay_date'
-                            description="Nomor Pembayaran {{str_pad($billing->thePayment->id, 5, '0', STR_PAD_LEFT)}}"
-                            link="{{route('file.payment.student', ['nim' => $billing->thePayment->payment_file])}}"
-                            linkDesc='Bukti Pembayaran'>
+                            :time='$item->pay_date'
+                            description="Pembayaran #{{str_pad($item->id, 5, '0', STR_PAD_LEFT)}}, nominal Rp.{{number_format($item->amount, 2, ',', '.')}}"
+                            link="{{$item->confirm_date == null ? route('payment.student.confirm', ['id' => $item->id]) : null}}"
+                            linkDesc="{{$item->confirm_date == null ? 'Konfirmasi Pembayaran' : null}}">
                         </x-flowbite.timeline-vertical-item>
+                        @else
+                        <x-flowbite.timeline-vertical-item title='Billing dibayar' :latest='false'
+                            :time='$item->pay_date' target='_blank'
+                            description="Pembayaran #{{str_pad($item->id, 5, '0', STR_PAD_LEFT)}}, nominal Rp.{{number_format($item->amount, 2, ',', '.')}}"
+                            link="{{$item->confirm_date == null ? 'https://wa.me/'.$setting->where('key', 'whatsapp')->value('value').'?text='.$setting->where('key', 'inquiryConfirmPayment')->value('value').str_pad($item->id, 5, '0', STR_PAD_LEFT) : null}}"
+                            linkDesc="{{$item->confirm_date == null ? 'Inquiry Konfirmasi Pembayaran' : null}}">
+                        </x-flowbite.timeline-vertical-item>
+                        @endif
 
-                        @isset($billing->thePayment->confirm_date)
+                        @isset($item->confirm_date)
                         <x-flowbite.timeline-vertical-item title='Pembayaran dikonfirmasi' :latest='false'
-                            :time='$billing->thePayment->confirm_date' description='' link='' linkDesc=''>
+                            :time='$item->confirm_date'
+                            description="Pembayaran #{{str_pad($item->id, 5, '0', STR_PAD_LEFT)}}"
+                            link="{{route('file.payment.student', ['nim' => $item->payment_file])}}"
+                            linkDesc='Bukti Pembayaran'>>
                         </x-flowbite.timeline-vertical-item>
                         @endisset
+                        @endforeach
+                        @endisset
+
+                        @isset($billing->theRefund)
+                        @foreach ($billing->theRefund as $item)
+                        <x-flowbite.timeline-vertical-item title='Pengembalian dana dibuat' :latest='false'
+                            :time='$item->created_at' description='' link='#' linkDesc="Pengembalian dana #{{str_pad($item->id, 5, '0', STR_PAD_LEFT)}}">
+                        </x-flowbite.timeline-vertical-item>
+                        @isset($item->spent_date)
+                        <x-flowbite.timeline-vertical-item title='Pengembalian dana dikirim' :latest='false' target='_blank'
+                            :time='$item->spent_date' description='' link="{{route('file.payment.refund', ['file' => $item->payment_file])}}" linkDesc="Bukti #{{str_pad($item->id, 5, '0', STR_PAD_LEFT)}}">
+                        </x-flowbite.timeline-vertical-item>
+                        @endisset
+                        @endforeach
                         @endisset
 
                         @isset($tutorPayment)
@@ -134,14 +173,24 @@
                                 <button id="services-tab" data-tabs-target="#services" type="button" role="tab"
                                     aria-controls="services" aria-selected="false"
                                     class="inline-block p-4 hover:text-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-gray-300">
-                                    Informasi Murid
-                                </button>
-                            </li>
+                                    Informasi Murid/Wali Murid
                             <li class="me-2">
                                 <button id="statistics-tab" data-tabs-target="#statistics" type="button" role="tab"
                                     aria-controls="statistics" aria-selected="false"
                                     class="inline-block p-4 hover:text-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-gray-300">
-                                    Informasi Tutor
+                                    Informasi Pembayaran
+                                </button>
+                            </li>
+                            <li class="me-2">
+                                <button id="refund-tab" data-tabs-target="#refund" type="button" role="tab"
+                                    aria-controls="refund" aria-selected="false"
+                                    class="inline-block p-4 hover:text-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-gray-300">
+                                    Informasi Pengembalian Dana
+                                    @if($diff < 0) <span
+                                        class="inline-flex items-center bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded-full dark:bg-green-900 dark:text-green-300">
+                                        <span class="w-2 h-2 me-1 bg-green-500 rounded-full"></span>
+                                        </span>
+                                        @endif
                                 </button>
                             </li>
                         </ul>
@@ -216,57 +265,193 @@
                                 <div class="w-fit">
                                     <label class="mb-2 font-semibold leading-none text-gray-900 dark:text-white"
                                         for="name">
-                                        Status Pembayaran Tutor
+                                        Data Murid
                                     </label>
-                                    <div class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">
-
+                                    <div class="mb-4 font-light sm:mb-5 d">
+                                        <div class="flex items-center">
+                                            @php
+                                            $words = preg_split("/\s+/", $billing->theStudent->userData->name);
+                                            $acronym = '';
+                                            $acronymPlus = '';
+                                            foreach ($words as $w) {
+                                            $acronym .= mb_substr($w, 0, 1);
+                                            $acronymPlus .= mb_substr($w, 0, 1).'+';
+                                            }
+                                            // dd($profile_photo);
+                                            @endphp
+                                            @if ($billing->theStudent->userData->profile_photo_path == '')
+                                            <img class="h-14 w-14 rounded-full object-cover"
+                                                src="https://ui-avatars.com/api/?name={{substr($acronymPlus, 0, 3)}}&color=7F9CF5&background=EBF4FF"
+                                                alt="{{$acronym}}">
+                                            @else
+                                            <img class="w-14 h-14 rounded-full" src="{{asset($billing->theStudent->userData->profile_photo_path)}}"
+                                                alt="{{$acronym}}">
+                                            @endif
+                                            <div class="pl-3 space-y-2">
+                                                <a href="{{route('student.show', ['nim' => $billing->theStudent->nim])}}" class="hover:underline">
+                                                    <div class="text-base font-semibold bg-white-100/50 rounded-sm px-2 py-1">
+                                                        {{$billing->theStudent->userData->nickname}}
+                                                    </div>
+                                                    <div class="font-thin text-xs text-gray-900 px-2 py-1">
+                                                        {{$billing->theStudent->userData->name}}
+                                                    </div>
+                                                </a>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="w-fit">
                                     <label class="mb-2 font-semibold leading-none text-gray-900 dark:text-white"
                                         for="name">
-                                        Nama Bank Tutor
+                                        Data Wali Murid
                                     </label>
-                                    <div class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">
-                                    </div>
-                                </div>
-                                <div class="w-fit">
-                                    <label class="mb-2 font-semibold leading-none text-gray-900 dark:text-white"
-                                        for="name">
-                                        Nomor Rekening Tutor
-                                    </label>
-                                    <div class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">
-                                    </div>
-                                </div>
-                                <div class="w-fit">
-                                    <label class="mb-2 font-semibold leading-none text-gray-900 dark:text-white"
-                                        for="name">
-                                        Informasi Tambahan
-                                    </label>
-                                    <div class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">
+                                    <div class="mb-4 flex items-center font-light text-gray-500 sm:mb-5 dark:text-gray-400">
+                                        @if ($billing->theStudent->theGuardian !== null)
+                                        @php
+                                        $words = preg_split("/\s+/", $item->theStudent->theGuardian->userData->name);
+                                        $acronym = '';
+                                        $acronymPlus = '';
+                                        foreach ($words as $w) {
+                                        $acronym .= mb_substr($w, 0, 1);
+                                        $acronymPlus .= mb_substr($w, 0, 1).'+';
+                                        }
+                                        // dd($profile_photo);
+                                        @endphp
+                                        @if ($billing->theStudent->theGuardian->userData->profile_photo_path == '')
+                                        <img class="h-14 w-14 rounded-full object-cover"
+                                            src="https://ui-avatars.com/api/?name={{substr($acronymPlus, 0, 3)}}&color=7F9CF5&background=EBF4FF"
+                                            alt="{{$acronym}}">
+                                        @else
+                                        <img class="w-14 h-14 rounded-full"
+                                            src="{{asset($billing->theStudent->theGuardian->userData->profile_photo_path)}}" alt="{{$acronym}}">
+                                        @endif
+                                        <div class="pl-3 space-y-2">
+                                            <a href="{{route('guardian.show', ['slug' => $billing->theStudent->theGuardian->userData->slug])}}"
+                                                class="hover:underline">
+                                                <div class="text-base font-semibold bg-white-100/50 rounded-sm px-2 py-1">
+                                                    {{$billing->theStudent->theGuardian->userData->nickname}}
+                                                </div>
+                                                <div class="font-thin text-xs text-gray-800 px-2 py-1">
+                                                    {{$billing->theStudent->theGuardian->userData->name}}
+                                                </div>
+                                            </a>
+                                        </div>
+                                        @else
+                                        <p class="italic">N/A</p>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="hidden p-4 bg-white rounded-lg md:p-8 dark:bg-gray-800" id="statistics"
-                            role="tabpanel" aria-labelledby="statistics-tab">
-                            <dl
-                                class="flex justify-between w-full grid-cols-2 gap-8 p-4 mx-auto text-gray-900 sm:grid-cols-3 xl:grid-cols-6 dark:text-white sm:p-8">
-                                <div class="flex flex-col">
+                        <div class="hidden bg-white rounded-lg dark:bg-gray-800" id="statistics" role="tabpanel"
+                            aria-labelledby="statistics-tab">
+                            <x-table.table search='false'>
+                                <x-slot name="title">
+                                    Daftar pembayaran ({{$billing->thePayment->count()}})
+                                </x-slot>
 
-                                    <dd class="text-gray-500 dark:text-gray-400">Registrasi sejak</dd>
-                                </div>
-                                <div class="flex flex-col">
+                                <x-slot name="caption">
+                                    Per {{date('d F Y H:i T')}}
+                                </x-slot>
 
-                                    <dd class="text-gray-500 dark:text-gray-400">
-                                        Login Terakhir
-                                    </dd>
-                                </div>
-                                <div class="flex flex-col">
+                                <x-slot name="head">
+                                    <x-table.head>
+                                        Nomor Pembayaran
+                                    </x-table.head>
+                                    <x-table.head>
+                                        Metode Pembayaran
+                                    </x-table.head>
+                                    <x-table.head>
+                                        Jumlah
+                                    </x-table.head>
+                                    <x-table.head>
+                                        Tanggal Transaksi
+                                    </x-table.head>
+                                    <x-table.head>
+                                        Bukti Pembayaran
+                                    </x-table.head>
+                                </x-slot>
 
-                                    <dd class="text-gray-500 dark:text-gray-400">Aktivitas Terakhir</dd>
-                                </div>
-                            </dl>
+                                <x-slot name="body">
+                                    @php
+                                    // dd($billing->thePayment);
+                                    @endphp
+                                    @forelse ($billing->thePayment as $i => $item)
+                                    <x-table.row-billing-payment wire:loading.class.delay.longest='opacity-80'
+                                        class='{{$item->confirm_date == null ? "bg-red-100" : "bg-gray-50"}}'
+                                        :data='$item'>
+                                    </x-table.row-billing-payment>
+                                    @empty
+                                    <tr>
+                                        <td colspan="5" class="px-2 py-3 italic">
+                                            Tidak ada data pembayaran
+                                        </td>
+                                    </tr>
+                                    @endforelse
+                                </x-slot>
+                                <x-slot name="foot">
+                                </x-slot>
+                            </x-table.table>
+                        </div>
+                        <div class="hidden bg-white rounded-lg dark:bg-gray-800" id="refund" role="tabpanel"
+                            aria-labelledby="refund-tab">
+                            <div class="m-7">
+                                @if ($diff < 0)
+                                    
+                                <x-page.button-with-confirm route='#'
+                                    confirmMessage='Konfirmasi pembuatan entri pengembalian dana?'
+                                    wire:click.prevent='makeRefund'>
+                                    Buat Pengembalian Dana
+                                </x-page.button-with-confirm>
+                                @endif
+                            </div>
+                            <x-table.classes search='false'>
+                                <x-slot name="title">
+                                    Daftar pengembalian dana ({{$billing->theRefund->count()}})
+                                </x-slot>
+
+                                <x-slot name="caption">
+                                    Per {{date('d F Y H:i T')}}
+                                </x-slot>
+
+                                <x-slot name="head">
+                                    <x-table.head>
+                                        Nomor Pembayaran
+                                    </x-table.head>
+                                    <x-table.head>
+                                        Metode Pembayaran
+                                    </x-table.head>
+                                    <x-table.head>
+                                        Jumlah
+                                    </x-table.head>
+                                    <x-table.head>
+                                        Jatuh Tempo
+                                    </x-table.head>
+                                    <x-table.head>
+                                        Bukti Pembayaran
+                                    </x-table.head>
+                                </x-slot>
+
+                                <x-slot name="body">
+                                    @php
+                                    // dd($billing->theRefund);
+                                    @endphp
+                                    @forelse ($billing->theRefund as $i => $item)
+                                    <x-table.row-billing-refund wire:loading.class.delay.longest='opacity-80'
+                                        class='{{$item->spent_date == null ? "bg-red-100" : "bg-gray-50"}}'
+                                        :data='$item'>
+                                    </x-table.row-billing-refund>
+                                    @empty
+                                    <tr>
+                                        <td colspan="5" class="px-2 py-3 italic">
+                                            Tidak ada data pengembalian dana
+                                        </td>
+                                    </tr>
+                                    @endforelse
+                                </x-slot>
+                                <x-slot name="foot">
+                                </x-slot>
+                            </x-table.classes>
                         </div>
                     </div>
                 </div>

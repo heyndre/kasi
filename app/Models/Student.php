@@ -21,6 +21,10 @@ class Student extends Model
         return $this->belongsTo(Guardian::class, 'guardian_id', 'id');
     }
 
+    public function thePackage() {
+        return $this->hasMany(Package::class, 'student_id');
+    }
+
     public function getEduLevelAttribute($value)
     {
         switch ($value) {

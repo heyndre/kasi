@@ -3,9 +3,7 @@
         Detail Kelas
     </x-page.header>
     <x-slot name='button'>
-        {{-- <button type="button" wire:click='addToBilling' wire:confirm='Konfirmasi penambahan kelas ke billing?'>
-            Tambah ke billing
-        </button> --}}
+        @if (auth()->user()->role == 'ADMIN' || auth()->user()->role == 'SUPERADMIN')
         @if ($billingStatus == 'Belum ditagih')
         <x-page.button-with-confirm confirmMessage='Konfirmasi penambahan kelas ke billing?'>
             Masukkan ke billing
@@ -14,7 +12,7 @@
             </x-slot>
         </x-page.button-with-confirm>
         @endif
-        
+
         @if ($billingStatus == 'Ditagih')
         <x-page.edit-button>
             Cek Pembayaran
@@ -22,6 +20,17 @@
                 {{route('payment.student.status', ['id' => $billing->id])}}
             </x-slot>
         </x-page.edit-button>
+        @endif
+
+        @elseif (auth()->user()->role == 'MURID' || auth()->user()->role == 'WALI MURID')
+        @if ($billingStatus == 'Ditagih')
+        <x-page.edit-button>
+            Cek Pembayaran
+            <x-slot name='route'>
+                {{route('student.billing.status', ['id' => $billing->id])}}
+            </x-slot>
+        </x-page.edit-button>
+        @endif
         @endif
 
         {{-- <x-page.back-button>
@@ -47,20 +56,7 @@
 
     <x-page.content-white>
         <div class="px-4 py-2">
-            @if(session()->has('success'))
-            <div class="flex items-center p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400"
-                role="alert">
-                <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                    fill="currentColor" viewBox="0 0 20 20">
-                    <path
-                        d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
-                </svg>
-                <span class="sr-only">Info</span>
-                <div>
-                    <span class="font-medium">INFO</span> {{session('success')}}
-                </div>
-            </div>
-            @endif
+            <x-page.notification />
             <div
                 class=" min-h-[100vh] flex flex-col w-full gap-4 p-4 bg-white border border-gray-200 rounded-lg md:flex-row dark:border-gray-700 dark:bg-gray-800">
                 <div class="w-1/3 p-6">
@@ -270,12 +266,14 @@
                                         </label>
                                         <div class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">
                                             @if ($course->photo)
-                                            <a class="example-image-link" href="{{route('file.class.photo', ['file' => $course->photo])}}"
+                                            <a class="example-image-link"
+                                                href="{{route('file.class.photo', ['file' => $course->photo])}}"
                                                 data-lightbox="foto-pelaksanaan-kelas" data-title="">
-                                            <img src="{{route('file.class.photo', ['file' => $course->photo])}}" alt="">
+                                                <img src="{{route('file.class.photo', ['file' => $course->photo])}}"
+                                                    alt="">
                                             </a>
                                             @else
-                                                Tidak ada foto kelas.
+                                            Tidak ada foto kelas.
                                             @endif
                                         </div>
                                     </div>
@@ -285,68 +283,102 @@
                         <div class="hidden p-4 bg-white rounded-lg md:p-8 dark:bg-gray-800" id="services"
                             role="tabpanel" aria-labelledby="services-tab">
                             <div class="grid grid-cols-2 grid-flow-auto gap-4">
-                                <div class="w-fit">
+                                <div class="w-fit col-span-2">
                                     <label class="mb-2 font-semibold leading-none text-gray-900 dark:text-white"
                                         for="name">
-                                        Status Pembayaran Tutor
+                                        Data Murid
                                     </label>
                                     <div class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">
-
-                                    </div>
-                                </div>
-                                <div class="w-fit">
-                                    <label class="mb-2 font-semibold leading-none text-gray-900 dark:text-white"
-                                        for="name">
-                                        Nama Bank Tutor
-                                    </label>
-                                    <div class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">
-                                    </div>
-                                </div>
-                                <div class="w-fit">
-                                    <label class="mb-2 font-semibold leading-none text-gray-900 dark:text-white"
-                                        for="name">
-                                        Nomor Rekening Tutor
-                                    </label>
-                                    <div class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">
-                                    </div>
-                                </div>
-                                <div class="w-fit">
-                                    <label class="mb-2 font-semibold leading-none text-gray-900 dark:text-white"
-                                        for="name">
-                                        Informasi Tambahan
-                                    </label>
-                                    <div class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">
+                                        <div class="mb-4 font-light sm:mb-5 d">
+                                            <div class="flex items-center">
+                                                @php
+                                                $words = preg_split("/\s+/", $course->theStudent->userData->name);
+                                                $acronym = '';
+                                                $acronymPlus = '';
+                                                foreach ($words as $w) {
+                                                $acronym .= mb_substr($w, 0, 1);
+                                                $acronymPlus .= mb_substr($w, 0, 1).'+';
+                                                }
+                                                // dd($profile_photo);
+                                                @endphp
+                                                @if ($course->theStudent->userData->profile_photo_path == '')
+                                                <img class="h-14 w-14 rounded-full object-cover"
+                                                    src="https://ui-avatars.com/api/?name={{substr($acronymPlus, 0, 3)}}&color=7F9CF5&background=EBF4FF"
+                                                    alt="{{$acronym}}">
+                                                @else
+                                                <img class="w-14 h-14 rounded-full"
+                                                    src="{{asset($course->theStudent->userData->profile_photo_path)}}"
+                                                    alt="{{$acronym}}">
+                                                @endif
+                                                <div class="pl-3 space-y-2">
+                                                    <a href="{{route('student.show', ['nim' => $course->theStudent->nim])}}"
+                                                        class="hover:underline">
+                                                        <div
+                                                            class="text-base font-semibold bg-white-100/50 rounded-sm px-2 py-1">
+                                                            {{$course->theStudent->userData->nickname}}
+                                                        </div>
+                                                        <div class="font-thin text-xs text-gray-900 px-2 py-1">
+                                                            {{$course->theStudent->userData->name}}
+                                                        </div>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="hidden p-4 bg-white rounded-lg md:p-8 dark:bg-gray-800" id="statistics"
                             role="tabpanel" aria-labelledby="statistics-tab">
-                            <dl
-                                class="flex justify-between w-full grid-cols-2 gap-8 p-4 mx-auto text-gray-900 sm:grid-cols-3 xl:grid-cols-6 dark:text-white sm:p-8">
-                                <div class="flex flex-col">
-
-                                    <dd class="text-gray-500 dark:text-gray-400">Registrasi sejak</dd>
+                            <div class="grid grid-cols-2 grid-flow-auto gap-4">
+                                <div class="w-fit col-span-2">
+                                    <label class="mb-2 font-semibold leading-none text-gray-900 dark:text-white"
+                                        for="name">
+                                        Data Tutor
+                                    </label>
+                                    <div class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">
+                                        <div class="mb-4 font-light sm:mb-5 d">
+                                            <div class="flex items-center">
+                                                @php
+                                                $words = preg_split("/\s+/", $course->theTutor->userData->name);
+                                                $acronym = '';
+                                                $acronymPlus = '';
+                                                foreach ($words as $w) {
+                                                $acronym .= mb_substr($w, 0, 1);
+                                                $acronymPlus .= mb_substr($w, 0, 1).'+';
+                                                }
+                                                // dd($profile_photo);
+                                                @endphp
+                                                @if ($course->theTutor->userData->profile_photo_path == '')
+                                                <img class="h-14 w-14 rounded-full object-cover"
+                                                    src="https://ui-avatars.com/api/?name={{substr($acronymPlus, 0, 3)}}&color=7F9CF5&background=EBF4FF"
+                                                    alt="{{$acronym}}">
+                                                @else
+                                                <img class="w-14 h-14 rounded-full"
+                                                    src="{{asset($course->theTutor->userData->profile_photo_path)}}"
+                                                    alt="{{$acronym}}">
+                                                @endif
+                                                <div class="pl-3 space-y-2">
+                                                    <a href="{{route('tutor.show', ['slug' => $course->theTutor->userData->slug])}}"
+                                                        class="hover:underline">
+                                                        <div
+                                                            class="text-base font-semibold bg-white-100/50 rounded-sm px-2 py-1">
+                                                            {{$course->theTutor->userData->nickname}}
+                                                        </div>
+                                                        <div class="font-thin text-xs text-gray-900 px-2 py-1">
+                                                            {{$course->theTutor->userData->name}}
+                                                        </div>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="flex flex-col">
-
-                                    <dd class="text-gray-500 dark:text-gray-400">
-                                        Login Terakhir
-                                    </dd>
-                                </div>
-                                <div class="flex flex-col">
-
-                                    <dd class="text-gray-500 dark:text-gray-400">Aktivitas Terakhir</dd>
-                                </div>
-                            </dl>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-
-
-
-</div>
-</x-page.content-white>
+    </x-page.content-white>
 </div>
