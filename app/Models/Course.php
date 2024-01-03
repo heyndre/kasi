@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class Course extends Model
 {
@@ -15,8 +16,11 @@ class Course extends Model
         'date_of_event' => 'datetime',
         'student_attendance' => 'datetime',
         'tutor_attendance' => 'datetime',
-        // 'additional_links' => 'array',
+        // 'class_end_time' => 'datetime',
+        'additional_links' => 'array',
     ];
+
+
     public function theTutor()
     {
         return $this->belongsTo(Tutor::class, 'tutor_id', 'id');

@@ -19,6 +19,7 @@ use App\Livewire\Guardian\Edit as GuardianEdit;
 use App\Livewire\Admin\KBM\Index as KBMList;
 use App\Livewire\Admin\KBM\Show as KBMShow;
 use App\Livewire\Admin\KBM\Edit as KBMEdit;
+use App\Livewire\Admin\KBM\Create as KBMAdd;
 use App\Livewire\Admin\KBM\StatusIndex as KBMStatusIndex;
 
 use App\Livewire\Admin\Keuangan\PembayaranMuridStatus as StatusPembayaranMurid;
@@ -93,6 +94,7 @@ Route::middleware([
 
         // KBM Menu
         Route::get('/kelas/list', KBMList::class)->name('kbm.index');
+        Route::get('/kelas/jadwalkan', KBMAdd::class)->name('kbm.add');
         Route::get('/kelas/status/billing', KBMStatusIndex::class)->name('kbm.billing.status');
         Route::get('/kelas/detail/{id}', KBMShow::class)->name('kbm.show');
         Route::get('/kelas/edit/{id}', KBMEdit::class)->name('kbm.edit');

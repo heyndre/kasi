@@ -21,6 +21,11 @@ class Tutor extends Model
         return $this->hasMany(TutorPayment::class, 'tutor_id', 'id');
     }
 
+    public function theSkill()
+    {
+        return $this->hasManyThrough(CourseBase::class, CoursePivot::class, 'tutor_id', 'id', 'id', 'skill_id');
+    }
+
     public function getEduLevelAttribute($value)
     {
         switch ($value) {

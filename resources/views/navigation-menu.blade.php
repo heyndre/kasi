@@ -114,6 +114,13 @@
                                     <x-dropdown-link href="{{ route('api-tokens.index') }}">
                                         {{ __('Laporan Kelas') }}
                                     </x-dropdown-link>
+                                    <div class="block px-4 py-2 text-xs text-gray-400">
+                                        Penjadwalan    
+                                    </div>
+
+                                    <x-dropdown-link href="{{ route('kbm.add') }}">
+                                        Jadwalkan Kelas
+                                    </x-dropdown-link>
 
                                     <div class="block px-4 py-2 text-xs text-gray-400">
                                         {{ __('Evaluasi') }}
