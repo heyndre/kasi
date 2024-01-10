@@ -31,6 +31,9 @@ use App\Livewire\Student\Keuangan\BillingIndex as StudentBillingIndex;
 use App\Livewire\Student\Keuangan\UploadPayment as StudentUploadPayment;
 use App\Livewire\Student\Kelas\Index as StudentClasses;
 
+use App\Livewire\Tutor\Kelas\Index as TutorClasses;
+use App\Livewire\Tutor\Kelas\Edit as TutorClassEdit;
+
 use App\Livewire\Tutor\Active as TutorActive;
 use App\Livewire\Tutor\Inactive as TutorInactive;
 use App\Livewire\Tutor\Show as TutorShow;
@@ -143,6 +146,25 @@ Route::middleware([
         Route::get('/kelas/list', StudentClasses::class)->name('student.classes');
         Route::get('/kelas/status/billing', KBMStatusIndex::class)->name('student.classes.billing.status');
         Route::get('/kelas/detail/{id}', KBMShow::class)->name('student.classes.show');
+
+    });
+
+    // Tutor group
+    Route::prefix('tutor')->middleware('role:TUTOR')->group(function () {
+        Route::get('keuangan/tagihan/', StudentBillingIndex::class)->name('tutor.billing.index');
+        Route::get('keuangan/tagihan/unggah-pembayaran/{id}', StudentUploadPayment::class)->name('tutor.billing.upload');
+
+        Route::get('keuangan/tagihan/unduh/{id}', [BillingController::class, 'generateInvoice'])->name('tutor.billing.download');
+
+        Route::get('keuangan/status/{id}', StatusPembayaranMurid::class)->name('tutor.billing.status');
+
+        Route::get('/profil/murid/data/{nim}', StudentShow::class)->name('student.profile.show');
+        Route::get('/profil/wali-murid/show/{slug}', GuardianShow::class)->name('tutor.guardian.show');
+
+        Route::get('/kelas/list', TutorClasses::class)->name('tutor.classes');
+        Route::get('/kelas/status/billing', KBMStatusIndex::class)->name('tutor.classes.billing.status');
+        Route::get('/kelas/detail/{id}', KBMShow::class)->name('tutor.classes.show');
+        Route::get('/kelas/edit/{id}', TutorClassEdit::class)->name('tutor.classes.edit');
 
     });
 });

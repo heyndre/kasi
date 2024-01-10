@@ -13,8 +13,8 @@
             Kembali
             <x-slot name='route'>
                 {{route('tutor.active')}}
-            </x-slot> --}}
-        </x-page.back-button>
+            </x-slot>
+        </x-page.back-button> --}}
     </x-slot>
 
     <x-page.style>
@@ -98,6 +98,13 @@
                                     aria-controls="statistics" aria-selected="false"
                                     class="inline-block p-4 hover:text-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-gray-300">
                                     Informasi Akun
+                                </button>
+                            </li>
+                            <li class="me-2">
+                                <button id="classes-tab" data-tabs-target="#classes" type="button" role="tab"
+                                    aria-controls="classes" aria-selected="false"
+                                    class="inline-block p-4 hover:text-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-gray-300">
+                                    Informasi Kelas
                                 </button>
                             </li>
                         </ul>
@@ -280,6 +287,78 @@
                                     <dd class="text-gray-500 dark:text-gray-400">Aktivitas Terakhir</dd>
                                 </div>
                             </dl>
+                        </div>
+                        <div class="hidden p-4 bg-white rounded-lg md:p-8 dark:bg-gray-800" id="classes">
+                            <div class="px-4 pt-4 w-full">
+                                <label class="mb-2 font-semibold leading-none text-gray-900 dark:text-white" for="name">
+                                    Mata Pelajaran/Bidang Tutor
+                                </label>
+                                <div class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">
+                                    @foreach ($tutor->theSkill as $key => $item)
+                                    <span class="">{{$key > 0 ? ', ' : ''}}{{$item->name}}</span>
+                                    @endforeach
+
+                                </div>
+                            </div>
+                            <div class="">
+                                {{-- Today Classes --}}
+                                <x-table.classes search='false'>
+                                    <x-slot name="title">
+                                        Daftar Kelas Tutor ({{$tutor->theSession->count()}})
+                                    </x-slot>
+
+                                    <x-slot name="caption">
+                                        Per {{date('d F Y H:i T')}}
+                                    </x-slot>
+
+                                    <x-slot name="head">
+                                        <x-table.head>
+                                            Waktu
+                                        </x-table.head>
+                                        <x-table.head>
+                                            Mata Pelajaran
+                                        </x-table.head>
+                                        <x-table.head>
+                                            Nama Murid
+                                        </x-table.head>
+                                        <x-table.head>
+                                            Topik
+                                        </x-table.head>
+                                        <x-table.head>
+                                            Opsi
+                                        </x-table.head>
+                                    </x-slot>
+
+                                    <x-slot name="body">
+                                        @php
+                                        // dd($today);
+                                        @endphp
+                                        @forelse ($tutor->theSession as $i => $item)
+                                        <x-table.row-class-billing wire:loading.class.delay.longest='opacity-80'
+                                            :tutor='$item->theStudent' :student='$item->theTutor'
+                                            :course='$item->theCourse'>
+                                            <x-slot name="id">
+                                                {{$item->id}}
+                                            </x-slot>
+                                            <x-slot name="time">
+                                                {{$item->date_of_event->format('d M Y H:i T')}}
+                                            </x-slot>
+                                            <x-slot name="topic">
+                                                {{$item->topic}}
+                                            </x-slot>
+                                        </x-table.row-class-billing>
+                                        @empty
+                                        <tr>
+                                            <td colspan="5" class="px-2 py-3 italic">
+                                                Tidak ada data kelas
+                                            </td>
+                                        </tr>
+                                        @endforelse
+                                    </x-slot>
+                                    <x-slot name="foot">
+                                    </x-slot>
+                                </x-table.classes>
+                            </div>
                         </div>
                     </div>
                 </div>

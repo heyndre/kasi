@@ -11,7 +11,7 @@ use Livewire\Component;
 
 class Create extends Component
 {
-    public $dateOfEvent, $dateFormat, $student, $package, $courseBase, $tutor, $topic, $lesson, $reference, $endTime, $length = 60, $availability = 'waiting';
+    public $dateOfEvent, $dateFormat, $student, $package, $courseBase, $tutor, $topic, $selectedCourse, $lesson, $reference, $endTime, $length = 60, $availability = 'waiting';
 
     public function mount()
     {
@@ -94,7 +94,29 @@ class Create extends Component
 
     public function scheduleClass()
     {
-        dd($this);
+        // dd($this);
+
+        $session = Course::create([
+            'date_of_event' => $this->dateFormat,
+            'length' => $this->length,
+            'tutor_id' => Tutor::whereHas('userData', function ($q) {
+                $q->where('slug', $this->tutor);
+            })
+            ->first()
+            ->id,
+            'student_id' => Student::where('nim', $this->student)
+            ->first()
+            ->id,
+            'status' => 'WAITING',
+            'course_id' => $this->selectedCourse,
+            'additional_links' => json_encode([]),
+            'price' => CourseBase::where('id', $this->selectedCourse)->first()->price
+        ]);
+
+        // dd($session);
+
+        session()->flash('success', 'Penjadwalan kelas berhasil.');
+        return $this->redirect(route('kbm.index'), navigate: true);
     }
 
     public function render()

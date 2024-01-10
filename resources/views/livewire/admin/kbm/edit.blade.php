@@ -1,6 +1,6 @@
 <div>
     <x-page.header>
-        Ubah Detail Tutor - {{$name}}
+        Ubah Detail Kelas - {{$name}}
     </x-page.header>
     <x-slot name='button'>
         <x-page.back-button>

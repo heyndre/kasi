@@ -8,6 +8,7 @@ use App\Models\Setting;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Http\Request;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -22,7 +23,7 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Bootstrap any application services.
      */
-    public function boot(): void
+    public function boot(Request $request): void
     {
         Builder::macro('search', function ($field, $string) {
             return $string ? $this->where($field, 'like', '%' . $string . '%') : $this;
@@ -35,5 +36,9 @@ class AppServiceProvider extends ServiceProvider
         View::share('setting', Setting::all());
 
         // Builder
+
+        // if ($request->server->has('HTTP_X_ORIGINAL_HOST')) {
+        //     $this->app['url']->forceRootUrl($request->server->get('HTTP_X_FORWARDED_PROTO').'://'.$request->server->get('HTTP_X_ORIGINAL_HOST'));
+        // }
     }
 }

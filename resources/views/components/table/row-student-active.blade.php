@@ -10,7 +10,7 @@
     </td> --}}
     <th scope="row" class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
         @php
-        $words = preg_split("/\s+/", $name);
+        $words = preg_split("/\s+/", $data->userData->name);
         $acronym = '';
         $acronymPlus = '';
         foreach ($words as $w) {
@@ -19,43 +19,45 @@
         }
         // dd($profile_photo);
         @endphp
-        @if ($profile_photo == '')
+        @if ($data->userData->profile_photo_path == '' || $data->userData->profile_photo_path == null)
         <img class="h-14 w-14 rounded-full object-cover"
             src="https://ui-avatars.com/api/?name={{substr($acronymPlus, 0, 3)}}&color=7F9CF5&background=EBF4FF" alt="{{$acronym}}">
         @else
-        <img class="w-14 h-14 rounded-full" src="{{asset($profile_photo)}}" alt="{{$acronym}}">
+        <img class="w-14 h-14 rounded-full" src="{{asset($data->userData->profile_photo_path)}}" alt="{{$acronym}}">
         @endif
         <div class="pl-3 space-y-2">
-            <a href="{{route('student.show', ['nim' => $nim])}}"
+            <a href="{{route('student.show', ['nim' => $data->nim])}}"
                 class="text-base font-semibold bg-sky-100/50 hover:underline rounded-sm px-2 py-1">
-                {{$name}}
+                {{$data->userData->name}}
             </a>
             <div class="font-normal underline px-2 py-1">
-                <a href="mailto:{{$email}}" class="text-gray-700 hover:text-gray-500" target="_blank"
+                @if ($data->userData->email)
+                <a href="mailto:{{$data->userData->email}}" class="text-gray-700 hover:text-gray-500" target="_blank"
                     rel="noopener noreferrer">
-                    {{$email}}
+                    {{$data->userData->email}}
                 </a>
                 <br>
-                <a href="https://wa.me/{{$tel}}" class="text-green-700 hover:text-green-500" target="_blank"
+                @endif
+                <a href="https://wa.me/{{$data->userData->mobile_number}}" class="text-green-700 hover:text-green-500" target="_blank"
                     rel="noopener noreferrer">
-                    WhatsApp : {{$tel}}
+                    WhatsApp : {{$data->userData->mobile_number}}
                 </a>
             </div>
         </div>
     </th>
     <td class="px-6 py-4">
-        {{$nim}}
+        {{$data->nim}}
     </td>
     <td class="px-6 py-4">
-        @if ($guardian_status == '1')
+        @if ($data->has_guardian == '1')
         <div class="flex items-center">
             <div class="h-2.5 w-2.5 rounded-full bg-green-500 mr-2"></div>
-            {{$guardian}}
+            {{$data->theGuardian->userData->name}}
 
         </div>
-        <a href="https://wa.me/{{$guardian_contact}}" class="text-green-700 underline hover:text-green-600"
+        <a href="https://wa.me/{{$data->theGuardian->userData->mobile_number}}" class="text-green-700 underline hover:text-green-600"
             target="_blank">
-            WhatsApp : {{$guardian_contact}}
+            WhatsApp : {{$data->theGuardian->userData->mobile_number}}
         </a>
         {{-- <br>
         <a href="tel:{{$guardian_contact}}" class="text-sky-700 underline hover:text-sky-600" target="_blank">
@@ -67,6 +69,6 @@
         @endif
     </td>
     <td class="px-6 py-4">
-        <a href="{{route('student.edit', ['nim' => $nim])}}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit user</a>
+        <a href="{{route('student.edit', ['nim' => $data->nim])}}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit user</a>
     </td>
 </tr>

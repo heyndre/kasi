@@ -31,6 +31,21 @@
             </x-slot>
         </x-page.edit-button>
         @endif
+        @elseif (auth()->user()->role == 'TUTOR')
+        @if ($course->status == 'WAITING')
+        <x-page.edit-button>
+            Ubah Detail Kelas
+            <x-slot name='route'>
+                {{route('tutor.classes.edit', ['id' => $course->id])}}
+            </x-slot>
+        </x-page.edit-button>
+        <x-page.button-with-confirm confirmMessage='Konfirmasi pelaksanaan kelas?'>
+            Konfirmasi Pelaksanaan Kelas
+            <x-slot name='route'>
+                {{route('billing.add', ['id' => $course->id])}}
+            </x-slot>
+        </x-page.button-with-confirm>
+        @endif
         @endif
 
         {{-- <x-page.back-button>
@@ -143,7 +158,7 @@
                     </div>
                 </div>
                 <div class="flex flex-col  leading-normal w-2/3">
-                    @if ($course->tutor_attendance !== null && $course->student_attendance !== null)
+                    {{-- @if ($course->tutor_attendance !== null && $course->student_attendance !== null)
                     <div
                         class="text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
                         Kehadiran Lengkap
@@ -164,6 +179,27 @@
                         Belum ada kehadiran
                     </div>
                     @else
+                    @endif --}}
+                    @if ($course->status == 'WAITING')
+                    <div
+                        class="text-cyan-700 bg-gradient-to-r from-cyan-100 to-blue-100 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
+                        Menunggu Jam Kelas
+                    </div>
+                    @elseif ($course->status == 'BURNED')
+                    <div
+                        class="text-white bg-gradient-to-r from-purple-500 to-pink-500 hover:bg-gradient-to-l focus:ring-4 focus:outline-none focus:ring-purple-200 dark:focus:ring-purple-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
+                        Kelas selesai tanpa kehadiran murid
+                    </div>
+                    @elseif ($course->status == 'CONDUCTED')
+                    <div
+                        class="text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
+                        Kelas selesai
+                    </div>
+                    @elseif ($course->status == 'CANCELLED')
+                    <div
+                        class="text-white bg-gradient-to-br from-pink-500 to-orange-400 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-pink-200 dark:focus:ring-pink-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
+                        Kelas Dibatalkan
+                    </div>
                     @endif
                     <div
                         class="w-full bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
@@ -241,8 +277,8 @@
                                         <div class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">
                                             <ul>
                                                 @foreach (json_decode($course->additional_links) as $item)
-                                                <li>
-                                                    <a href="{{$item}}">
+                                                <li class="text-wrap break-all">
+                                                    <a href="{{$item}}" target="_blank">
                                                         {{$item}}
                                                     </a>
                                                 </li>

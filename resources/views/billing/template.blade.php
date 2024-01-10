@@ -40,7 +40,7 @@
                     Tagihan Kelas KASI - {{str_pad($billing->invoice_id, 5, '0', STR_PAD_LEFT)}}
                     {{-- </span> --}}
             </div>
-            <div class="text-sm font-thin mt-2">Tagihan dibuat pada {{now()->format('d/m/Y H:i:s T')}}</div>
+            <div class="text-sm font-thin mt-2">Tagihan dicetak pada {{now()->format('d/m/Y H:i:s T')}}</div>
         </div>
     </div>
     <hr class="" style="border-color:#e36c2a">

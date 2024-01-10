@@ -2,6 +2,8 @@
 
 namespace App\Livewire\Tutor;
 
+use App\Models\CourseBase;
+use App\Models\CoursePivot;
 use App\Models\Student;
 use App\Models\Tutor;
 use App\Models\User;
@@ -16,7 +18,7 @@ class Register extends Component
 {
     use WithFileUploads;
 
-    public $email, $whatsapp, $birthday, $name, $avatar, $city, $address, $province, $eduStatus = 'educating', $eduLevel, $workTitle = 'unemployed', $workSite, $eduSite, $bankAccount, $bankName, $bankAdditionalInfo, $eduMajor, $religion, $hobbies, $passion, $motto, $teachingExp, $leadershipExp, $competitionExp;
+    public $email, $whatsapp, $nickname, $birthday, $name, $skills, $avatar, $city, $address, $province, $eduStatus = 'educating', $eduLevel, $workTitle = 'unemployed', $workSite, $eduSite, $bankAccount, $bankName, $bankAdditionalInfo, $eduMajor, $religion, $hobbies, $passion, $motto, $teachingExp, $leadershipExp, $competitionExp;
 
     public function register()
     {
@@ -25,12 +27,14 @@ class Register extends Component
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'whatsapp' => ['required', 'numeric', 'unique:users,mobile_number'],
             'name' => ['required', 'string', 'max:255'],
+            'nickname' => ['required', 'string', 'max:255', 'unique:users,nickname'],
             'address' => ['required', 'string', 'max:512'],
             'avatar' => ['image', 'max:5120', 'nullable'],
 
         ], [
             'email.required' => 'Email tidak boleh kosong',
             'email.unique' => 'Email sudah digunakan, silakan gunakan alamat email lain',
+            'email.unique' => 'Username sudah digunakan, silakan gunakan username lain',
             'whatsapp.required' => 'Nomor Whatsapp murid tidak boleh kosong',
             'whatsapp.unique' => 'Nomor telepon sudah digunakan, silakan gunakan nomor telepon lain',
             'whatsapp.numeric' => 'Nomor telepon tidak valid',
@@ -41,11 +45,13 @@ class Register extends Component
         $base = User::create([
             'email' => $data['email'],
             'name' => $data['name'],
+            'nickname' => $data['nickname'],
             // 'password' => Hash::make('BelajarDuluMenginspirasiKemudian'),
             'password' => Hash::make(Str::random(8)),
             'mobile_number' => $data['whatsapp'],
             'birthday' => $this->birthday,
             'address' => $this->address,
+            'role' => 'TUTOR',
         ]);
 
         $expiresAt = now()->addDay();
@@ -85,6 +91,13 @@ class Register extends Component
             'competition_experience' => $this->competitionExp,
         ]);
 
+        foreach ($this->skills as $item) {
+            CoursePivot::create([
+                'tutor_id' => $tutor->id,
+                'skill_id' => $item,
+            ]);
+        }
+
         session()->flash('success', 'Registrasi tutor baru berhasil.');
         return $this->redirect(route('tutor.active'), navigate: true);
     }
@@ -97,6 +110,16 @@ class Register extends Component
             'email.email' => 'Masukkan alamat email yang valid',
             'email.required' => 'Email tidak boleh kosong',
             'email.unique' => 'Email sudah digunakan, silakan gunakan alamat email lain',
+        ]);
+    }
+
+    public function updatedNickname()
+    {
+        $this->validate([
+            'nickname' => ['required', 'string', 'max:255', 'unique:users,nickname'],
+        ], [
+            'nickname.required' => 'Nickname tidak boleh kosong',
+            'emanicknameil.unique' => 'Nickname sudah digunakan, silakan gunakan nickname lain',
         ]);
     }
 
@@ -140,6 +163,7 @@ class Register extends Component
 
     public function render()
     {
-        return view('livewire.tutor.register');
+        $skillBase = CourseBase::all();
+        return view('livewire.tutor.register', ['skillBase' => $skillBase]);
     }
 }

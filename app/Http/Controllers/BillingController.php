@@ -13,7 +13,9 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 use DB;
 use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Storage;
 
+use Spatie\LaravelPdf\Facades\Pdf;
 use Spatie\Browsershot\Browsershot;
 use Spatie\Image\Manipulations;
 use Intervention\Image\Facades\Image;
@@ -108,26 +110,38 @@ class BillingController extends Controller
     {
         $billing = Billing::with('theClass.theTutor.userData', 'theStudent', 'theStudentData')
             ->where('id', $id)->firstOrFail();
-        $filename = 'Invoice KASI ' . str_pad($billing->invoice_id, 5, '0', STR_PAD_LEFT) . '.png';
+        // $filename = 'Invoice KASI ' . str_pad($billing->invoice_id, 5, '0', STR_PAD_LEFT) . '.png';
+        $filename = 'Invoice KASI ' . str_pad($billing->invoice_id, 5, '0', STR_PAD_LEFT) . '.pdf';
+
         // dd($billing->theClass[0]);
         $image = Browsershot::html(view('billing.template', ['billing' => $billing])->render())
             ->waitUntilNetworkIdle()
             ->newHeadless()
-            ->usePipe()
+            ->emulateMedia("screen")
+            ->format("A4")
+            ->margins(0.25, 0.25, 0.25, 0.25, "in")
+            ->showBackground()
+            ->setRemoteInstance('127.0.0.1', 9222)
             ->mobile()
             ->fullPage()
-            ->deviceScaleFactor(2)
+            // ->deviceScaleFactor(2)
             ->disableJavascript()
-            ->device('iPhone 13 Mini landscape')
+            // ->device('iPhone 13 Mini landscape')
             // ->base64Screenshot();
-            ->save(storage_path("app/billing/" . $filename));
-        ob_end_clean();
+            // ->save(storage_path("app/billing/" . $filename));
+            ->savePdf(storage_path("app/billing/" . $filename));
+        // ob_end_clean();
+
+        // return Pdf::view('billing.template', ['billing' => $billing])
+        //     ->format('a4')
+        //     ->name($filename);
 
         // $file = Image::make($image)->save();
         // return response()->streamDownload(function () use ($file) {
         //     echo $file;
         // }, $filename, ['Content-Type: image/png']);
         return Response::download(storage_path("app/billing/" . $filename), $filename);
+        // return $image;
     }
 
     // public function confirmBillPayment($id)
@@ -177,28 +191,36 @@ class BillingController extends Controller
 
     public function testPDF()
     {
-        $image = Browsershot::html(view('billing.default')->render())
-            ->waitUntilNetworkIdle()
+        $pdf = Browsershot::html('<h1>Hello world!!</h1>')
+            ->setRemoteInstance('127.0.0.1', 9222)
+            // ->timeout(30000)
             ->newHeadless()
-            // ->noSandbox()
-            ->usePipe()
-            ->mobile()
-            ->fullPage()
-            ->deviceScaleFactor(2)
-            ->disableJavascript()
-            ->device('iPhone 13 Mini landscape')
-            // ->windowSize(1080, 1920)
-            // ->fit(Manipulations::FIT_CONTAIN, 1080, 480)
-            // ->ignoreHttpsErrors()
-            // ->timeout(500)
-            // ->base64pdf();
-            // ->setScreenshotType('png')
-            ->base64Screenshot();
-        // ->save(storage_path("app/billing/".Str::random(8).'.png'));
+            ->pdf();
+        dd($pdf);
 
-        // return response()->file($image);
-        // ob_end_clean();
-        return Image::make($image)->response();
+        // $image = Browsershot::html(view('billing.default')->render())
+        //     ->waitUntilNetworkIdle()
+        //     ->newHeadless()
+        //     // ->noSandbox()
+        //     ->usePipe()
+        //     ->mobile()
+        //     ->fullPage()
+        //     ->deviceScaleFactor(2)
+        //     ->disableJavascript()
+        //     ->device('iPhone 13 Mini landscape')
+        //     // ->windowSize(1080, 1920)
+        //     // ->fit(Manipulations::FIT_CONTAIN, 1080, 480)
+        //     // ->ignoreHttpsErrors()
+        //     // ->timeout(500)
+        //     // ->base64pdf();
+        //     ->pdf();
+        // // ->setScreenshotType('png')
+        // // ->base64Screenshot();
+        // // ->save(storage_path("app/billing/".Str::random(8).'.png'));
+
+        // // return response()->file($image);
+        // // ob_end_clean();
+        // return Image::make($image)->response();
 
 
         // Browsershot::url("https://kasi.test")

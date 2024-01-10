@@ -15,16 +15,16 @@ use Livewire\Component;
 
 class Show extends Component
 {
-    public $email, $whatsapp, $birthday, $name, $photo, $city, $address, $province, $eduStatus = 'educating', $eduLevel, $workTitle = 'unemployed', $workSite, $eduSite, $bankNumber, $bankName, $bankAdditionalInfo, $eduMajor, $religion, $hobbies, $passion, $motto, $teachingExp, $leadershipExp, $competitionExp, $acronym, $acronymPlus, $status, $registeredAt, $lastLoginAt, $lastActiveAt, $photoUrl, $nextAnniversary, $slug;
+    public $email, $tutor, $whatsapp, $birthday, $name, $photo, $city, $address, $province, $eduStatus = 'educating', $eduLevel, $workTitle = 'unemployed', $workSite, $eduSite, $bankNumber, $bankName, $bankAdditionalInfo, $eduMajor, $religion, $hobbies, $passion, $motto, $teachingExp, $leadershipExp, $competitionExp, $acronym, $acronymPlus, $status, $registeredAt, $lastLoginAt, $lastActiveAt, $photoUrl, $nextAnniversary, $slug;
 
     public function mount($slug)
     {
-        $data = Tutor::with('userData')
+        $data = Tutor::with('userData', 'theSkill')
             ->whereHas('userData', function ($q) use ($slug) {
                 $q->where('slug', $slug);
             })->firstOrFail();
         // dd($data);
-
+        $this->tutor = $data;
         $this->name = $data->userData->name;
         $this->email = $data->userData->email;
         $this->address = $data->userData->address;

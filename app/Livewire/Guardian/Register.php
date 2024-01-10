@@ -25,18 +25,17 @@ class Register extends Component
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'whatsapp' => ['required', 'numeric', 'unique:users,mobile_number'],
             'name' => ['required', 'string', 'max:255'],
-            'address' => ['required', 'string', 'max:512'],
+            'address' => ['nullable', 'string', 'max:512'],
             'avatar' => ['image', 'max:5120', 'nullable'],
 
         ], [
             'email.email' => 'Masukkan alamat email yang valid',
             'email.required' => 'Email tidak boleh kosong',
             'email.unique' => 'Email sudah digunakan, silakan gunakan alamat email lain',
-            'whatsapp.required' => 'Nomor Whatsapp murid tidak boleh kosong',
+            'whatsapp.required' => 'Nomor Whatsapp wali murid tidak boleh kosong',
             'whatsapp.unique' => 'Nomor telepon sudah digunakan, silakan gunakan nomor telepon lain',
             'whatsapp.numeric' => 'Nomor telepon tidak valid',
-            'address.required' => 'Alamat murid tidak boleh kosong',
-            'name.required' => 'Nama murid tidak boleh kosong',
+            'name.required' => 'Nama wali murid tidak boleh kosong',
         ]);
 
         $base = User::create([
@@ -46,6 +45,7 @@ class Register extends Component
             'password' => Hash::make(Str::random(8)),
             'mobile_number' => $data['whatsapp'],
             'address' => $this->address,
+            'role' => 'WALI MURID',
         ]);
 
         $expiresAt = now()->addDay();

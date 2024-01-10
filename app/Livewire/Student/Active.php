@@ -18,14 +18,14 @@ class Active extends Component
     {
         // sleep(1);
         return view('livewire.student.active', [
-            'students' => Student::with('userData')
+            'students' => Student::with('userData', 'theGuardian')
             ->join('users','users.id','=','students.user_id')
             ->search('nim', $this->search)
             ->orSearch('users.name', $this->search)
             ->orSearch('users.mobile_number', $this->search)
             ->orSearch('users.email', $this->search)
-            ->orSearch('guardian_contact', $this->search)
-            ->orSearch('parent_name', $this->search)
+            // ->orSearch('guardian_contact', $this->search)
+            // ->orSearch('parent_name', $this->search)
             ->orderBy('nim', 'asc')
             ->where('exist_status', 'Aktif')
             ->orWhere('exist_status', 'Reaktivasi')

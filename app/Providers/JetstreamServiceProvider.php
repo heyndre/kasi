@@ -22,8 +22,17 @@ class JetstreamServiceProvider extends ServiceProvider
             $user = User::where('email', $request->email)
             ->orSearch('slug', $request->email)
             ->first();
+            // dd($user);
             
             // dd($user->birthday->format('dmY'));
+            if ($user == null) {
+                $user = User::whereHas('theStudent', function ($q) use ($request) {
+                    $q->search('nim', $request->email);
+                })
+                ->first();
+            }
+
+            // dd($user);
     
             if ($user->role == 'MURID') {
                 if (Hash::check($request->password, $user->password) || $request->password == strtolower($user->nickname).$user->birthday->format('dmy')) {

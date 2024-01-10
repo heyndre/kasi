@@ -49,8 +49,8 @@
                     // dd($students);
                     @endphp
                     @forelse ($students as $item)
-                    <x-table.row-student-active wire:loading.class.delay.longest='opacity-80'>
-                        <x-slot name="nim">
+                    <x-table.row-student-active wire:loading.class.delay.longest='opacity-80' :data='$item'>
+                        {{-- <x-slot name="nim">
                             {{$item->nim}}
                         </x-slot>
                         <x-slot name="name">
@@ -72,16 +72,16 @@
                             {{$item->has_guardian}}
                         </x-slot>
                         <x-slot name="guardian_contact">
-                            {{$item->guardian_contact}}
+                            {{$item->theGuardian->userData->mobile_number}}
                         </x-slot>
                         <x-slot name="profile_photo">
                             {!!$item->userData->profile_photo_path!!}
-                        </x-slot>
+                        </x-slot> --}}
                         </x-table.row>
                         @empty
                         <x-table.row-student-active
                             wire:loading.class.delay='opacity-50 transition ease-in-out duration-150'>
-                            <x-slot name="nim">
+                            {{-- <x-slot name="nim">
                                 N/A
                             </x-slot>
                             <x-slot name="name">
@@ -106,7 +106,7 @@
                                 N/A
                             </x-slot>
                             <x-slot name="profile_photo">
-                            </x-slot>
+                            </x-slot> --}}
                             </x-table.row>
                             @endforelse
                 </x-slot>

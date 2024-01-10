@@ -171,12 +171,14 @@
                                         </div>
                                     </div>
 
-                                    <label class="mb-2 font-semibold leading-none text-gray-900 dark:text-white"
-                                        for="name">
-                                        Tempat Pendidikan Murid
-                                    </label>
-                                    <div class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">
-                                        {{$eduSite}}
+                                    <div class="w-fit">
+                                        <label class="mb-2 font-semibold leading-none text-gray-900 dark:text-white"
+                                            for="name">
+                                            Tempat Pendidikan Murid
+                                        </label>
+                                        <div class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">
+                                            {{$eduSite}}
+                                        </div>
                                     </div>
 
                                     @else
@@ -226,7 +228,9 @@
                                         Nama Wali Murid
                                     </label>
                                     <div class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">
-                                        {{$guardianName != null && $guardianName != '' ? $guardianName : '-'}}
+                                        <a href="{{route('guardian.show', ['slug' => $guardian->userData->slug])}}">
+                                            {{$guardianName != null && $guardianName != '' ? $guardianName : '-'}}
+                                        </a>
                                     </div>
                                 </div>
                                 <div class="w-fit">

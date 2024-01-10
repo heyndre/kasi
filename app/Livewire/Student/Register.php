@@ -26,8 +26,9 @@ class Register extends Component
     {
         // dd($this->birthday);
         $data = $this->validate([
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'email' => ['nullable', 'string', 'email', 'max:255', 'unique:users'],
             'whatsapp' => ['nullable', 'numeric', 'unique:users,mobile_number'],
+            // 'nickname' => ['nullable', 'string', 'unique:users,nickname'],
             'name' => ['required', 'string', 'max:255'],
             'hasGuardian' => ['nullable', 'boolean'],
             'address' => ['required', 'string', 'max:512'],
@@ -51,10 +52,13 @@ class Register extends Component
             'password' => Hash::make(Str::random(8)),
             'mobile_number' => $data['whatsapp'],
             'birthday' => $this->birthday,
+            'role' => 'MURID',
         ]);
 
-        $expiresAt = now()->addDay();
-        $base->sendWelcomeNotification($expiresAt);
+        if ($data['email'] !== null) {
+            $expiresAt = now()->addDay();
+            $base->sendWelcomeNotification($expiresAt);
+        }
 
         if ($data['avatar'] != null) {
             Image::load($this->avatar->getRealPath())->fit(Manipulations::FIT_FILL_MAX, 1080, 1080)->optimize()->save();

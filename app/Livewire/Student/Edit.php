@@ -34,9 +34,11 @@ class Edit extends Component
         $this->name = $data->userData->name;
         $this->address = $data->address;
         $this->hasGuardian = boolval($data->has_guardian);
-        $this->guardian = $data->guardian_id;
-        $this->guardianWhatsapp = $data->theGuardian->userData->mobile_number;
-        $this->guardianName = $data->theGuardian->userData->name;
+        if ($this->hasGuardian == true) {
+            $this->guardian = $data->guardian_id;
+            $this->guardianName = $data->theGuardian->userData->name;
+            $this->guardianWhatsapp = $data->theGuardian->userData->mobile_number;
+        }
         $this->eduStatus = $data->getRawOriginal('edu_status');
         $this->eduLevel = $data->getRawOriginal('edu_level');
         $this->workTitle = $data->getRawOriginal('work_title');

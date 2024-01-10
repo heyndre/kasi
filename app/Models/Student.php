@@ -19,6 +19,7 @@ class Student extends Model
     public function theGuardian()
     {
         return $this->belongsTo(Guardian::class, 'guardian_id', 'id');
+        // return $this->hasOne(Guardian::class, 'id', 'guardian_id');
     }
 
     public function thePackage() {
@@ -47,9 +48,9 @@ class Student extends Model
     public function getEduStatusAttribute($value)
     {
         switch ($value) {
-            case '0':
-                return 'Sedang Menempuh Studi';
             case '1':
+                return 'Sedang Menempuh Studi';
+            case '0':
                 return 'Sudah Menyelesaikan Studi';
         }
     }

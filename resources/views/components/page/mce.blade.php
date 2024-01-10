@@ -31,5 +31,5 @@
                 })
             });
     </script>
-    <textarea class="h-screen p-2" id="{{$name}}" name="{{$name}}"> </textarea>
+    <textarea class="h-screen p-2" id="{{$name}}" name="{{$name}}" wire:model='{{$name}}'> </textarea>
 </div>
