@@ -4,6 +4,21 @@
     </x-page.header>
     <x-slot name='button'>
         @if (auth()->user()->role == 'ADMIN' || auth()->user()->role == 'SUPERADMIN')
+        <x-page.edit-button>
+            Ubah Kelas
+            <x-slot name='route'>
+                {{route('kbm.edit', ['id' => $course->id])}}
+            </x-slot>
+        </x-page.edit-button>
+        
+        @if ($course->status == 'WAITING')
+        <x-page.edit-button>
+            Ubah Jadwal Kelas
+            <x-slot name='route'>
+                {{route('kbm.edit.reschedule', ['id' => $course->id])}}
+            </x-slot>
+        </x-page.edit-button>
+        @endif
         @if ($billingStatus == 'Belum ditagih')
         <x-page.button-with-confirm confirmMessage='Konfirmasi penambahan kelas ke billing?'>
             Masukkan ke billing
@@ -183,7 +198,7 @@
                     @if ($course->status == 'WAITING')
                     <div
                         class="text-cyan-700 bg-gradient-to-r from-cyan-100 to-blue-100 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
-                        Menunggu Jam Kelas
+                        Menunggu Pelaksanaan Kelas
                     </div>
                     @elseif ($course->status == 'BURNED')
                     <div
@@ -275,14 +290,18 @@
                                             Referensi Tambahan
                                         </label>
                                         <div class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">
+                                            @php
+                                                // dd(json_decode($course->additional_links))
+                                            @endphp
                                             <ul>
-                                                @foreach (json_decode($course->additional_links) as $item)
+                                                @forelse (json_decode($course->additional_links) as $item)
                                                 <li class="text-wrap break-all">
                                                     <a href="{{$item}}" target="_blank">
                                                         {{$item}}
                                                     </a>
                                                 </li>
-                                                @endforeach
+                                                @empty
+                                                @endforelse
                                             </ul>
                                         </div>
                                     </div>

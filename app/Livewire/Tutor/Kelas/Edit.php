@@ -15,8 +15,15 @@ class Edit extends Component
         $this->data->update([
             'topic' => $this->topic,
             'lesson_matter' => $this->lesson,
-            'additional_links' => json_encode($this->reference),
+            // 'additional_links' => json_encode($this->reference),
         ]);
+        if ($this->reference != $this->links) {
+            // dd($this->reference == $this->links);
+            // dd($this);
+            $this->data->update([
+            'additional_links' => json_encode($this->reference),
+            ]);
+        }
 
         session()->flash('success', 'Pembaruan detail kelas berhasil');
         return $this->redirect(route('tutor.classes.show', ['id' => $this->data->id]), navigate: false);

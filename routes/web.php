@@ -19,6 +19,7 @@ use App\Livewire\Guardian\Edit as GuardianEdit;
 use App\Livewire\Admin\KBM\Index as KBMList;
 use App\Livewire\Admin\KBM\Show as KBMShow;
 use App\Livewire\Admin\KBM\Edit as KBMEdit;
+use App\Livewire\Admin\KBM\Reschedule as KBMReschedule;
 use App\Livewire\Admin\KBM\Create as KBMAdd;
 use App\Livewire\Admin\KBM\StatusIndex as KBMStatusIndex;
 
@@ -101,6 +102,7 @@ Route::middleware([
         Route::get('/kelas/status/billing', KBMStatusIndex::class)->name('kbm.billing.status');
         Route::get('/kelas/detail/{id}', KBMShow::class)->name('kbm.show');
         Route::get('/kelas/edit/{id}', KBMEdit::class)->name('kbm.edit');
+        Route::get('/kelas/edit/ubah-jadwal/{id}', KBMReschedule::class)->name('kbm.edit.reschedule');
 
         Route::get('kelas/billing/tambah/{id}', [BillingController::class, 'addBilling'])->name('billing.add');
         Route::get('kelas/billing/konfirmasi/{id}', [BillingController::class, 'confirmBilling'])->name('billing.confirm');
