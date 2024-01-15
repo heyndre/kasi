@@ -112,29 +112,25 @@ class BillingController extends Controller
     {
         $billing = Billing::with('theClass.theTutor.userData', 'theStudent', 'theStudentData')
             ->where('id', $id)->firstOrFail();
-        // $filename = 'Invoice KASI ' . str_pad($billing->invoice_id, 5, '0', STR_PAD_LEFT) . '.png';
         $filename = 'Invoice KASI ' . str_pad($billing->invoice_id, 5, '0', STR_PAD_LEFT) . '.pdf';
 
-        // dd($billing->theClass[0]);
-
-        return PDF::loadView('billing.template-dom', ['billing' => $billing])->stream();
-        // $image = Browsershot::html(view('billing.template', ['billing' => $billing])->render())
-        //     ->waitUntilNetworkIdle()
-        //     ->newHeadless()
-        //     ->emulateMedia("screen")
-        //     ->format("A4")
-        //     ->margins(0.25, 0.25, 0.25, 0.25, "in")
-        //     ->showBackground()
-        //     ->setRemoteInstance('127.0.0.1', 9222)
-        //     ->mobile()
-        //     ->fullPage()
-        //     // ->deviceScaleFactor(2)
-        //     ->disableJavascript()
-        //     // ->device('iPhone 13 Mini landscape')
-        //     // ->base64Screenshot();
-        //     // ->save(storage_path("app/billing/" . $filename));
-        //     ->savePdf(storage_path("app/billing/" . $filename));
-        // // ob_end_clean();
+        $image = Browsershot::html(view('billing.template', ['billing' => $billing])->render())
+            ->waitUntilNetworkIdle()
+            ->newHeadless()
+            ->emulateMedia("screen")
+            ->format("A4")
+            ->margins(0.25, 0.25, 0.25, 0.25, "in")
+            ->showBackground()
+            ->setRemoteInstance('127.0.0.1', 9222)
+            ->mobile()
+            ->fullPage()
+            // ->deviceScaleFactor(2)
+            ->disableJavascript()
+            // ->device('iPhone 13 Mini landscape')
+            // ->base64Screenshot();
+            // ->save(storage_path("app/billing/" . $filename));
+            ->savePdf(storage_path("app/billing/" . $filename));
+        // ob_end_clean();
 
         // // return Pdf::view('billing.template', ['billing' => $billing])
         // //     ->format('a4')
@@ -146,6 +142,51 @@ class BillingController extends Controller
         // // }, $filename, ['Content-Type: image/png']);
         // return Response::download(storage_path("app/billing/" . $filename), $filename);
         // return $image;
+    }
+
+    public function generateInvoiceImage($id)
+    {
+        $billing = Billing::with('theClass.theTutor.userData', 'theStudent', 'theStudentData')
+            ->where('id', $id)->firstOrFail();
+        $filename = 'Invoice KASI ' . str_pad($billing->invoice_id, 5, '0', STR_PAD_LEFT) . '.png';
+
+        $image = Browsershot::html(view('billing.template', ['billing' => $billing])->render())
+            ->waitUntilNetworkIdle()
+            ->newHeadless()
+            ->emulateMedia("screen")
+            ->format("A4")
+            ->margins(0.25, 0.25, 0.25, 0.25, "in")
+            ->showBackground()
+            ->setRemoteInstance('127.0.0.1', 9222)
+            ->mobile()
+            ->fullPage()
+            // ->deviceScaleFactor(2)
+            ->disableJavascript()
+            // ->device('iPhone 13 Mini landscape')
+            // ->base64Screenshot();
+            ->save(storage_path("app/billing/" . $filename));
+            // ->savePdf(storage_path("app/billing/" . $filename));
+        // ob_end_clean();
+
+        // // return Pdf::view('billing.template', ['billing' => $billing])
+        // //     ->format('a4')
+        // //     ->name($filename);
+
+        // // $file = Image::make($image)->save();
+        // // return response()->streamDownload(function () use ($file) {
+        // //     echo $file;
+        // // }, $filename, ['Content-Type: image/png']);
+        return Response::download(storage_path("app/billing/" . $filename), $filename);
+        // return $image;
+    }
+
+    public function generateInvoiceBarryPDF($id)
+    {
+        $billing = Billing::with('theClass.theTutor.userData', 'theStudent', 'theStudentData')
+            ->where('id', $id)->firstOrFail();
+        $filename = 'Invoice KASI ' . str_pad($billing->invoice_id, 5, '0', STR_PAD_LEFT) . '.pdf';
+
+        return PDF::loadView('billing.template-dom', ['billing' => $billing])->stream();
     }
 
     // public function confirmBillPayment($id)

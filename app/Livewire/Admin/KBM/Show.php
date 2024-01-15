@@ -9,6 +9,7 @@ use App\Models\Student;
 use App\Models\Tutor;
 use App\Models\TutorPayment;
 use App\Models\User;
+use App\Models\Setting;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
@@ -19,13 +20,16 @@ use Livewire\Component;
 
 class Show extends Component
 {
-    public $course, $billing, $payment, $tutorSharing, $billingStatus, $invoiceNumber, $billingDate, $studentPayment, $studentPaymentID, $tutorPaymentID, $tutorPayment, $tutorPaymentDate, $tutorPaymentReceipt;
+    public $course, $billing, $payment, $tutorSharing, $link, $billingStatus, $invoiceNumber, $billingDate, $studentPayment, $studentPaymentID, $tutorPaymentID, $tutorPayment, $tutorPaymentDate, $tutorPaymentReceipt;
 
     public function mount($id)
     {
-        $this->course = Course::with('theTutor', 'theStudent', 'theCourse', 'theBilling', )
+        $this->course = Course::with('theTutor', 'theStudent', 'theCourse', 'theBilling',)
             ->where('id', $id)
             ->firstOrFail();
+
+        $this->link = Setting::where('key', 'default_link')->first()->value;
+        // dd($this->link);
         $this->billing = $this->course->theBilling;
         if ($this->course->theBilling) {
             $this->billingDate = $this->billing->bill_date->format('d M Y H:i T');
@@ -34,7 +38,6 @@ class Show extends Component
 
             $this->payment = Payment::where('billing_id', $this->billing->id)->first();
             $this->tutorSharing = TutorPayment::where('billing_id', $this->billing->id)->first();
-
         } else {
             $this->billingStatus = 'Belum ditagih';
             $this->billingDate = 'N/A';
@@ -58,6 +61,33 @@ class Show extends Component
             $this->tutorPaymentDate = 'N/A';
             $this->tutorPaymentReceipt = 'N/A';
         }
+    }
+
+    public function cancelClass()
+    {
+        $this->course->update([
+            'status' => 'CANCELLED'
+        ]);
+        session()->flash('warning', 'Status kelas dibatalkan.');
+        return $this->redirect(route('kbm.show', ['id' => $this->course->id]), navigate: false);
+    }
+
+    public function finishClass()
+    {
+        $this->course->update([
+            'status' => 'CONDUCTED'
+        ]);
+        session()->flash('success', 'Status kelas diselesaikan.');
+        return $this->redirect(route('kbm.show', ['id' => $this->course->id]), navigate: false);
+    }
+
+    public function burnClass()
+    {
+        $this->course->update([
+            'status' => 'BURNED'
+        ]);
+        session()->flash('success', 'Status kelas diselesaikan tanpa kehadiran murid.');
+        return $this->redirect(route('kbm.show', ['id' => $this->course->id]), navigate: false);
     }
 
     public function render()

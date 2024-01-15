@@ -16,11 +16,15 @@ class Edit extends Component
 {
     use SupportFileUploadsWithFileUploads;
 
-    public $data, $topic, $lesson, $reference, $links, $availability;
+    public $data, $topic, $lesson, $reference, $links, $availability, $files = [], $photo, $recording = [];
+
+    public function updatedFiles() {
+        // dd($this->files);
+    }
 
     public function updateClass()
     {
-        // dd($this);
+        dd($this);
 
         $this->data->update([
             'topic' => $this->topic,
@@ -46,6 +50,7 @@ class Edit extends Component
         $this->lesson = $this->data->lesson_matter;
         $this->reference = $this->data->additional_links;
         $this->links = $this->data->additional_links;
+        $this->files = json_decode($this->data->files);
     }
 
     public function render()

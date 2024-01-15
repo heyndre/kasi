@@ -77,6 +77,61 @@
                     </div>
                 </div>
 
+                <div class="mb-6  col-span-2" >
+                    <div class="">
+                        @foreach ($files as $item)
+                            <a href=""></a>
+                        @endforeach
+                    </div>
+                    <div class="" >
+                        <label for="files" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                        Unggah File Kelas
+                        @error('files')
+                        <p class="mt-2 text-sm text-red-600 dark:text-red-500"><span class="font-medium">Oops!</span>
+                            {{$message}}</p>
+                            @enderror
+                        </label>
+                        {{-- <input type="file" wire:model='files'> --}}
+                        <x-page.filepond wire:model='files' multiple/>
+                    </div>
+                </div>
+
+                <div class="mb-6  col-span-2" >
+                    <div class="">
+                        @foreach ($files as $item)
+                            <a href=""></a>
+                        @endforeach
+                    </div>
+                    <div class="" >
+                        <label for="recording" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                        Unggah Rekaman Kelas
+                        @error('recording')
+                        <p class="mt-2 text-sm text-red-600 dark:text-red-500"><span class="font-medium">Oops!</span>
+                            {{$message}}</p>
+                            @enderror
+                        </label>
+                        {{-- <input type="file" wire:model='files'> --}}
+                        <x-page.filepond wire:model='recording' multiple/>
+                    </div>
+                </div>
+                <div class="mb-6  col-span-2" >
+                    <div class="">
+                        @foreach ($files as $item)
+                            <a href=""></a>
+                        @endforeach
+                    </div>
+                    <div class="" >
+                        <label for="photo" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                        Unggah Foto Kelas
+                        @error('photo')
+                        <p class="mt-2 text-sm text-red-600 dark:text-red-500"><span class="font-medium">Oops!</span>
+                            {{$message}}</p>
+                            @enderror
+                        </label>
+                        {{-- <input type="file" wire:model='files'> --}}
+                        <x-page.filepond wire:model='photo'/>
+                    </div>
+                </div>
                 
 
                 <div class="block col-span-2 " wire:loading.remove>

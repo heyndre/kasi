@@ -18,6 +18,7 @@ class Course extends Model
         'tutor_attendance' => 'datetime',
         // 'class_end_time' => 'datetime',
         'additional_links' => 'array',
+        'files' => 'array',
     ];
 
 

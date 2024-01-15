@@ -7,7 +7,7 @@ use Livewire\Component;
 
 class Edit extends Component
 {
-    public $data, $topic, $lesson, $reference, $links;
+    public $data, $topic, $lesson, $reference, $links, $files = [], $photo, $recording = [];
 
     public function updateClass() {
         // dd($this);

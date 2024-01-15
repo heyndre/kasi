@@ -10,7 +10,7 @@
                 {{route('kbm.edit', ['id' => $course->id])}}
             </x-slot>
         </x-page.edit-button>
-        
+
         @if ($course->status == 'WAITING')
         <x-page.edit-button>
             Ubah Jadwal Kelas
@@ -46,20 +46,28 @@
             </x-slot>
         </x-page.edit-button>
         @endif
-        @elseif (auth()->user()->role == 'TUTOR')
         @if ($course->status == 'WAITING')
+        <x-page.green-button-message message='Terima kasih telah konfirmasi kehadiran, selamat belajar di KASI!'>
+            Konfirmasi Kehadiran
+            <x-slot name='route'>
+                {{route('student.classes.attendance', ['id' => $course->id])}}
+            </x-slot>
+        </x-page.green-button-message>
+        @endif
+        @elseif (auth()->user()->role == 'TUTOR')
         <x-page.edit-button>
             Ubah Detail Kelas
             <x-slot name='route'>
                 {{route('tutor.classes.edit', ['id' => $course->id])}}
             </x-slot>
         </x-page.edit-button>
-        <x-page.button-with-confirm confirmMessage='Konfirmasi pelaksanaan kelas?'>
-            Konfirmasi Pelaksanaan Kelas
+        @if ($course->status == 'WAITING')
+        <x-page.green-button-message message='Terima kasih telah konfirmasi kehadiran, selamat mengajar di KASI!'>
+            Konfirmasi Kehadiran
             <x-slot name='route'>
-                {{route('billing.add', ['id' => $course->id])}}
+                {{route('tutor.classes.attendance', ['id' => $course->id])}}
             </x-slot>
-        </x-page.button-with-confirm>
+        </x-page.green-button-message>
         @endif
         @endif
 
@@ -105,6 +113,14 @@
                             <div class="font-thin">
                                 {{$course->length}} menit
                             </div>
+                        </div>
+                        <div class="border-b-1">
+                            Link Ruang Kelas
+                            <br>
+                            <a href="{{$course->meeting_link != null ? $course->meeting_link : $link}}"
+                                class="font-thin text-wrap break-all underline text-blue-600">
+                                {{$course->meeting_link != null ? $course->meeting_link : $link}}
+                            </a>
                         </div>
                         <div class="border-b-1">
                             Biaya Kelas per 60 menit
@@ -170,6 +186,53 @@
                                 </a>
                             </div>
                         </div>
+
+                        @if (auth()->user()->role == 'ADMIN' || auth()->user()->role == 'SUPERADMIN')
+                        <hr class="p-3">
+                        <div class="border-b-1">
+                            Manajemen Status Kelas
+                        </div>
+                        @if ($course->status != 'CANCELLED')
+                        <div wire:click='cancelClass' wire:confirm='Ubah status kelas menjadi dibatalkan?'
+                            class="text-white cursor-pointer bg-red-500 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center me-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
+                            <svg class="w-3.5 h-3.5 me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                fill="currentColor" viewBox="0 0 20 18">
+                                <path
+                                    d="M12.687 14.408a3.01 3.01 0 0 1-1.533.821l-3.566.713a3 3 0 0 1-3.53-3.53l.713-3.566a3.01 3.01 0 0 1 .821-1.533L10.905 2H2.167A2.169 2.169 0 0 0 0 4.167v11.666A2.169 2.169 0 0 0 2.167 18h11.666A2.169 2.169 0 0 0 16 15.833V11.1l-3.313 3.308Zm5.53-9.065.546-.546a2.518 2.518 0 0 0 0-3.56 2.576 2.576 0 0 0-3.559 0l-.547.547 3.56 3.56Z" />
+                                <path
+                                    d="M13.243 3.2 7.359 9.081a.5.5 0 0 0-.136.256L6.51 12.9a.5.5 0 0 0 .59.59l3.566-.713a.5.5 0 0 0 .255-.136L16.8 6.757 13.243 3.2Z" />
+                            </svg>
+                            Batalkan Kelas
+                        </div>
+                        @endif
+                        @if ($course->status != 'CONDUCTED')
+                        <div wire:click='finishClass' wire:confirm='Ubah status kelas menjadi dilaksanakan?'
+                            class="text-white cursor-pointer bg-sky-500 hover:bg-sky-800 focus:ring-4 focus:outline-none focus:ring-sky-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center me-2 dark:bg-sky-600 dark:hover:bg-sky-700 dark:focus:ring-sky-800">
+                            <svg class="w-3.5 h-3.5 me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                fill="currentColor" viewBox="0 0 20 18">
+                                <path
+                                    d="M12.687 14.408a3.01 3.01 0 0 1-1.533.821l-3.566.713a3 3 0 0 1-3.53-3.53l.713-3.566a3.01 3.01 0 0 1 .821-1.533L10.905 2H2.167A2.169 2.169 0 0 0 0 4.167v11.666A2.169 2.169 0 0 0 2.167 18h11.666A2.169 2.169 0 0 0 16 15.833V11.1l-3.313 3.308Zm5.53-9.065.546-.546a2.518 2.518 0 0 0 0-3.56 2.576 2.576 0 0 0-3.559 0l-.547.547 3.56 3.56Z" />
+                                <path
+                                    d="M13.243 3.2 7.359 9.081a.5.5 0 0 0-.136.256L6.51 12.9a.5.5 0 0 0 .59.59l3.566-.713a.5.5 0 0 0 .255-.136L16.8 6.757 13.243 3.2Z" />
+                            </svg>
+                            Selesaikan Kelas
+                        </div>
+                        @endif
+                        @if ($course->status != 'BURNED')
+                        <div wire:click='burnClass'
+                            wire:confirm='Ubah status kelas menjadi dilaksanakan tanpa kehadiran murid?'
+                            class="text-white cursor-pointer bg-blue-500 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center me-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                            <svg class="w-3.5 h-3.5 me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                fill="currentColor" viewBox="0 0 20 18">
+                                <path
+                                    d="M12.687 14.408a3.01 3.01 0 0 1-1.533.821l-3.566.713a3 3 0 0 1-3.53-3.53l.713-3.566a3.01 3.01 0 0 1 .821-1.533L10.905 2H2.167A2.169 2.169 0 0 0 0 4.167v11.666A2.169 2.169 0 0 0 2.167 18h11.666A2.169 2.169 0 0 0 16 15.833V11.1l-3.313 3.308Zm5.53-9.065.546-.546a2.518 2.518 0 0 0 0-3.56 2.576 2.576 0 0 0-3.559 0l-.547.547 3.56 3.56Z" />
+                                <path
+                                    d="M13.243 3.2 7.359 9.081a.5.5 0 0 0-.136.256L6.51 12.9a.5.5 0 0 0 .59.59l3.566-.713a.5.5 0 0 0 .255-.136L16.8 6.757 13.243 3.2Z" />
+                            </svg>
+                            Selesaikan Kelas tanpa murid
+                        </div>
+                        @endif
+                        @endif
                     </div>
                 </div>
                 <div class="flex flex-col  leading-normal w-2/3">
@@ -291,7 +354,7 @@
                                         </label>
                                         <div class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">
                                             @php
-                                                // dd(json_decode($course->additional_links))
+                                            // dd(json_decode($course->additional_links))
                                             @endphp
                                             <ul>
                                                 @forelse (json_decode($course->additional_links) as $item)
@@ -310,6 +373,9 @@
                                             for="name">
                                             Rekaman Kelas
                                         </label>
+                                        @if (auth()->user()->role == 'TUTOR')
+                                        @endif
+
                                         <div class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">
                                             <a href="{{$course->recording}}"></a>
                                         </div>

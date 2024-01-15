@@ -32,6 +32,9 @@
     <script src="{{asset('lightbox2-2.11.4/dist/js/lightbox.js')}}"></script>
     <link href="{{asset('woocommerce-FlexSlider-690832b/flexslider.css')}}" rel="stylesheet" />
     <script src="{{asset('woocommerce-FlexSlider-690832b/jquery.flexslider.js')}}"></script>
+    <link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet">
+
+    <script src="https://unpkg.com/filepond/dist/filepond.js"></script>
 
     @if (isset($style))
     {{ $style }}
@@ -74,8 +77,8 @@
         @php
         $whatsapp = \App\Models\Setting::where('key', 'whatsapp')->value('value');
         @endphp
-        <a href="https://wa.me/{{$whatsapp}}?text=Halo%2C saya butuh bantuan tentang Portal KASI"
-            class="" target="_blank">
+        <a href="https://wa.me/{{$whatsapp}}?text=Halo%2C saya butuh bantuan tentang Portal KASI" class=""
+            target="_blank">
             Butuh bantuan?
             <span class="p-1 bg-amber-600 text-white rounded-md hover:bg-amber-800 transition">
                 Hubungi Admin KASI via WhatsApp
@@ -90,7 +93,17 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.0.0/flowbite.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.1.1/datepicker.min.js"></script>
+    {{-- <script>
+        FilePond.parse(document.body);
+    </script> --}}
 
+    {{-- <script>
+        // Get a reference to the file input element
+        const inputElement = document.querySelector('input[type="file"]');
+    
+        // Create a FilePond instance
+        const pond = FilePond.create(inputElement);
+    </script> --}}
 </body>
 
 </html>

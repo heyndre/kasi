@@ -3,7 +3,7 @@
 use App\Http\Controllers\BillingController;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\FileAccessController;
-
+use App\Http\Controllers\MeetingController;
 use App\Livewire\Student\Active as StudentActive;
 use App\Livewire\Student\Inactive as StudentInactive;
 use App\Livewire\Student\Show as StudentShow;
@@ -20,6 +20,7 @@ use App\Livewire\Admin\KBM\Index as KBMList;
 use App\Livewire\Admin\KBM\Show as KBMShow;
 use App\Livewire\Admin\KBM\Edit as KBMEdit;
 use App\Livewire\Admin\KBM\Reschedule as KBMReschedule;
+use App\Livewire\Admin\KBM\EditStatus as KBMStatusEdit;
 use App\Livewire\Admin\KBM\Create as KBMAdd;
 use App\Livewire\Admin\KBM\StatusIndex as KBMStatusIndex;
 
@@ -103,6 +104,7 @@ Route::middleware([
         Route::get('/kelas/detail/{id}', KBMShow::class)->name('kbm.show');
         Route::get('/kelas/edit/{id}', KBMEdit::class)->name('kbm.edit');
         Route::get('/kelas/edit/ubah-jadwal/{id}', KBMReschedule::class)->name('kbm.edit.reschedule');
+        Route::get('/kelas/edit/ubah-status/{id}', KBMStatusEdit::class)->name('kbm.edit.status');
 
         Route::get('kelas/billing/tambah/{id}', [BillingController::class, 'addBilling'])->name('billing.add');
         Route::get('kelas/billing/konfirmasi/{id}', [BillingController::class, 'confirmBilling'])->name('billing.confirm');
@@ -148,6 +150,7 @@ Route::middleware([
         Route::get('/kelas/list', StudentClasses::class)->name('student.classes');
         Route::get('/kelas/status/billing', KBMStatusIndex::class)->name('student.classes.billing.status');
         Route::get('/kelas/detail/{id}', KBMShow::class)->name('student.classes.show');
+        Route::get('/kelas/konfirmasi-kehadiran/{id}', [MeetingController::class, 'studentAttendance'])->name('student.classes.attendance');
 
     });
 
@@ -167,6 +170,7 @@ Route::middleware([
         Route::get('/kelas/status/billing', KBMStatusIndex::class)->name('tutor.classes.billing.status');
         Route::get('/kelas/detail/{id}', KBMShow::class)->name('tutor.classes.show');
         Route::get('/kelas/edit/{id}', TutorClassEdit::class)->name('tutor.classes.edit');
+        Route::get('/kelas/konfirmasi-kehadiran/{id}', [MeetingController::class, 'tutorAttendance'])->name('tutor.classes.attendance');
 
     });
 });

@@ -4,6 +4,7 @@ namespace App\Livewire\Admin\Kbm;
 
 use App\Models\Course;
 use App\Models\CourseBase;
+use App\Models\Setting;
 use App\Models\Student;
 use App\Models\Tutor;
 use Illuminate\Support\Carbon;
@@ -11,10 +12,11 @@ use Livewire\Component;
 
 class Create extends Component
 {
-    public $dateOfEvent, $dateFormat, $student, $package, $courseBase, $tutor, $topic, $selectedCourse, $lesson, $reference, $endTime, $length = 60, $availability = 'waiting';
+    public $dateOfEvent, $dateFormat, $student, $link, $package, $courseBase, $tutor, $topic, $selectedCourse, $lesson, $reference, $endTime, $length = 60, $availability = 'waiting';
 
     public function mount()
     {
+        $this->link = Setting::where('key', 'default_link')->first()->value;
     }
 
     public function updatedTutor()
@@ -110,6 +112,7 @@ class Create extends Component
             'status' => 'WAITING',
             'course_id' => $this->selectedCourse,
             'additional_links' => json_encode([]),
+            'meeting_link' => $this->link,
             'price' => CourseBase::where('id', $this->selectedCourse)->first()->price
         ]);
 

@@ -83,7 +83,7 @@
                     Tagihan Kelas KASI - {{str_pad($billing->invoice_id, 5, '0', STR_PAD_LEFT)}}
                     {{-- </span> --}}
             </div>
-            <div class="text-sm font-thin mt-2">Tagihan dicetak pada {{now()->format('d/m/Y H:i:s T')}}</div>
+            <div class="text-xs mt-2 text-gray-600">Tagihan dicetak pada {{now()->format('d/m/Y H:i:s T')}}</div>
         </div>
     </div>
     <hr class="" style="border-color:#e36c2a">
@@ -98,9 +98,10 @@
             @endphp
             <div class="text-gray-800 text-sm mt-6">
                 Berikut rincian tagihan murid a.n. :
-                <div class="px-4 py-2 font-bold bg-amber-100 rounded-md my-1">
+                <span class="px-4 font-bold bg-amber-100 rounded-md my-1">
                     {{$billing->theStudentData->name}} - NIM {{$billing->theStudent->nim}}
-                </div>
+                </span>
+                <br>
                 untuk bulan <span class="font-bold">{{$billing->bill_date->format('F Y')}}</span>
             </div>
             <table class="w-full mt-4 text-sm table-auto text-gray-500 dark:text-gray-400">
