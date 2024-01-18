@@ -95,13 +95,17 @@
                         <x-flowbite.timeline-vertical-item title=' Billing ditagihkan' :latest='false'
                             :time='$billing->bill_date' description='Klik tombol untuk mengunduh tagihan'
                             target='_blank' link='{{route("billing.download", ["id" => $billing->id])}}'
-                            linkDesc='Unduh Tagihan #{{str_pad($billing->invoice_id, 5, "0", STR_PAD_LEFT)}}'>
+                            linkDesc='Unduh Tagihan #{{str_pad($billing->invoice_id, 5, "0", STR_PAD_LEFT)}} (PDF)'
+                            target2='_blank' link2='{{route("billing.download.image", ["id" => $billing->id])}}'
+                            linkDesc2='Unduh Tagihan #{{str_pad($billing->invoice_id, 5, "0", STR_PAD_LEFT)}} (PNG)'>
                         </x-flowbite.timeline-vertical-item>
                         @elseif (auth()->user()->role == 'MURID' || auth()->user()->role == 'WALI MURID')
                         <x-flowbite.timeline-vertical-item title=' Billing ditagihkan' :latest='false'
                             :time='$billing->bill_date' description='Klik tombol untuk mengunduh tagihan'
                             target='_blank' link='{{route("student.billing.download", ["id" => $billing->id])}}'
-                            linkDesc='Unduh Tagihan #{{str_pad($billing->invoice_id, 5, "0", STR_PAD_LEFT)}}'>
+                            linkDesc='Unduh Tagihan #{{str_pad($billing->invoice_id, 5, "0", STR_PAD_LEFT)}} (PDF)'
+                            target2='_blank' link2='{{route("student.billing.download.image", ["id" => $billing->id])}}'
+                            linkDesc2='Unduh Tagihan #{{str_pad($billing->invoice_id, 5, "0", STR_PAD_LEFT)}} (PNG)'>
                         </x-flowbite.timeline-vertical-item>
                         @endif
                         @endisset

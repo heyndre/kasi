@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Admin\Kbm;
 
+use App\Jobs\SendMeetingRescheduleInfo;
 use App\Models\Course;
 use App\Models\CourseBase;
 use App\Models\Student;
@@ -64,15 +65,68 @@ class Reschedule extends Component
     public function scheduleClass()
     {
         // dd($this);
-
+        $classDateOld = $this->course->date_of_event;
         $this->course->update([
             'date_of_event' => $this->dateFormat,
             'length' => $this->length,
         ]);
+        
+        $message = 'Perubahan jadwal kelas berhasil. ';
+        if ($this->course->theStudent->userData->email !== null) {
+            $student = [
+                'className' => $this->course->theCourse->name,
+                'classID' => $this->course->id,
+                'classDate' => $classDateOld->format('d/m/Y H:i T'),
+                'classDateNew' => $this->course->date_of_event->format('d/m/Y H:i T'),
+                'tutorName' => $this->course->theTutor->userData->name,
+                'studentName' => $this->course->theStudent->userData->name,
+                'studentNIM' => $this->course->theStudent->nim,
+                'email' => $this->course->theStudent->userData->email,
+                'role' => 'MURID',
+                'meetingLink' => $this->course->meeting_link,
+            ];
+            SendMeetingRescheduleInfo::dispatch($student);
+            $message .= 'Notifikasi murid via email dibuat. ';
+        }
 
-        // dd($session);
+        if ($this->course->theStudent->has_guardian == 1) {
+            if ($this->course->theStudent->theGuardian->userData->email !== null) {
+                $guardian = [
+                    'className' => $this->course->theCourse->name,
+                    'classID' => $this->course->id,
+                    'classDate' => $classDateOld->format('d/m/Y H:i T'),
+                    'classDateNew' => $this->course->date_of_event->format('d/m/Y H:i T'),
+                    'tutorName' => $this->course->theTutor->userData->name,
+                    'studentName' => $this->course->theStudent->userData->name,
+                    'guardianName' => $this->course->theStudent->theGuardian->userData->name,
+                    'studentNIM' => $this->course->theStudent->nim,
+                    'email' => $this->course->theStudent->theGuardian->userData->email,
+                    'role' => 'WALI MURID',
+                    'meetingLink' => $this->course->meeting_link,
+                ];
+                SendMeetingRescheduleInfo::dispatch($guardian);
+                $message .= 'Notifikasi wali murid via email dibuat. ';
+            }
+        }
 
-        session()->flash('success', 'Penjadwalan ulang kelas berhasil.');
+        if ($this->course->theTutor->userData->email !== null) {
+            $tutor = [
+                'className' => $this->course->theCourse->name,
+                'classID' => $this->course->id,
+                'classDate' => $classDateOld->format('d/m/Y H:i T'),
+                'classDateNew' => $this->course->date_of_event->format('d/m/Y H:i T'),
+                'tutorName' => $this->course->theTutor->userData->name,
+                'studentName' => $this->course->theStudent->userData->name,
+                'studentNIM' => $this->course->theStudent->nim,
+                'email' => $this->course->theTutor->userData->email,
+                'role' => 'TUTOR',
+                'meetingLink' => $this->course->meeting_link,
+            ];
+            SendMeetingRescheduleInfo::dispatch($tutor);
+            $message .= 'Notifikasi tutor via email dibuat. ';
+        }
+
+        session()->flash('success', $message);
         return $this->redirect(route('kbm.show', ['id' => $this->course->id]), navigate: false);
     }
 

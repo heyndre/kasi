@@ -8,6 +8,16 @@ use Illuminate\Http\Request;
 
 class MeetingController extends Controller
 {
+
+    public function finishClass($id) {
+        $course = Course::where('id', $id)->where('status', 'WAITING')->firstOrFail();
+        $course->update([
+            'tutor_finish_confirm' => now()
+        ]);
+
+        
+    }
+
     public function studentAttendance($id)
     {
         if (auth()->user()->role !== 'MURID') {

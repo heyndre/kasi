@@ -51,7 +51,7 @@
                 Terima kasih telah belajar bersama KASI!
             </div>
             @php
-                // setlocale(LC_ALL, 'id_ID');
+            // setlocale(LC_ALL, 'id_ID');
             @endphp
             <div class="text-gray-800 text-sm mt-6">
                 Berikut rincian tagihan murid a.n. :
@@ -112,17 +112,34 @@
                 </tbody>
                 <tfoot>
                     <tr class="font-semibold text-gray-900 dark:text-white">
-                        <td scope="row" class="p-2 text-base bg-amber-800 text-white" colspan="2">Jumlah</td>
+                        <td scope="row" class="p-2 text-base bg-amber-800 text-white font-bold" colspan="2">Jumlah</td>
                         <td class="p-2 bg-amber-600 text-white font-bold">{{$totalHours / 60}} jam</td>
                         <td class="p-2 bg-amber-100 font-bold">Rp.{{number_format($totalPrice, 0, ',', '.')}}</td>
                     </tr>
                 </tfoot>
             </table>
-            <div class="grid grid-cols-2 gap-x-4">
+            <div class="grid grid-cols-2 gap-x-4 items-end">
                 <div class="mt-4 text-gray-800 text-sm">
                     Pembayaran dapat dilakukan melalui transfer ke
                     <p class="font-semibold">BANK BCA 0240920395</p>
                     <p class="text-sm italic">a.n. Firstya Andreas Pandega</p>
+                    <div class="flex items-center justify-around">
+                        <div class="w-1/3">
+                            <hr>
+                        </div>
+                        <div class="w-1/3 text-gray-600 text-center">
+                            atau
+                        </div>
+                        <div class="w-1/3">
+                            <hr>
+                        </div>
+                    </div>
+                    <a href="https://flip.id/me/firstyaandreaspandega" class="w-full px-2">
+                        <div class="font-semibold bg-amber-600 text-white border-1 rounded-md">
+                        Bayar via Aplikasi Flip (klik disini)</a>
+                        </div>
+                    <p class="text-sm italic">a.n. Firstya Andreas Pandega / 0851 - 7982 - 4064</p>
+                           
                     maksimal pada tanggal <span class="font-bold">{{$billing->due_date->format('d/m/Y')}}</span>.
                     Keterlambatan pembayaran dapat mengakibatkan denda.
                 </div>

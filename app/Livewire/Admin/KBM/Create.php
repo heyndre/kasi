@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Admin\Kbm;
 
+use App\Jobs\SendMeetingInfo;
 use App\Models\Course;
 use App\Models\CourseBase;
 use App\Models\Setting;
@@ -12,7 +13,7 @@ use Livewire\Component;
 
 class Create extends Component
 {
-    public $dateOfEvent, $dateFormat, $student, $link, $package, $courseBase, $tutor, $topic, $selectedCourse, $lesson, $reference, $endTime, $length = 60, $availability = 'waiting';
+    public $dateOfEvent, $dateFormat, $student, $link, $package, $courseBase, $tutor, $topic, $selectedCourse = 4, $lesson, $reference, $endTime, $length = 60, $availability = 'waiting';
 
     public function mount()
     {
@@ -26,8 +27,8 @@ class Create extends Component
         $this->courseBase = Tutor::whereHas('userData', function ($q) {
             $q->where('slug', $this->tutor);
         })
-        ->with('theSkill')
-        ->first();
+            ->with('theSkill')
+            ->first();
 
         // dd($this->courseBase);
     }
@@ -35,7 +36,6 @@ class Create extends Component
     public function updatedStudent()
     {
         $this->availability = 'waiting';
-
     }
 
     public function updatedDateOfEvent()
@@ -104,11 +104,11 @@ class Create extends Component
             'tutor_id' => Tutor::whereHas('userData', function ($q) {
                 $q->where('slug', $this->tutor);
             })
-            ->first()
-            ->id,
+                ->first()
+                ->id,
             'student_id' => Student::where('nim', $this->student)
-            ->first()
-            ->id,
+                ->first()
+                ->id,
             'status' => 'WAITING',
             'course_id' => $this->selectedCourse,
             'additional_links' => json_encode([]),
@@ -116,9 +116,66 @@ class Create extends Component
             'price' => CourseBase::where('id', $this->selectedCourse)->first()->price
         ]);
 
+        // dd($session->theStudent->has_guardian);
+
+        $message = 'Penjadwalan kelas berhasil. ';
+        if ($session->theStudent->userData->email !== null) {
+            $student = [
+                'className' => $session->theCourse->name,
+                'classID' => $session->id,
+                'classDate' => $session->date_of_event->format('d/m/Y H:i T'),
+                'tutorName' => $session->theTutor->userData->name,
+                'studentName' => $session->theStudent->userData->name,
+                'guardianName' => '',
+                'studentNIM' => $session->theStudent->nim,
+                'email' => $session->theStudent->userData->email,
+                'role' => 'MURID',
+                'meetingLink' => $session->meeting_link,
+            ];
+            // dd($student);
+            SendMeetingInfo::dispatch($student);
+            $message .= 'Notifikasi murid via email dibuat. ';
+        }
+
+        if ($session->theStudent->has_guardian == 1) {
+            if ($session->theStudent->theGuardian->userData->email !== null) {
+                $guardian = [
+                    'className' => $session->theCourse->name,
+                    'classID' => $session->id,
+                    'classDate' => $session->date_of_event->format('d/m/Y H:i T'),
+                    'tutorName' => $session->theTutor->userData->name,
+                    'studentName' => $session->theStudent->userData->name,
+                    'guardianName' => $session->theStudent->theGuardian->userData->name,
+                    'studentNIM' => $session->theStudent->nim,
+                    'email' => $session->theStudent->theGuardian->userData->email,
+                    'role' => 'WALI MURID',
+                    'meetingLink' => $session->meeting_link,
+                ];
+                SendMeetingInfo::dispatch($guardian);
+                $message .= 'Notifikasi wali murid via email dibuat. ';
+            }
+        }
+
+        if ($session->theTutor->userData->email !== null) {
+            $tutor = [
+                'className' => $session->theCourse->name,
+                'classID' => $session->id,
+                'classDate' => $session->date_of_event->format('d/m/Y H:i T'),
+                'tutorName' => $session->theTutor->userData->name,
+                'studentName' => $session->theStudent->userData->name,
+                'guardianName' => '',
+                'studentNIM' => $session->theStudent->nim,
+                'email' => $session->theTutor->userData->email,
+                'role' => 'TUTOR',
+                'meetingLink' => $session->meeting_link,
+            ];
+            SendMeetingInfo::dispatch($tutor);
+            $message .= 'Notifikasi tutor via email dibuat. ';
+        }
+
+        session()->flash('success', $message);
         // dd($session);
 
-        session()->flash('success', 'Penjadwalan kelas berhasil.');
         return $this->redirect(route('kbm.index'), navigate: true);
     }
 

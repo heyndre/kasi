@@ -53,8 +53,8 @@
                             placeholder="Masukkan jumlah pembayaran">
                     </div>
                 </div>
-                <div class="mb-6">
-                    <img src="{{route('file.payment.student', ['nim' => $payment->payment_file])}}" class="max-h-screen h-screen" alt="" srcset="">
+                <div class="mb-6 max-h-screen max-w-screen">
+                    <img src="{{route('file.payment.student', ['nim' => $payment->payment_file])}}" class="w-full" alt="" srcset="">
                 </div>
                    
                

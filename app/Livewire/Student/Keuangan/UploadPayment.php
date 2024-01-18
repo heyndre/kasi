@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Student\Keuangan;
 
+use App\Jobs\SendStudentReceiptConfirm;
 use App\Models\Billing;
 use App\Models\Student;
 use App\Models\User;
@@ -106,22 +107,58 @@ class UploadPayment extends Component
 
             $filename = $billing->theStudent->nim . '/SIPAKA-' . str_pad($payment->id, 5, '0', STR_PAD_LEFT) . '.png';
             // dd($billing->theClass[0]);
-            $image = Browsershot::html(view('billing.package-payment', ['billing' => $billing, 'package' => $package])->render())
-                ->waitUntilNetworkIdle()
-                ->newHeadless()
-                ->usePipe()
-                ->mobile()
-                ->fullPage()
-                ->deviceScaleFactor(2)
-                ->disableJavascript()
-                ->device('iPhone 13 Mini landscape')
-                // ->base64Screenshot();
-                ->save(storage_path("app/billing/student-payment-receipt/" . $filename));
-            ob_end_clean();
+            if (PHP_OS == 'Linux') {
+                $image = Browsershot::html(view('billing.package-payment', ['billing' => $billing, 'package' => $package])->render())
+                    ->waitUntilNetworkIdle()
+                    ->newHeadless()
+                    ->setRemoteInstance('127.0.0.1', 9222)
+                    ->setCustomTempPath(storage_path('/tmp'))
+                    ->setNodeBinary('/www/server/nvm/versions/node/v20.11.0/bin/node')
+                    ->setNpmBinary('/www/server/nvm/versions/node/v20.11.0/bin/npm')
+                    ->userDataDir('/var/fileexchange')
+                    ->usePipe()
+                    ->mobile()
+                    ->fullPage()
+                    ->deviceScaleFactor(2)
+                    ->disableJavascript()
+                    ->device('iPhone 13 Mini landscape')
+                    // ->base64Screenshot();
+                    ->save(storage_path("app/billing/student-payment-receipt/" . $filename));
+                ob_end_clean();
+            } else {
+                $image = Browsershot::html(view('billing.package-payment', ['billing' => $billing, 'package' => $package])->render())
+                    ->waitUntilNetworkIdle()
+                    ->newHeadless()
+                    ->setRemoteInstance('127.0.0.1', 9222)
+                    ->usePipe()
+                    ->mobile()
+                    ->fullPage()
+                    ->deviceScaleFactor(2)
+                    ->disableJavascript()
+                    ->device('iPhone 13 Mini landscape')
+                    // ->base64Screenshot();
+                    ->save(storage_path("app/billing/student-payment-receipt/" . $filename));
+                ob_end_clean();
+            }
 
             $payment->update([
                 'payment_file' => $filename
             ]);
+
+            $recipients = User::management()->get();
+            foreach ($recipients as $to) {
+                $data = [
+                    'email' => $to->email,
+                    'billingID' => $billing->id,
+                    'paymentID' => $payment->id,
+                    'studentPayTime' => $payment->pay_date->format('d/m/Y H:i:s T'),
+                    'guardianName' => $billing->theStudent->theGuardian->userData->name,
+                    'studentName' => $billing->theStudent->userData->name,
+                    'studentNIM' => $billing->theStudent->nim,
+
+                ];
+                SendStudentReceiptConfirm::dispatch($data);
+            }
         }
 
         return $this->redirect(route('student.billing.status', ['id' => $billing->id]));

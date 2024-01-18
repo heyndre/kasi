@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Billing;
+use App\Models\Student;
 use App\Models\Payment;
 use App\Models\Course;
 use App\Models\CourseBase;
@@ -17,10 +18,10 @@ use Illuminate\Support\Facades\Storage;
 
 // use Spatie\LaravelPdf\Facades\Pdf;
 use Spatie\Browsershot\Browsershot;
-use Spatie\Image\Manipulations;
-use Intervention\Image\Facades\Image;
+// use Spatie\Image\Manipulations;
+// use Intervention\Image\Facades\Image;
 
-use Barryvdh\DomPDF\Facade\Pdf;
+use Barryvdh\DomPDF\Facade\Pdf as BarryPDF;
 
 class BillingController extends Controller
 {
@@ -69,10 +70,23 @@ class BillingController extends Controller
             }
         }
 
-        if ($course->theStudent->has('thePackage')) {
+        // dd(Package::where('student_id', $course->theStudent->id)->get());
+
+        // dd(Package::where('student_id', $course->theStudent->id)
+        // ->where('expire_at', '>=', $course->date_of_event)
+        // ->get());
+        $availPackage = Package::where('student_id', $course->theStudent->id)
+        ->where('expire_at', '>=', $course->date_of_event)
+        ->get();
+
+        // if ($course->theStudent->has('thePackage')) {
+        if ($availPackage->count() > 0) {
+            // dd('yes');
             // dd($course->theStudent->thePackage->where('expire_at', '>=', $course->date_of_event)->first()->price_per_unit);
             $price = $course->theStudent->thePackage->where('expire_at', '>=', $course->date_of_event)->first()->price_per_unit;
         } else {
+            // dd('no');
+
             $price = $course->price;
         }
 
@@ -114,34 +128,39 @@ class BillingController extends Controller
             ->where('id', $id)->firstOrFail();
         $filename = 'Invoice KASI ' . str_pad($billing->invoice_id, 5, '0', STR_PAD_LEFT) . '.pdf';
 
-        $image = Browsershot::html(view('billing.template', ['billing' => $billing])->render())
-            ->waitUntilNetworkIdle()
-            ->newHeadless()
-            ->emulateMedia("screen")
-            ->format("A4")
-            ->margins(0.25, 0.25, 0.25, 0.25, "in")
-            ->showBackground()
-            ->setRemoteInstance('127.0.0.1', 9222)
-            ->mobile()
-            ->fullPage()
-            // ->deviceScaleFactor(2)
-            ->disableJavascript()
-            // ->device('iPhone 13 Mini landscape')
-            // ->base64Screenshot();
-            // ->save(storage_path("app/billing/" . $filename));
-            ->savePdf(storage_path("app/billing/" . $filename));
-        // ob_end_clean();
+        if (PHP_OS == 'Linux') {
+            $image = Browsershot::html(view('billing.template', ['billing' => $billing])->render())
+                ->waitUntilNetworkIdle()
+                ->newHeadless()
+                ->emulateMedia("screen")
+                ->format("A4")
+                ->margins(0.25, 0.25, 0.25, 0.25, "in")
+                ->showBackground()
+                ->setRemoteInstance('127.0.0.1', 9222)
+                ->mobile()
+                ->fullPage()
+                ->setCustomTempPath(storage_path('/tmp'))
+                ->setNodeBinary('/www/server/nvm/versions/node/v20.11.0/bin/node')
+                ->setNpmBinary('/www/server/nvm/versions/node/v20.11.0/bin/npm')
+                ->userDataDir('/var/fileexchange')
+                ->disableJavascript()
+                ->save(storage_path("app/billing/" . $filename));
+        } else {
+            $image = Browsershot::html(view('billing.template', ['billing' => $billing])->render())
+                ->waitUntilNetworkIdle()
+                ->newHeadless()
+                ->emulateMedia("screen")
+                ->format("A4")
+                ->margins(0.25, 0.25, 0.25, 0.25, "in")
+                ->showBackground()
+                ->setRemoteInstance('127.0.0.1', 9222)
+                ->mobile()
+                ->fullPage()
+                ->disableJavascript()
+                ->save(storage_path("app/billing/" . $filename));
 
-        // // return Pdf::view('billing.template', ['billing' => $billing])
-        // //     ->format('a4')
-        // //     ->name($filename);
-
-        // // $file = Image::make($image)->save();
-        // // return response()->streamDownload(function () use ($file) {
-        // //     echo $file;
-        // // }, $filename, ['Content-Type: image/png']);
-        // return Response::download(storage_path("app/billing/" . $filename), $filename);
-        // return $image;
+        }
+        return Response::download(storage_path("app/billing/" . $filename), $filename);
     }
 
     public function generateInvoiceImage($id)
@@ -150,7 +169,8 @@ class BillingController extends Controller
             ->where('id', $id)->firstOrFail();
         $filename = 'Invoice KASI ' . str_pad($billing->invoice_id, 5, '0', STR_PAD_LEFT) . '.png';
 
-        $image = Browsershot::html(view('billing.template', ['billing' => $billing])->render())
+        if (PHP_OS == 'Linux') {       
+            $image = Browsershot::html(view('billing.template', ['billing' => $billing])->render())
             ->waitUntilNetworkIdle()
             ->newHeadless()
             ->emulateMedia("screen")
@@ -160,24 +180,28 @@ class BillingController extends Controller
             ->setRemoteInstance('127.0.0.1', 9222)
             ->mobile()
             ->fullPage()
-            // ->deviceScaleFactor(2)
+            ->setCustomTempPath(storage_path('/tmp'))
+            ->setNodeBinary('/www/server/nvm/versions/node/v20.11.0/bin/node')
+            ->setNpmBinary('/www/server/nvm/versions/node/v20.11.0/bin/npm')
+            ->userDataDir('/var/fileexchange')
+            ->deviceScaleFactor(2)
             ->disableJavascript()
-            // ->device('iPhone 13 Mini landscape')
-            // ->base64Screenshot();
             ->save(storage_path("app/billing/" . $filename));
-            // ->savePdf(storage_path("app/billing/" . $filename));
-        // ob_end_clean();
-
-        // // return Pdf::view('billing.template', ['billing' => $billing])
-        // //     ->format('a4')
-        // //     ->name($filename);
-
-        // // $file = Image::make($image)->save();
-        // // return response()->streamDownload(function () use ($file) {
-        // //     echo $file;
-        // // }, $filename, ['Content-Type: image/png']);
+        } else {
+            $image = Browsershot::html(view('billing.template', ['billing' => $billing])->render())
+            ->waitUntilNetworkIdle()
+            ->newHeadless()
+            ->emulateMedia("screen")
+            ->format("A4")
+            ->margins(0.25, 0.25, 0.25, 0.25, "in")
+            ->showBackground()
+            ->setRemoteInstance('127.0.0.1', 9222)
+            ->mobile()
+            ->fullPage()
+            ->disableJavascript()
+            ->save(storage_path("app/billing/" . $filename));
+        }
         return Response::download(storage_path("app/billing/" . $filename), $filename);
-        // return $image;
     }
 
     public function generateInvoiceBarryPDF($id)
@@ -236,6 +260,7 @@ class BillingController extends Controller
 
     public function testPDF()
     {
+        // dd(PHP_OS);
         // $pdf = PDF::loadHTML('<h1>Test</h1>');
         // return $pdf->stream();
         return PDF::loadView('billing.default')->stream();

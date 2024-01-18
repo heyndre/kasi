@@ -12,6 +12,7 @@ use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
+use Illuminate\Database\Eloquent\Builder;
 
 class User extends Authenticatable
 {
@@ -20,7 +21,7 @@ class User extends Authenticatable
     use HasProfilePhoto;
     use Notifiable;
     use TwoFactorAuthenticatable;
-    use \Spatie\WelcomeNotification\ReceivesWelcomeNotification;
+    // use \Spatie\WelcomeNotification\ReceivesWelcomeNotification;
     use HasSlug;
 
     /**
@@ -125,6 +126,11 @@ class User extends Authenticatable
     public function getRouteKeyName()
     {
         return 'slug';
+    }
+
+    public function scopeManagement(Builder $query): void
+    {
+        $query->where('role', 'ADMIN')->orWhere('role', 'SUPERADMIN');
     }
 
     public function isAdmin()

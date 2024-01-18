@@ -16,6 +16,7 @@ class Course extends Model
         'date_of_event' => 'datetime',
         'student_attendance' => 'datetime',
         'tutor_attendance' => 'datetime',
+        'tutor_finish_confirm' => 'datetime',
         // 'class_end_time' => 'datetime',
         'additional_links' => 'array',
         'files' => 'array',

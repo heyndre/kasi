@@ -47,12 +47,12 @@
         </x-page.edit-button>
         @endif
         @if ($course->status == 'WAITING')
-        <x-page.green-button-message message='Terima kasih telah konfirmasi kehadiran, selamat belajar di KASI!'>
-            Konfirmasi Kehadiran
+        {{-- <x-page.green-button-message message='Terima kasih telah konfirmasi kehadiran, selamat belajar di KASI!'>
+            Konfirmasi Selesai
             <x-slot name='route'>
                 {{route('student.classes.attendance', ['id' => $course->id])}}
             </x-slot>
-        </x-page.green-button-message>
+        </x-page.green-button-message> --}}
         @endif
         @elseif (auth()->user()->role == 'TUTOR')
         <x-page.edit-button>
@@ -63,7 +63,7 @@
         </x-page.edit-button>
         @if ($course->status == 'WAITING')
         <x-page.green-button-message message='Terima kasih telah konfirmasi kehadiran, selamat mengajar di KASI!'>
-            Konfirmasi Kehadiran
+            Konfirmasi Selesai
             <x-slot name='route'>
                 {{route('tutor.classes.attendance', ['id' => $course->id])}}
             </x-slot>
@@ -114,20 +114,7 @@
                                 {{$course->length}} menit
                             </div>
                         </div>
-                        <div class="border-b-1">
-                            Link Ruang Kelas
-                            <br>
-                            <a href="{{$course->meeting_link != null ? $course->meeting_link : $link}}"
-                                class="font-thin text-wrap break-all underline text-blue-600">
-                                {{$course->meeting_link != null ? $course->meeting_link : $link}}
-                            </a>
-                        </div>
-                        <div class="border-b-1">
-                            Biaya Kelas per 60 menit
-                            <div class="font-thin">
-                                {{number_format($course->price, 2, ',', '.')}}
-                            </div>
-                        </div>
+
                         <hr class="p-3">
                         <div class="border-b-1">
                             Kehadiran Murid
@@ -138,10 +125,33 @@
                                     {{$course->student_attendance->diffForHumans($course->date_of_event,
                                     Carbon\CarbonInterface::DIFF_RELATIVE_AUTO, false, 2)}}
                                 </p>
+                                @if (auth()->user()->role == 'MURID' && $course->status == 'WAITING')
+                                <a href="{{$meetingLink}}" target="_blank"
+                                    class="text-white bg-green-500 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center me-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
+                                    Klik untuk masuk ke kelas
+                                </a>
+                                @endif
                                 @else
                                 <p class="italic font-thin">
                                     Tidak ada data
                                 </p>
+                                @if (auth()->user()->role == 'MURID')
+                                <div>
+                                    <div wire:click='studentAttendance'
+                                        onclick="return alert('Kehadiran akan dicatat, selamat belajar di KASI! Silakan klik OK untuk melanjutkan')"
+                                        class="cursor-pointer text-white bg-green-500 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center me-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
+                                        <svg class="w-3.5 h-3.5 me-2" aria-hidden="true"
+                                            xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 18">
+                                            <path
+                                                d="M12.687 14.408a3.01 3.01 0 0 1-1.533.821l-3.566.713a3 3 0 0 1-3.53-3.53l.713-3.566a3.01 3.01 0 0 1 .821-1.533L10.905 2H2.167A2.169 2.169 0 0 0 0 4.167v11.666A2.169 2.169 0 0 0 2.167 18h11.666A2.169 2.169 0 0 0 16 15.833V11.1l-3.313 3.308Zm5.53-9.065.546-.546a2.518 2.518 0 0 0 0-3.56 2.576 2.576 0 0 0-3.559 0l-.547.547 3.56 3.56Z" />
+                                            <path
+                                                d="M13.243 3.2 7.359 9.081a.5.5 0 0 0-.136.256L6.51 12.9a.5.5 0 0 0 .59.59l3.566-.713a.5.5 0 0 0 .255-.136L16.8 6.757 13.243 3.2Z" />
+                                        </svg>
+                                        Tandai Kehadiran & Masuk ke Kelas
+                                    </div>
+                                </div>
+                                @endif
+
                                 @endif
                             </div>
                         </div>
@@ -154,10 +164,33 @@
                                     {{$course->tutor_attendance->diffForHumans($course->date_of_event,
                                     Carbon\CarbonInterface::DIFF_RELATIVE_AUTO, false, 2)}}
                                 </p>
+                                @if (auth()->user()->role == 'TUTOR' && $course->status == 'WAITING')
+                                <a href="{{$meetingLink}}" target="_blank"
+                                    class="text-white bg-green-500 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center me-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
+                                    Klik untuk masuk ke kelas
+                                </a>
+                                @endif
                                 @else
                                 <p class="italic font-thin">
                                     Tidak ada data
                                 </p>
+
+                                @if (auth()->user()->role == 'TUTOR')
+                                <div>
+                                    <div wire:click='tutorAttendance'
+                                        onclick="return alert('Kehadiran akan dicatat, selamat mengajar di KASI! Silakan klik OK untuk melanjutkan')"
+                                        class="cursor-pointer text-white bg-green-500 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center me-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
+                                        <svg class="w-3.5 h-3.5 me-2" aria-hidden="true"
+                                            xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 18">
+                                            <path
+                                                d="M12.687 14.408a3.01 3.01 0 0 1-1.533.821l-3.566.713a3 3 0 0 1-3.53-3.53l.713-3.566a3.01 3.01 0 0 1 .821-1.533L10.905 2H2.167A2.169 2.169 0 0 0 0 4.167v11.666A2.169 2.169 0 0 0 2.167 18h11.666A2.169 2.169 0 0 0 16 15.833V11.1l-3.313 3.308Zm5.53-9.065.546-.546a2.518 2.518 0 0 0 0-3.56 2.576 2.576 0 0 0-3.559 0l-.547.547 3.56 3.56Z" />
+                                            <path
+                                                d="M13.243 3.2 7.359 9.081a.5.5 0 0 0-.136.256L6.51 12.9a.5.5 0 0 0 .59.59l3.566-.713a.5.5 0 0 0 .255-.136L16.8 6.757 13.243 3.2Z" />
+                                        </svg>
+                                        Tandai Kehadiran & Masuk ke Kelas
+                                    </div>
+                                </div>
+                                @endif
                                 @endif
                             </div>
                         </div>
@@ -279,7 +312,7 @@
                         Kelas Dibatalkan
                     </div>
                     @endif
-                    <div
+                    <div wire:ignore
                         class="w-full bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
                         <ul class="flex flex-wrap text-sm font-medium text-center text-gray-500 border-b border-gray-200 rounded-t-lg bg-gray-50 dark:border-gray-700 dark:text-gray-400 dark:bg-gray-800"
                             id="defaultTab" data-tabs-toggle="#defaultTabContent" role="tablist">

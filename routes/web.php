@@ -63,8 +63,17 @@ Route::get('/', function () {
 })->name('root');
 
 Route::get('/test', [Controller::class, 'test']);
+Route::get('tes-mail', function () {
+    $data['text'] = "Queued mail";
+    // $data['email'] = 'admin@kasi.web.id';
+    dispatch(new App\Jobs\SendStudentAttendance($data, 'kangenmenginspirasi@gmail.com'));
+
+    dd('Mail sent successfully.');
+});
+
 
 Route::view('default-billing', 'billing.default');
+Route::view('mail-student-attendance', 'mail.student-attendance');
 
 Route::middleware([
     'auth:sanctum',
@@ -110,6 +119,7 @@ Route::middleware([
         Route::get('kelas/billing/konfirmasi/{id}', [BillingController::class, 'confirmBilling'])->name('billing.confirm');
         Route::get('kelas/billing/ubah/{id}', [BillingController::class, 'updatePrice'])->name('billing.edit');
         Route::get('kelas/billing/unduh/{id}', [BillingController::class, 'generateInvoice'])->name('billing.download');
+        Route::get('kelas/billing/unduh-png/{id}', [BillingController::class, 'generateInvoiceImage'])->name('billing.download.image');
 
 
         // Finance Menu
@@ -141,6 +151,7 @@ Route::middleware([
         Route::get('keuangan/tagihan/unggah-pembayaran/{id}', StudentUploadPayment::class)->name('student.billing.upload');
 
         Route::get('keuangan/tagihan/unduh/{id}', [BillingController::class, 'generateInvoice'])->name('student.billing.download');
+        Route::get('keuangan/tagihan/unduh-png/{id}', [BillingController::class, 'generateInvoiceImage'])->name('student.billing.download.image');
 
         Route::get('keuangan/status/{id}', StatusPembayaranMurid::class)->name('student.billing.status');
 

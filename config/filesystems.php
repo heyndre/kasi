@@ -42,6 +42,13 @@ return [
             'visibility' => 'private',
         ],
 
+        'class-recording' => [
+            'driver' => 'local',
+            'root' => storage_path('app/classes/recording'),
+            'throw' => false,
+            'visibility' => 'private',
+        ],
+
         'student-payment' => [
             'driver' => 'local',
             'root' => storage_path('app/billing/student-payment-receipt'),

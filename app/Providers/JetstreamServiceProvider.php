@@ -20,7 +20,7 @@ class JetstreamServiceProvider extends ServiceProvider
     {
         Fortify::authenticateUsing(function (Request $request) {
             $user = User::where('email', $request->email)
-            ->orSearch('slug', $request->email)
+            ->orSearch('mobile_number', $request->email)
             ->first();
             // dd($user);
             
@@ -32,10 +32,14 @@ class JetstreamServiceProvider extends ServiceProvider
                 ->first();
             }
 
+            if ($user == null) {
+                return null;
+            }
+
             // dd($user);
     
             if ($user->role == 'MURID') {
-                if (Hash::check($request->password, $user->password) || $request->password == strtolower($user->nickname).$user->birthday->format('dmy')) {
+                if (Hash::check($request->password, $user->password) || $request->password == $user->birthday->format('dmY')) {
                     return $user;
                 }
             } else  {

@@ -118,12 +118,12 @@
                     </tr>
                 </tfoot>
             </table>
-            <div class="grid grid-cols-2 gap-x-4">
+            <div class="grid grid-cols-2 gap-x-4 items-end">
                 <div class="mt-4 text-gray-800 text-sm">
                     Pembayaran diambil dari pembelian SIPAKA tanggal
                     <p class="font-semibold">{{$package->bought_at->format('d/m/Y')}}</p>
-                    <p class="text-sm italic">seharga Rp.{{number_format($package->duration / 60 * $package->price_per_unit, 2, ',', '.')}}</p>
-                    dengan sisa durasi <span class="font-bold">{{$package->remaining}}</span> menit.
+                    <p class="text-sm italic">sejumlah Rp.{{number_format($package->duration / 60 * $package->price_per_unit, 2, ',', '.')}}</p>
+                    dengan sisa durasi paket sebanyak <span class="font-bold">{{$package->remaining}}</span> menit.
                     Terima kasih telah melakukan bimbingan bersama KASI.
                 </div>
                 <div class="mt-4 text-gray-800 text-sm">
