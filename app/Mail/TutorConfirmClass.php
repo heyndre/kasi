@@ -6,11 +6,11 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
-use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Mail\Mailables\Headers;
+use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class StudentAttendance extends Mailable
+class TutorConfirmClass extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -21,8 +21,6 @@ class StudentAttendance extends Mailable
     public function __construct($data)
     {
         $this->data = $data;
-        // $this->data['email'] = $recipient;
-        // $this->recipient = $recipient;
     }
 
     /**
@@ -31,8 +29,7 @@ class StudentAttendance extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Student Attendance ' . now()->format('d/m/Y H:i:s T'),
-            // to: [$this->recipient],
+            subject: 'Konfirmasi Kelas Selesai #'.$this->data['classID'],
         );
     }
 
@@ -42,7 +39,7 @@ class StudentAttendance extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'mail.student-attendance',
+            view: 'mail.tutor-confirm-class',
             with: [
                 'data' => $this->data
             ]

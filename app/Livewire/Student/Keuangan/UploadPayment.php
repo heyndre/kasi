@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Hash;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Spatie\Image\Image as Image;
-use Spatie\Image\Manipulations;
+use Spatie\Image\Enums\Fit;
 use Illuminate\Support\Str;
 use Spatie\Browsershot\Browsershot;
 
@@ -40,7 +40,7 @@ class UploadPayment extends Component
         $billing = $this->theBillData;
 
         if ($this->receipt != null) {
-            Image::load($this->receipt->getRealPath())->fit(Manipulations::FIT_FILL_MAX, 1080, 1920)->optimize()->save();
+            Image::load($this->receipt->getRealPath())->fit(Fit::Max, 1080, 1920)->optimize()->save();
             $name = str_pad($billing->invoice_id, 5, '0', STR_PAD_LEFT) . '-' . now()->format('Ymd His') . '.' . pathinfo($this->receipt->getFilename(), PATHINFO_EXTENSION);
             $filename = $this->receipt->storeAs($billing->theStudent->nim, $name, 'student-payment');
         } else {
@@ -145,20 +145,21 @@ class UploadPayment extends Component
                 'payment_file' => $filename
             ]);
 
-            $recipients = User::management()->get();
-            foreach ($recipients as $to) {
-                $data = [
-                    'email' => $to->email,
-                    'billingID' => $billing->id,
-                    'paymentID' => $payment->id,
-                    'studentPayTime' => $payment->pay_date->format('d/m/Y H:i:s T'),
-                    'guardianName' => $billing->theStudent->theGuardian->userData->name,
-                    'studentName' => $billing->theStudent->userData->name,
-                    'studentNIM' => $billing->theStudent->nim,
+        }
+        
+        $recipients = User::management()->get();
+        foreach ($recipients as $to) {
+            $data = [
+                'email' => $to->email,
+                'billingID' => $billing->id,
+                'paymentID' => $payment->id,
+                'studentPayTime' => $payment->pay_date->format('d/m/Y H:i:s T'),
+                'guardianName' => $billing->theStudent->theGuardian->userData->name,
+                'studentName' => $billing->theStudent->userData->name,
+                'studentNIM' => $billing->theStudent->nim,
 
-                ];
-                SendStudentReceiptConfirm::dispatch($data);
-            }
+            ];
+            SendStudentReceiptConfirm::dispatch($data);
         }
 
         return $this->redirect(route('student.billing.status', ['id' => $billing->id]));

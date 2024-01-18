@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2bb215c102fb8f018365bf164ecfb996",
+    "content-hash": "36a5acd910d6c011e431267605723fb2",
     "packages": [
         {
             "name": "alchemyguy/youtube-laravel-api",

@@ -2,7 +2,7 @@
 
 namespace App\Jobs;
 
-use App\Mail\StudentReceiptConfirm;
+use App\Mail\TutorConfirmClass;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -11,7 +11,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Mail;
 
-class SendStudentReceiptConfirm implements ShouldQueue
+class SendTutorConfirmClass implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -30,6 +30,6 @@ class SendStudentReceiptConfirm implements ShouldQueue
     public function handle(): void
     {
         Mail::to($this->data['email'])
-            ->send(new StudentReceiptConfirm($this->data));
+            ->send(new TutorConfirmClass($this->data));
     }
 }

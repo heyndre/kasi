@@ -181,14 +181,14 @@
                                         Daftar Wali Murid
                                     </x-dropdown-link>
 
+                                    
+                                    <div class="block px-4 py-2 text-xs text-gray-400">
+                                        Registrasi
+                                    </div>
+                                    
                                     <x-dropdown-link href="{{ route('guardian.register') }}" wire:navigate>
                                         Registrasi Wali Murid
                                     </x-dropdown-link>
-
-                                    <div class="block px-4 py-2 text-xs text-gray-400">
-                                        Manajemen Murid
-                                    </div>
-
                                     <x-dropdown-link href="{{ route('student.register') }}">
                                         {{ __('Registrasi') }}
                                     </x-dropdown-link>

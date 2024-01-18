@@ -16,11 +16,12 @@ use Illuminate\Http\Request;
 use Jenssegers\Date\Date;
 use App\Jobs\SendStudentAttendance;
 use App\Jobs\SendTutorAttendance;
+use App\Jobs\SendTutorConfirmClass;
 use Livewire\Component;
 
 class Show extends Component
 {
-    public $course, $billing, $payment, $tutorSharing, $meetingLink, $link, $billingStatus, $invoiceNumber, $billingDate, $studentPayment, $studentPaymentID, $tutorPaymentID, $tutorPayment, $tutorPaymentDate, $tutorPaymentReceipt;
+    public $course, $billing, $payment, $tutorSharing, $meetingLink, $link, $billingStatus, $invoiceNumber, $billingDate, $studentPayment, $studentPaymentID, $tutorPaymentID, $tutorPayment, $tutorPaymentDate, $tutorPaymentReceipt, $recording, $recordingSource;
 
     public function mount($id)
     {
@@ -68,6 +69,9 @@ class Show extends Component
             $this->tutorPaymentDate = 'N/A';
             $this->tutorPaymentReceipt = 'N/A';
         }
+
+        $this->recording =  $this->course->recording_youtube == null ? $this->course->recording : $this->course->recording_youtube;
+        $this->recordingSource =  $this->course->recording_youtube == null ? 'Google Drive' : 'Youtube';
     }
 
     public function cancelClass()
@@ -110,17 +114,22 @@ class Show extends Component
 
         $this->course->update([
             'student_attendance' => now(),
+            'status' => 'RUNNING'
         ]);
         $recipients = User::management()->get();
         // dd($recipients);
-        foreach($recipients as $to) {
+        foreach ($recipients as $to) {
             // dd($to->email);
             $data = [
                 'email' => $to->email,
                 'classDate' => $this->course->date_of_event->format('d/m/Y H:i T'),
                 'studentAttendance' => $this->course->student_attendance->format('d/m/Y H:i T'),
-                'studentAttendanceDiff' => $this->course->student_attendance->diffForHumans($this->course->date_of_event,
-                    \Carbon\CarbonInterface::DIFF_RELATIVE_AUTO, false, 2),
+                'studentAttendanceDiff' => $this->course->student_attendance->diffForHumans(
+                    $this->course->date_of_event,
+                    \Carbon\CarbonInterface::DIFF_RELATIVE_AUTO,
+                    false,
+                    2
+                ),
                 'studentName' => $this->course->theStudent->userData->name,
                 'studentNIM' => $this->course->theStudent->nim,
                 'tutorName' => $this->course->theTutor->userData->name,
@@ -141,16 +150,21 @@ class Show extends Component
 
         $this->course->update([
             'tutor_attendance' => now(),
+            'status' => 'RUNNING'
         ]);
-        
+
         $recipients = User::management()->get();
-        foreach($recipients as $to) {
+        foreach ($recipients as $to) {
             $data = [
                 'email' => $to->email,
                 'classDate' => $this->course->date_of_event->format('d/m/Y H:i T'),
                 'tutorAttendance' => $this->course->tutor_attendance->format('d/m/Y H:i T'),
-                'tutorAttendanceDiff' => $this->course->tutor_attendance->diffForHumans($this->course->date_of_event,
-                    \Carbon\CarbonInterface::DIFF_RELATIVE_AUTO, false, 2),
+                'tutorAttendanceDiff' => $this->course->tutor_attendance->diffForHumans(
+                    $this->course->date_of_event,
+                    \Carbon\CarbonInterface::DIFF_RELATIVE_AUTO,
+                    false,
+                    2
+                ),
                 'studentName' => $this->course->theStudent->userData->name,
                 'studentNIM' => $this->course->theStudent->nim,
                 'tutorName' => $this->course->theTutor->userData->name,
@@ -161,5 +175,41 @@ class Show extends Component
         }
 
         session()->flash('success', 'Kehadiran tercatat, selamat mengajar di KASI!');
+    }
+
+    public function tutorConfirmFinish()
+    {
+        if (auth()->user()->role !== 'TUTOR') {
+            return 'Tutor tidak ditemukan';
+        }
+
+        $this->course->update([
+            'tutor_finish_confirm' => now(),
+            'status' => 'NEEDCONFIRMATION'
+        ]);
+
+        $recipients = User::management()->get();
+        foreach ($recipients as $to) {
+            $data = [
+                'email' => $to->email,
+                'classDate' => $this->course->date_of_event->format('d/m/Y H:i T'),
+                'tutorAttendance' => $this->course->tutor_attendance->format('d/m/Y H:i T'),
+                'tutorAttendanceDiff' => $this->course->tutor_attendance->diffForHumans(
+                    $this->course->date_of_event,
+                    \Carbon\CarbonInterface::DIFF_RELATIVE_AUTO,
+                    false,
+                    2
+                ),
+                'submitFinish' => $this->course->tutor_finish_confirm,
+                'studentName' => $this->course->theStudent->userData->name,
+                'studentNIM' => $this->course->theStudent->nim,
+                'tutorName' => $this->course->theTutor->userData->name,
+                'className' => $this->course->theCourse->name,
+                'classID' => $this->course->id
+            ];
+            SendTutorConfirmClass::dispatch($data);
+        }
+
+        session()->flash('success', 'Penyelesaian kelas tercatat, terima kasih telah mengajar di KASI!');
     }
 }

@@ -33,9 +33,14 @@
     <link href="{{asset('woocommerce-FlexSlider-690832b/flexslider.css')}}" rel="stylesheet" />
     <script src="{{asset('woocommerce-FlexSlider-690832b/jquery.flexslider.js')}}"></script>
     <link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet">
+    <link href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css"
+        rel="stylesheet" />
 
     <script src="https://unpkg.com/filepond/dist/filepond.js"></script>
-
+    <script src="https://unpkg.com/filepond-plugin-image-resize/dist/filepond-plugin-image-resize.js"></script>
+    <script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.js"></script>
+    <script src="https://unpkg.com/filepond-plugin-image-transform/dist/filepond-plugin-image-transform.js"></script>
+    
     @if (isset($style))
     {{ $style }}
     @endif

@@ -2,15 +2,18 @@
 
 namespace App\Livewire\Student;
 
+use App\Jobs\SendRegisterStudent;
 use App\Models\Student;
 use App\Models\User;
 use App\Models\Guardian;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Spatie\Image\Image as Image;
 use Spatie\Image\Manipulations;
 use Illuminate\Support\Str;
+use Spatie\Image\Enums\Fit;
 
 class Register extends Component
 {
@@ -49,19 +52,14 @@ class Register extends Component
             'name' => $data['name'],
             'nickname' => $this->nickname,
             // 'password' => Hash::make('BelajarDuluMenginspirasiKemudian'),
-            'password' => Hash::make(Str::random(8)),
+            'password' => Hash::make(Carbon::createFromFormat('Y-m-d', $this->birthday)->format('dmY')),
             'mobile_number' => $data['whatsapp'],
             'birthday' => $this->birthday,
             'role' => 'MURID',
         ]);
 
-        if ($data['email'] !== null) {
-            $expiresAt = now()->addDay();
-            $base->sendWelcomeNotification($expiresAt);
-        }
-
         if ($data['avatar'] != null) {
-            Image::load($this->avatar->getRealPath())->fit(Manipulations::FIT_FILL_MAX, 1080, 1080)->optimize()->save();
+            Image::load($this->avatar->getRealPath())->fit(Fit::Max, 1080, 1080)->optimize()->save();
             $filename = $this->avatar->store('/profile-photos', 'public');
             $base->update([
                 'profile_photo_path' => $filename,
@@ -98,6 +96,20 @@ class Register extends Component
             'work_title' => $this->workTitle,
             'work_site' => $this->workSite,
         ]);
+
+        if ($data['email'] !== null) {
+            // $expiresAt = now()->addDay();
+            // $base->sendWelcomeNotification($expiresAt);
+            $emailData = [
+                'email' => $data['email'],
+                'studentName' => $base->name,
+                'studentNickname' => $base->nickname,
+                'studentNIM' => $student->nim,
+                'studentPassword' => $base->birthday->format('dmY')
+            ];
+
+            SendRegisterStudent::dispatch($emailData);
+        }
 
 
         session()->flash('success', 'Registrasi murid baru berhasil.');
@@ -158,6 +170,7 @@ class Register extends Component
     public function updatedBirthday()
     {
         // dd($this->birthday);
+        // dd(Carbon::createFromFormat('Y-m-d', $this->birthday)->format('dmY'));
 
     }
 

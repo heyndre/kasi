@@ -7,10 +7,9 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
-use Illuminate\Mail\Mailables\Headers;
 use Illuminate\Queue\SerializesModels;
 
-class StudentAttendance extends Mailable
+class RegisterStudent extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -31,8 +30,7 @@ class StudentAttendance extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Student Attendance ' . now()->format('d/m/Y H:i:s T'),
-            // to: [$this->recipient],
+            subject: 'Registrasi Akun Portal KASI',
         );
     }
 
@@ -42,21 +40,10 @@ class StudentAttendance extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'mail.student-attendance',
+            view: 'mail.account.student-register',
             with: [
                 'data' => $this->data
             ]
-        );
-    }
-
-    public function headers(): Headers
-    {
-        return new Headers(
-            references: [],
-            text: [
-                // 'Content-Type' => 'text/html',
-                // 'Content-Transfer-Encoding' => 'quoted-printable',
-            ],
         );
     }
 

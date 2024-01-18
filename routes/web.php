@@ -65,8 +65,8 @@ Route::get('/', function () {
 Route::get('/test', [Controller::class, 'test']);
 Route::get('tes-mail', function () {
     $data['text'] = "Queued mail";
-    // $data['email'] = 'admin@kasi.web.id';
-    dispatch(new App\Jobs\SendStudentAttendance($data, 'kangenmenginspirasi@gmail.com'));
+    $data['email'] = 'student@kasi.web.id';
+    dispatch(new App\Jobs\SendRegisterStudent($data, 'student@kasi.web.id'));
 
     dd('Mail sent successfully.');
 });

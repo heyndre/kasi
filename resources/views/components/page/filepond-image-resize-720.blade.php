@@ -1,4 +1,7 @@
 <div class="" x-init="
+FilePond.registerPlugin(FilePondPluginImagePreview);
+FilePond.registerPlugin(FilePondPluginImageResize);
+FilePond.registerPlugin(FilePondPluginImageTransform);
 FilePond.setOptions({
     allowMultiple: {{isset($attributes['multiple']) ? 'true' : 'false'}},
     maxParallelUploads: 1,
@@ -11,6 +14,15 @@ FilePond.setOptions({
             @this.removeUpload('{{$attributes['wire:model']}}', filename, load);
         }
     },
+    allowImagePreview: true,
+    allowImageResize: true,
+    imageResizeTargetWidth: 1280,
+    imageResizeTargetHeigth: 720,
+    imageResizeMode: 'contain',
+    imageResizeUpscale: false,
+    imageTransformOutputQuality: 65,
+    imageTransformOutputQualityMode: 'always',
+    imageTransformOutputMimeType: 'image/jpeg',
 });
 
 FilePond.create($refs.{{$attributes['wire:model']}});

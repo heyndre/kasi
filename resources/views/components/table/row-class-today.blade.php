@@ -8,8 +8,11 @@
             <label for="checkbox-table-search-1" class="sr-only">checkbox</label>
         </div>
     </td> --}}
-    <td class="px-6 py-4">
+    <td class="px-6 py-4 text-center">
         {{$time}}
+        <p class="text-gray-800 font-semibold">
+            {{$data->statusName()}}
+            </p>
     </td>
     <td class="px-6 py-4">
         {{$course->name}}

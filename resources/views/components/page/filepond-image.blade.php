@@ -1,4 +1,6 @@
 <div class="" x-init="
+FilePond.registerPlugin(FilePondPluginImagePreview);
+FilePond.registerPlugin(FilePondPluginImageResize);
 FilePond.setOptions({
     allowMultiple: {{isset($attributes['multiple']) ? 'true' : 'false'}},
     maxParallelUploads: 1,
@@ -11,6 +13,7 @@ FilePond.setOptions({
             @this.removeUpload('{{$attributes['wire:model']}}', filename, load);
         }
     },
+
 });
 
 FilePond.create($refs.{{$attributes['wire:model']}});

@@ -12,7 +12,7 @@
 </head>
 
 <body>
-    <div class="font-sans text-gray-900 antialiased w-full" style="width: 100%;">
+    <div class="font-sans text-gray-900 antialiased w-full mb-6" style="width: 100%;">
 
         <div class="text-xl font-bold" style="font-size: 2em; font-weight: 800;">
             Informasi Pembayaran Tagihan Kelas KASI

@@ -92,7 +92,10 @@
                             @enderror
                         </label>
                         {{-- <input type="file" wire:model='files'> --}}
-                        <x-page.filepond wire:model='files' multiple/>
+                        <x-page.filepond wire:model='files' multiple>
+                            allowImagePreview: true,
+
+                        </x-page.filepond>
                     </div>
                 </div>
 
@@ -114,13 +117,13 @@
                         <x-page.filepond wire:model='recording' multiple/>
                     </div>
                 </div>
-                <div class="mb-6  col-span-2" >
+                <div class="mb-6" >
                     <div class="">
                         @foreach ($files as $item)
                             <a href=""></a>
                         @endforeach
                     </div>
-                    <div class="" >
+                    <div class="">
                         <label for="photo" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                         Unggah Foto Kelas
                         @error('photo')
@@ -128,8 +131,7 @@
                             {{$message}}</p>
                             @enderror
                         </label>
-                        {{-- <input type="file" wire:model='files'> --}}
-                        <x-page.filepond wire:model='photo'/>
+                        <x-page.filepond-image-resize-720 wire:model='photo' multiple />
                     </div>
                 </div>
 

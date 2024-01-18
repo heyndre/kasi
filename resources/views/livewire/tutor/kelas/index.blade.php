@@ -82,7 +82,7 @@
                         $lastColor = $color;
                     @endphp
                     <x-table.row-class-today wire:loading.class.delay.longest='opacity-80' :tutor='$item->theTutor'
-                        :student='$item->theStudent' :course='$item->theCourse' style='background-color: {{$color}}'>
+                        :student='$item->theStudent' :course='$item->theCourse' :data='$item' style='background-color: {{$color}}'>
                         <x-slot name="id">
                             {{$item->id}}
                         </x-slot>
@@ -163,7 +163,7 @@
                         $lastColor = $color;
                     @endphp
                     <x-table.row-class-today wire:loading.class.delay.longest='opacity-80' :tutor='$item->theTutor'
-                        :student='$item->theStudent' :course='$item->theCourse' style='background-color: {{$color}}'>
+                        :student='$item->theStudent' :course='$item->theCourse' :data='$item' style='background-color: {{$color}}'>
                         <x-slot name="id">
                             {{$item->id}}
                         </x-slot>
@@ -222,31 +222,16 @@
                     @forelse ($past as $i => $item)
                     @php
                     // dd($i);
-                    $hash = md5(Str::random(25));
-                    $r = hexdec(substr($hash, 0, 2)); // r
-                    $g = hexdec(substr($hash, 2, 2)); // g
-                    $b = hexdec(substr($hash, 4, 2)); //b
-
-                    if ($i == 0) {
-                    $color = 'rgba('.$r. ','. $g. ','. $b. ',.1)';
-                    } else {
-                        if ($past[$i-1]->date_of_event == $item->date_of_event) {
-                            $color = $lastColor;
-                        } else {
-                            while ($lastColor == $color) {
-                            $hash = md5(Str::random(25));
-                            $r = hexdec(substr($hash, 0, 2)); // r
-                            $g = hexdec(substr($hash, 2, 2)); // g
-                            $b = hexdec(substr($hash, 4, 2)); //b
-                            $color = 'rgba('.$r. ','. $g. ','. $b. ',.1)';
-                            }
-                            }
-                            // dd($color);
-                        }
-                        $lastColor = $color;
+                    if ($item->status == 'CONDUCTED') {
+                        $color = 'rgba(76,200,80,.1)';
+                    } else if ($item->status == 'BURNED') {
+                        $color = 'rgba(76,0,153,.1)';
+                    } else if ($item->status == 'CANCELLED') {
+                        $color = 'rgba(153,0,76,.1)';
+                    }
                     @endphp
                     <x-table.row-class-today wire:loading.class.delay.longest='opacity-80' :tutor='$item->theTutor'
-                        :student='$item->theStudent' :course='$item->theCourse' style='background-color: {{$color}}'>
+                        :student='$item->theStudent' :course='$item->theCourse' :data='$item' style='background-color: {{$color}}'>
                         <x-slot name="id">
                             {{$item->id}}
                         </x-slot>

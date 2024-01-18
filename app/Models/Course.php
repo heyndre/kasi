@@ -40,6 +40,24 @@ class Course extends Model
 
     public function theCourse()
     {
-        return $this->hasOneThrough(CourseBase::class, CoursePivot::class, 'id', 'id', 'course_id', 'skill_id');
+        // return $this->hasOneThrough(CourseBase::class, CoursePivot::class, 'id', 'id', 'course_id', 'skill_id');
+        return $this->hasOne(CourseBase::class, 'id', 'course_id');
+    }
+
+    public function statusName()
+    {
+        if ($this->status == 'WAITING') {
+            return 'Menunggu Pelaksanaan Kelas';
+        } else if ($this->status == 'RUNNING') {
+            return 'Kelas sedang dilaksanakan';
+        } else if ($this->status == 'CONDUCTED') {
+            return 'Kelas selesai';
+        } else if ($this->status == 'CANCELLED') {
+            return 'Kelas dibatalkan';
+        } else if ($this->status == 'BURNED') {
+            return 'Kelas selesai tanpa kehadiran murid';
+        } else if ($this->status == 'NEEDCONFIRMATION') {
+            return 'Menunggu konfirmasi Admin KASI';
+        }
     }
 }
