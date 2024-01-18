@@ -14,7 +14,7 @@ use Livewire\Component;
 
 class Show extends Component
 {
-    public $status, $slug, $acronym, $photoUrl, $eduLevel, $acronymPlus, $name, $address, $birthday, $nextAnniversary, $whatsapp, $photo, $childrens, $religion, $guardianWhatsapp, $registeredAt, $lastLoginAt, $lastActiveAt, $eduStatus, $eduSite, $workSite, $workTitle;
+    public $status, $data, $slug, $acronym, $photoUrl, $eduLevel, $acronymPlus, $name, $address, $birthday, $nextAnniversary, $whatsapp, $photo, $childrens, $religion, $guardianWhatsapp, $registeredAt, $lastLoginAt, $lastActiveAt, $eduStatus, $eduSite, $workSite, $workTitle;
 
     public function mount($slug)
     {
@@ -24,6 +24,7 @@ class Show extends Component
         })
         ->firstOrFail();
         // dd($data);
+        $this->data = $data;
         $this->childrens = $data->theChildren;
         $this->religion = $data->religion;
         $this->slug = $data->userData->slug;
@@ -41,16 +42,16 @@ class Show extends Component
         $this->lastActiveAt = $data->userData->last_active_at;
         $this->status = $data->userData->exist_status;
 
-        $words = preg_split("/\s+/", $this->name);
-        $this->acronym = '';
-        $this->acronymPlus = '';
-        foreach ($words as $w) {
-            $this->acronym .= mb_substr($w, 0, 1);
-            $this->acronymPlus .= mb_substr($w, 0, 1) . '+';
-        }
+        // $words = preg_split("/\s+/", $this->name);
+        // $this->acronym = '';
+        // $this->acronymPlus = '';
+        // foreach ($words as $w) {
+        //     $this->acronym .= mb_substr($w, 0, 1);
+        //     $this->acronymPlus .= mb_substr($w, 0, 1) . '+';
+        // }
 
         if ($this->photo == '') {
-            $this->photoUrl = 'https://ui-avatars.com/api/?size=512&length=2&name='.substr($this->acronymPlus, 0, 3).'&color=7F9CF5&background=EBF4FF';
+            $this->photoUrl = 'https://ui-avatars.com/api/?size=512&length=2&name='. $this->data->userData->theAcronym() .'&color=7F9CF5&background=EBF4FF';
         } else {
             $this->photoUrl = asset($this->photo);
         }

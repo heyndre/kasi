@@ -22,7 +22,7 @@
             @endif
             <x-table.student>
                 <x-slot name="title">
-                    Daftar Murid Aktif KASI ({{$students->count()}})
+                    Daftar Murid Aktif Saya ({{$students->count()}})
                 </x-slot>
 
                 <x-slot name="caption">

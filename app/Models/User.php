@@ -133,6 +133,15 @@ class User extends Authenticatable
         $query->where('role', 'ADMIN')->orWhere('role', 'SUPERADMIN');
     }
 
+    public function isManagement()
+    {
+        if ($this->role == 'ADMIN' || $this->role == 'SUPERADMIN') {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public function isAdmin()
     {
         if ($this->role == 'ADMIN') {
@@ -142,7 +151,7 @@ class User extends Authenticatable
         }
     }
 
-    
+
     public function isSuperAdmin()
     {
         if ($this->role == 'SUPERADMIN') {
@@ -152,7 +161,7 @@ class User extends Authenticatable
         }
     }
 
-    
+
     public function isStudent()
     {
         if ($this->role == 'MURID') {
@@ -162,17 +171,30 @@ class User extends Authenticatable
         }
     }
 
-    
+    public function theAcronym()
+    {
+        $words = preg_split("/\s+/", $this->name);
+        $this->acronym = '';
+        $this->acronymPlus = '';
+        foreach ($words as $w) {
+            $this->acronym .= mb_substr($w, 0, 1);
+            $this->acronymPlus .= mb_substr($w, 0, 1) . '+';
+        }
+
+        return substr($this->acronymPlus, 0, 3);
+    }
+
+
     public function isTutor()
     {
-        if ($this->role == 'Tutor') {
+        if ($this->role == 'TUTOR') {
             return true;
         } else {
             return false;
         }
     }
 
-    
+
     public function isGuardian()
     {
         if ($this->role == 'WALI MURID') {

@@ -269,44 +269,29 @@
                                 </x-slot>
 
                                 <x-slot name="content">
-                                    <div class="block px-4 py-2 text-xs text-gray-400">
+                                    {{-- <div class="block px-4 py-2 text-xs text-gray-400">
                                         Billing
                                     </div>
-                                    <x-dropdown-link href="{{ route('payment.student.billing') }}">
-                                        Daftar Billing
-                                    </x-dropdown-link>
-
-                                    <x-dropdown-link href="{{ route('profile.show') }}">
-                                        {{ __('Konfirmasi Pembayaran') }}
-                                    </x-dropdown-link>
-
-                                    <div class="block px-4 py-2 text-xs text-gray-400">
-                                        Pembayaran
-                                    </div>
-
-                                    <x-dropdown-link href="{{ route('profile.show') }}">
-                                        Status Pembayaran Saya
-                                    </x-dropdown-link>
-
-                                    <x-dropdown-link href="{{ route('profile.show') }}">
-                                        Konfirmasi Penerimaan Pembayaran
-                                    </x-dropdown-link>
-
+                                    <x-dropdown-link href="">
+                                        Daftar Billing Murid Saya
+                                    </x-dropdown-link> --}}
+                                    
                                     <div class="border-t border-gray-200"></div>
-
                                     <div class="block px-4 py-2 text-xs text-gray-400">
-                                        {{ __('Internal') }}
+                                        Honor
                                     </div>
 
                                     <x-dropdown-link href="{{ route('profile.show') }}">
-                                        {{ __('Status Keuangan') }}
+                                        Status Honor Saya
                                     </x-dropdown-link>
 
-                                    <x-dropdown-link href="{{ route('profile.show') }}">
-                                        {{ __('Transaksi') }}
+                                    <div class="block px-4 py-2 text-xs text-gray-400">
+                                        Bantuan
+                                    </div>
+                                    <x-dropdown-link target='_blank'
+                                        href="https://wa.me/{{$setting->where('key','whatsapp')->value('value')}}?text=Halo%2C saya butuh bantuan tentang Portal KASI bagian Keuangan">
+                                        Hubungi Admin KASI
                                     </x-dropdown-link>
-
-
                                 </x-slot>
                             </x-dropdown>
                         </div>
@@ -339,34 +324,23 @@
                                         Jadwal Kelas Saya
                                     </x-dropdown-link>
 
-                                    <x-dropdown-link href="{{ route('kbm.billing.status') }}">
-                                        Status Billing Kelas
-                                    </x-dropdown-link>
-
-                                    <x-dropdown-link href="{{ route('profile.show') }}">
-                                        {{ __('Laporan Kelas') }}
-                                    </x-dropdown-link>
-                                    <div class="block px-4 py-2 text-xs text-gray-400">
-                                        Penjadwalan
-                                    </div>
-
-                                    <x-dropdown-link href="{{ route('kbm.add') }}">
-                                        Jadwalkan Kelas
-                                    </x-dropdown-link>
-
                                     <div class="block px-4 py-2 text-xs text-gray-400">
                                         {{ __('Evaluasi') }}
                                     </div>
 
-                                    <x-dropdown-link href="{{ route('profile.show') }}">
-                                        {{ __('Jadwal Evaluasi') }}
-                                    </x-dropdown-link>
-
-                                    <x-dropdown-link href="{{ route('profile.show') }}">
-                                        {{ __('Status Evaluasi') }}
+                                    <x-dropdown-link href="#">
+                                        Status Evaluasi (Coming Soon)
                                     </x-dropdown-link>
 
                                     <div class="border-t border-gray-200"></div>
+                                
+                                    <div class="block px-4 py-2 text-xs text-gray-400">
+                                        Bantuan
+                                    </div>
+                                    <x-dropdown-link target='_blank'
+                                        href="https://wa.me/{{$setting->where('key','whatsapp')->value('value')}}?text=Halo%2C saya butuh bantuan tentang Portal KASI bagian KBM">
+                                        Hubungi Admin KASI
+                                    </x-dropdown-link>
 
                                 </x-slot>
                             </x-dropdown>
@@ -397,11 +371,11 @@
                                         Daftar Murid
                                     </div>
 
-                                    <x-dropdown-link href="{{ route('student.active') }}" wire:navigate>
+                                    <x-dropdown-link href="{{ route('tutor.students.active') }}" wire:navigate>
                                         Daftar Murid Saya
                                     </x-dropdown-link>
 
-                                    <x-dropdown-link href="{{ route('student.inactive') }}" wire:navigate>
+                                    <x-dropdown-link href="{{ route('tutor.students.inactive') }}" wire:navigate>
                                         Daftar Murid Inaktif
                                     </x-dropdown-link>
 
@@ -409,49 +383,6 @@
 
                                 </x-slot>
                             </x-dropdown>
-                        </div>
-
-                        <div class="hidden sm:flex sm:items-center sm:ms-6">
-                            <div class="ms-3 relative">
-                                <x-dropdown align="right" width="48">
-                                    <x-slot name="trigger">
-                                        <span class="inline-flex rounded-md">
-                                            <button type="button"
-                                                class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-5 font-medium rounded-md text-gray-900 bg-white hover:text-gray-700 hover:bg-gray-50 focus:outline-none focus:bg-gray-50 active:bg-gray-50 transition ease-in-out duration-150">
-                                                Tutor
-                                                <svg class="ms-2 -me-0.5 h-4 w-4" xmlns="http://www.w3.org/2000/svg"
-                                                    fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                                    stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
-                                                </svg>
-                                            </button>
-                                        </span>
-                                    </x-slot>
-
-                                    <x-slot name="content">
-                                        <div class="block px-4 py-2 text-xs text-gray-400">
-                                            {{ __('Daftar Tutor') }}
-                                        </div>
-                                        <x-dropdown-link href="{{ route('tutor.active') }}">
-                                            {{ __('Daftar Tutor Aktif') }}
-                                        </x-dropdown-link>
-                                        <x-dropdown-link href="{{ route('tutor.inactive') }}">
-                                            {{ __('Daftar Tutor Inaktif') }}
-                                        </x-dropdown-link>
-
-                                        <div class="block px-4 py-2 text-xs text-gray-400">
-                                            {{ __('Manajemen Tutor') }}
-                                        </div>
-                                        <x-dropdown-link href="{{ route('tutor.register') }}">
-                                            {{ __('Registrasi Tutor') }}
-                                        </x-dropdown-link>
-
-                                        <div class="border-t border-gray-200"></div>
-
-                                    </x-slot>
-                                </x-dropdown>
-                            </div>
                         </div>
                     </div>
                     @endif

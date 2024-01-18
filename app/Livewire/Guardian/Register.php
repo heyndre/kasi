@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Guardian;
 
+use App\Jobs\SendRegisterGuardian;
 use App\Models\Student;
 use App\Models\Guardian;
 use App\Models\User;
@@ -11,6 +12,7 @@ use Livewire\WithFileUploads;
 use Spatie\Image\Image as Image;
 use Spatie\Image\Manipulations;
 use Illuminate\Support\Str;
+use Spatie\Image\Enums\Fit;
 
 class Register extends Component
 {
@@ -42,17 +44,17 @@ class Register extends Component
             'email' => $data['email'],
             'name' => $data['name'],
             // 'password' => Hash::make('BelajarDuluMenginspirasiKemudian'),
-            'password' => Hash::make(Str::random(8)),
+            'password' => Hash::make('inspirasi2024'),
             'mobile_number' => $data['whatsapp'],
             'address' => $this->address,
             'role' => 'WALI MURID',
         ]);
 
-        $expiresAt = now()->addDay();
-        $base->sendWelcomeNotification($expiresAt);
+        // $expiresAt = now()->addDay();
+        // $base->sendWelcomeNotification($expiresAt);
 
         if ($data['avatar'] != null) {
-            Image::load($this->avatar->getRealPath())->fit(Manipulations::FIT_FILL_MAX, 1080, 1080)->optimize()->save();
+            Image::load($this->avatar->getRealPath())->fit(Fit::Max, 1080, 1080)->optimize()->save();
             $filename = $this->avatar->store('/profile-photos', 'public');
             $base->update([
                 'profile_photo_path' => $filename,
@@ -75,6 +77,20 @@ class Register extends Component
             'edu_major' => $this->eduMajor,
             'religion' => $this->religion,
         ]);
+
+        if ($data['email'] !== null) {
+            // $expiresAt = now()->addDay();
+            // $base->sendWelcomeNotification($expiresAt);
+            $emailData = [
+                'email' => $data['email'],
+                'guardianName' => $base->name,
+                'guardianEmail' => $base->email,
+                'guardianMobile' => $base->mobile_number,
+                'guardianPassword' => 'inpirasi2024'
+            ];
+
+            SendRegisterGuardian::dispatch($emailData);
+        }
 
         session()->flash('success', 'Registrasi wali murid baru berhasil.');
         return $this->redirect(route('guardian.index'), navigate: true);

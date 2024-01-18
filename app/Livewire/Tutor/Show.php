@@ -54,16 +54,16 @@ class Show extends Component
         $this->status = $data->userData->exist_status;
         $this->slug = $data->userData->slug;
 
-        $words = preg_split("/\s+/", $this->name);
-        $this->acronym = '';
-        $this->acronymPlus = '';
-        foreach ($words as $w) {
-            $this->acronym .= mb_substr($w, 0, 1);
-            $this->acronymPlus .= mb_substr($w, 0, 1) . '+';
-        }
+        // $words = preg_split("/\s+/", $this->name);
+        // $this->acronym = '';
+        // $this->acronymPlus = '';
+        // foreach ($words as $w) {
+        //     $this->acronym .= mb_substr($w, 0, 1);
+        //     $this->acronymPlus .= mb_substr($w, 0, 1) . '+';
+        // }
 
         if ($this->photo == '') {
-            $this->photoUrl = 'https://ui-avatars.com/api/?size=512&length=2&name=' . substr($this->acronymPlus, 0, 3) . '&color=7F9CF5&background=EBF4FF';
+            $this->photoUrl = 'https://ui-avatars.com/api/?size=512&length=2&name=' . $this->tutor->userData->theAcronym() . '&color=7F9CF5&background=EBF4FF';
         } else {
             $this->photoUrl = asset($this->photo);
         }

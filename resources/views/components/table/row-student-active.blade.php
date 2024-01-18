@@ -21,7 +21,8 @@
         @endphp
         @if ($data->userData->profile_photo_path == '' || $data->userData->profile_photo_path == null)
         <img class="h-14 w-14 rounded-full object-cover"
-            src="https://ui-avatars.com/api/?name={{substr($acronymPlus, 0, 3)}}&color=7F9CF5&background=EBF4FF" alt="{{$acronym}}">
+            src="https://ui-avatars.com/api/?name={{substr($acronymPlus, 0, 3)}}&color=7F9CF5&background=EBF4FF"
+            alt="{{$acronym}}">
         @else
         <img class="w-14 h-14 rounded-full" src="{{asset($data->userData->profile_photo_path)}}" alt="{{$acronym}}">
         @endif
@@ -38,8 +39,8 @@
                 </a>
                 <br>
                 @endif
-                <a href="https://wa.me/{{$data->userData->mobile_number}}" class="text-green-700 hover:text-green-500" target="_blank"
-                    rel="noopener noreferrer">
+                <a href="https://wa.me/{{$data->userData->mobile_number}}" class="text-green-700 hover:text-green-500"
+                    target="_blank" rel="noopener noreferrer">
                     WhatsApp : {{$data->userData->mobile_number}}
                 </a>
             </div>
@@ -55,8 +56,8 @@
             {{$data->theGuardian->userData->name}}
 
         </div>
-        <a href="https://wa.me/{{$data->theGuardian->userData->mobile_number}}" class="text-green-700 underline hover:text-green-600"
-            target="_blank">
+        <a href="https://wa.me/{{$data->theGuardian->userData->mobile_number}}"
+            class="text-green-700 underline hover:text-green-600" target="_blank">
             WhatsApp : {{$data->theGuardian->userData->mobile_number}}
         </a>
         {{-- <br>
@@ -69,6 +70,14 @@
         @endif
     </td>
     <td class="px-6 py-4">
-        <a href="{{route('student.edit', ['nim' => $data->nim])}}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit user</a>
+        @if (auth()->user()->isManagement())
+        <a href="{{route('student.show', ['nim' => $data->nim])}}"
+            class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Detail murid</a>
+
+        @elseif (auth()->user()->isTutor())
+        <a href="{{route('tutor.student.show', ['nim' => $data->nim])}}"
+            class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Detail murid</a>
+
+        @endif
     </td>
 </tr>

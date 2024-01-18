@@ -9,7 +9,7 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class RegisterStudent extends Mailable
+class RegisterTutor extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -38,7 +38,7 @@ class RegisterStudent extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'mail.account.student-register',
+            view: 'mail.account.tutor-register',
             with: [
                 'data' => $this->data
             ]

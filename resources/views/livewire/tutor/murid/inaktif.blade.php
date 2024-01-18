@@ -1,6 +1,6 @@
 <div>
     <x-page.header>
-        Daftar Murid Inaktif
+        Daftar Murid Tidak Aktif
     </x-page.header>
 
 
@@ -22,7 +22,7 @@
             @endif
             <x-table.student>
                 <x-slot name="title">
-                    Daftar Murid Inaktif KASI ({{$students->count()}})
+                    Daftar Murid Tidak Aktif Saya ({{$students->count()}})
                 </x-slot>
 
                 <x-slot name="caption">
@@ -46,11 +46,12 @@
 
                 <x-slot name="body">
                     @php
-                    // dd($students);
+                    // dd($students->total());
                     @endphp
+                    {{-- @if ($students->total() > 0) --}}
                     @forelse ($students as $item)
-                    <x-table.row-student-active wire:loading.class.delay.longest='opacity-80'>
-                        <x-slot name="nim">
+                    <x-table.row-student-active wire:loading.class.delay.longest='opacity-80' :data='$item'>
+                        {{-- <x-slot name="nim">
                             {{$item->nim}}
                         </x-slot>
                         <x-slot name="name">
@@ -72,16 +73,15 @@
                             {{$item->has_guardian}}
                         </x-slot>
                         <x-slot name="guardian_contact">
-                            {{$item->guardian_contact}}
+                            {{$item->theGuardian->userData->mobile_number}}
                         </x-slot>
                         <x-slot name="profile_photo">
                             {!!$item->userData->profile_photo_path!!}
-                        </x-slot>
+                        </x-slot> --}}
                     </x-table.row-student-active>
                     @empty
-                    <x-table.row-student-active
-                        wire:loading.class.delay='opacity-50 transition ease-in-out duration-150'>
-                        <x-slot name="nim">
+                    <x-table.row-student-empty wire:loading.class.delay='opacity-50 transition ease-in-out duration-150'>
+                        {{-- <x-slot name="nim">
                             N/A
                         </x-slot>
                         <x-slot name="name">
@@ -106,8 +106,8 @@
                             N/A
                         </x-slot>
                         <x-slot name="profile_photo">
-                        </x-slot>
-                    </x-table.row-student-active>
+                        </x-slot> --}}
+                    </x-table.row-student-empty>
                     @endforelse
                 </x-slot>
                 <x-slot name="foot">

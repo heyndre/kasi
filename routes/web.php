@@ -41,6 +41,8 @@ use App\Livewire\Tutor\Inactive as TutorInactive;
 use App\Livewire\Tutor\Show as TutorShow;
 use App\Livewire\Tutor\Register as TutorRegister;
 use App\Livewire\Tutor\Edit as TutorEdit;
+use App\Livewire\Tutor\Murid\Aktif as TutorStudentActive;
+use App\Livewire\Tutor\Murid\Inaktif as TutorStudentInactive;
 // use App\Livewire\Tutor\Birthday as TutorBirthday;
 
 use Illuminate\Support\Facades\Route;
@@ -182,6 +184,10 @@ Route::middleware([
         Route::get('/kelas/detail/{id}', KBMShow::class)->name('tutor.classes.show');
         Route::get('/kelas/edit/{id}', TutorClassEdit::class)->name('tutor.classes.edit');
         Route::get('/kelas/konfirmasi-kehadiran/{id}', [MeetingController::class, 'tutorAttendance'])->name('tutor.classes.attendance');
+
+        Route::get('/murid/list/aktif', TutorStudentActive::class)->name('tutor.students.active');
+        Route::get('/murid/list/inaktif', TutorStudentInactive::class)->name('tutor.students.inactive');
+        Route::get('/data/murid/{nim}', StudentShow::class)->name('tutor.student.show');
 
     });
 });

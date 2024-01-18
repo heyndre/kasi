@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Tutor;
 
+use App\Jobs\SendRegisterTutor;
 use App\Models\CourseBase;
 use App\Models\CoursePivot;
 use App\Models\Student;
@@ -13,6 +14,7 @@ use Livewire\WithFileUploads;
 use Spatie\Image\Image as Image;
 use Spatie\Image\Manipulations;
 use Illuminate\Support\Str;
+use Spatie\Image\Enums\Fit;
 
 class Register extends Component
 {
@@ -47,18 +49,18 @@ class Register extends Component
             'name' => $data['name'],
             'nickname' => $data['nickname'],
             // 'password' => Hash::make('BelajarDuluMenginspirasiKemudian'),
-            'password' => Hash::make(Str::random(8)),
+            'password' => Hash::make('2024menginspirasi'),
             'mobile_number' => $data['whatsapp'],
             'birthday' => $this->birthday,
             'address' => $this->address,
             'role' => 'TUTOR',
         ]);
 
-        $expiresAt = now()->addDay();
-        $base->sendWelcomeNotification($expiresAt);
+        // $expiresAt = now()->addDay();
+        // $base->sendWelcomeNotification($expiresAt);
 
         if ($data['avatar'] != null) {
-            Image::load($this->avatar->getRealPath())->fit(Manipulations::FIT_FILL_MAX, 1080, 1080)->optimize()->save();
+            Image::load($this->avatar->getRealPath())->fit(Fit::Max, 1080, 1080)->optimize()->save();
             $filename = $this->avatar->store('/profile-photos', 'public');
             $base->update([
                 'profile_photo_path' => $filename,
@@ -96,6 +98,21 @@ class Register extends Component
                 'tutor_id' => $tutor->id,
                 'skill_id' => $item,
             ]);
+        }
+
+        if ($data['email'] !== null) {
+            // $expiresAt = now()->addDay();
+            // $base->sendWelcomeNotification($expiresAt);
+            $emailData = [
+                'email' => $data['email'],
+                'tutorName' => $base->name,
+                'tutorNickname' => $base->nickname,
+                'tutorEmail' => $base->email,
+                'tutorMobile' => $base->mobile_number,
+                'tutorPassword' => '2024menginspirasi'
+            ];
+
+            SendRegisterTutor::dispatch($emailData);
         }
 
         session()->flash('success', 'Registrasi tutor baru berhasil.');

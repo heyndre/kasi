@@ -222,6 +222,7 @@
                                         Murid' : 'Tidak Punya Wali Murid'}}
                                     </div>
                                 </div>
+                                @if ($hasGuardian == 1)
                                 <div class="w-fit">
                                     <label class="mb-2 font-semibold leading-none text-gray-900 dark:text-white"
                                         for="name">
@@ -248,6 +249,7 @@
                                         @endif
                                     </div>
                                 </div>
+                                @endif
                             </div>
                         </div>
                         <div class="hidden p-4 bg-white rounded-lg md:p-8 dark:bg-gray-800" id="statistics"
