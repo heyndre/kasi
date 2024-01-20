@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Admin\KBM;
 
+use App\Jobs\SendClassCancelInfo;
 use App\Models\Billing;
 use App\Models\Course;
 use App\Models\Payment;
@@ -45,7 +46,7 @@ class Show extends Component
             $this->invoiceNumber = str_pad($this->billing->invoice_id, 5, '0', STR_PAD_LEFT);
 
             $this->payment = Payment::where('billing_id', $this->billing->id)->first();
-            $this->tutorSharing = TutorPayment::where('billing_id', $this->billing->id)->first();
+            $this->tutorSharing = TutorPayment::where('class_id', $this->course->id)->first();
         } else {
             $this->billingStatus = 'Belum ditagih';
             $this->billingDate = 'N/A';
@@ -61,13 +62,15 @@ class Show extends Component
         }
 
         if ($this->tutorSharing) {
-            $this->tutorPayment = 'Terbayar';
-            $this->tutorPaymentDate = $this->tutorSharing->pay_date->format('d M Y H:i T');
-            $this->tutorPaymentReceipt = $this->tutorSharing->id;
-        } else {
-            $this->tutorPayment = 'Belum terbayar';
-            $this->tutorPaymentDate = 'N/A';
-            $this->tutorPaymentReceipt = 'N/A';
+            if ($this->tutorSharing->pay_date) {
+                $this->tutorPayment = 'Terbayar';
+                $this->tutorPaymentDate = $this->tutorSharing->pay_date->format('d M Y H:i T');
+                $this->tutorPaymentReceipt = $this->tutorSharing->id;
+            } else {
+                $this->tutorPayment = 'Belum terbayar';
+                $this->tutorPaymentDate = 'N/A';
+                $this->tutorPaymentReceipt = 'N/A';
+            }
         }
 
         $this->recording =  $this->course->recording_youtube == null ? $this->course->recording : $this->course->recording_youtube;
@@ -79,6 +82,48 @@ class Show extends Component
         $this->course->update([
             'status' => 'CANCELLED'
         ]);
+        if ($this->course->theStudent->userData->email) {
+            $data = [
+                'email' => $this->course->theStudent->userData->email,
+                'classDate' => $this->course->date_of_event->format('d/m/Y H:i T'),
+                'studentName' => $this->course->theStudent->userData->name,
+                'studentNIM' => $this->course->theStudent->nim,
+                'tutorName' => $this->course->theTutor->userData->name,
+                'className' => $this->course->theCourse->name,
+                'classID' => $this->course->id,
+                'role' => 'MURID'
+            ];
+            SendClassCancelInfo::dispatch($data);
+        }
+
+        if ($this->course->theStudent->has_guardian == 1 && $this->course->theStudent->theGuardian->userData->email) {
+            $data = [
+                'email' => $this->course->theStudent->theGuardian->userData->email,
+                'classDate' => $this->course->date_of_event->format('d/m/Y H:i T'),
+                'studentName' => $this->course->theStudent->userData->name,
+                'studentNIM' => $this->course->theStudent->nim,
+                'tutorName' => $this->course->theTutor->userData->name,
+                'className' => $this->course->theCourse->name,
+                'classID' => $this->course->id,
+                'role' => 'WALI MURID'
+            ];
+            SendClassCancelInfo::dispatch($data);
+        }
+
+        if ($this->course->theTutor->userData->email) {
+            $data = [
+                'email' => $this->course->theTutor->userData->email,
+                'classDate' => $this->course->date_of_event->format('d/m/Y H:i T'),
+                'studentName' => $this->course->theStudent->userData->name,
+                'studentNIM' => $this->course->theStudent->nim,
+                'tutorName' => $this->course->theTutor->userData->name,
+                'className' => $this->course->theCourse->name,
+                'classID' => $this->course->id,
+                'role' => 'TUTOR'
+            ];
+            SendClassCancelInfo::dispatch($data);
+        }
+
         session()->flash('warning', 'Status kelas dibatalkan.');
         return $this->redirect(route('kbm.show', ['id' => $this->course->id]), navigate: false);
     }
@@ -109,6 +154,42 @@ class Show extends Component
     public function studentAttendance()
     {
         if (auth()->user()->role !== 'MURID') {
+            return 'Murid tidak ditemukan';
+        }
+
+        $this->course->update([
+            'student_attendance' => now(),
+            'status' => 'RUNNING'
+        ]);
+        $recipients = User::management()->get();
+        // dd($recipients);
+        foreach ($recipients as $to) {
+            // dd($to->email);
+            $data = [
+                'email' => $to->email,
+                'classDate' => $this->course->date_of_event->format('d/m/Y H:i T'),
+                'studentAttendance' => $this->course->student_attendance->format('d/m/Y H:i T'),
+                'studentAttendanceDiff' => $this->course->student_attendance->diffForHumans(
+                    $this->course->date_of_event,
+                    \Carbon\CarbonInterface::DIFF_RELATIVE_AUTO,
+                    false,
+                    2
+                ),
+                'studentName' => $this->course->theStudent->userData->name,
+                'studentNIM' => $this->course->theStudent->nim,
+                'tutorName' => $this->course->theTutor->userData->name,
+                'className' => $this->course->theCourse->name,
+                'classID' => $this->course->id
+            ];
+            SendStudentAttendance::dispatch($data);
+        }
+
+        session()->flash('success', 'Kehadiran tercatat, selamat belajar di KASI!');
+    }
+
+    public function studentAttendanceByGuardian()
+    {
+        if (!auth()->user()->isGuardian()) {
             return 'Murid tidak ditemukan';
         }
 

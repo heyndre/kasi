@@ -63,6 +63,13 @@ return [
             'visibility' => 'private',
         ],
 
+        'tutor-payment' => [
+            'driver' => 'local',
+            'root' => storage_path('app/finance/tutor-payment-receipt'),
+            'throw' => false,
+            'visibility' => 'private',
+        ],
+
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),

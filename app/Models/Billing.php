@@ -43,6 +43,11 @@ class Billing extends Model
         return $this->hasMany(Expense::class, 'billing_id', 'id');
     }
 
+    public function thePromo()
+    {
+        return $this->belongsTo(Promo::class, 'promo_code', 'code');
+    }
+
     public function scopeBillBetween($query, array $dates)
     {
         $start = ($dates[0] instanceof Carbon) ? $dates[0] : Carbon::parse($dates[0]);

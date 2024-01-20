@@ -97,6 +97,30 @@
                     </div>
                 </div> --}}
 
+                {{-- Lesson --}}
+                <div class="mb-6 ">
+                    <label for="noteStudent" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                        Catatan Tutor untuk Murid
+                        @error('noteStudent')
+                        <p class="mt-2 text-sm text-red-600 dark:text-red-500"><span class="font-medium">Oops!</span>
+                            {{$message}}</p>
+                        @enderror
+                    </label>
+                    <textarea wire:model='noteStudent' rows="4" class="w-full"></textarea>
+                </div>
+
+                {{-- Lesson --}}
+                <div class="mb-6 ">
+                    <label for="noteAdmin" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                        Catatan Tutor (Internal)
+                        @error('noteAdmin')
+                        <p class="mt-2 text-sm text-red-600 dark:text-red-500"><span class="font-medium">Oops!</span>
+                            {{$message}}</p>
+                        @enderror
+                    </label>
+                    <textarea wire:model='noteAdmin' rows="4" class="w-full"></textarea>
+                </div>
+
                 <div class="mb-6 ">
                     <div class="">
                         @foreach ($files as $item)

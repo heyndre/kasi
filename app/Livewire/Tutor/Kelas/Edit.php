@@ -22,6 +22,8 @@ class Edit extends Component
             'topic' => $this->topic,
             'lesson_matter' => $this->lesson,
             'recording' => $this->recording,
+            'tutor_notes' => $this->noteStudent,
+            'tutor_notes_to_admin' => $this->noteAdmin,
             // 'additional_links' => json_encode($this->reference),
         ]);
         if ($this->reference != $this->links) {

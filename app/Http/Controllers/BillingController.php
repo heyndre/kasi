@@ -108,6 +108,7 @@ class BillingController extends Controller
                 'bill_date' => Carbon::now()->addMonth()->startOfMonth(),
                 'due_date' => Carbon::now()->addMonth()->startOfMonth()->addDays(10),
                 'amount' => ($course->length / 60 * $price),
+                'amount_no_promo' => ($course->length / 60 * $price),
                 'invoice_id' => $invoiceNumber,
                 'student_id' => $course->student_id,
                 'length' => $course->length,

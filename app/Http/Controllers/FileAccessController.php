@@ -32,4 +32,11 @@ class FileAccessController extends Controller
         ob_end_clean();
         return response()->file(storage_path('app/billing/student-refund-receipt/' . $file . '/' . $name));
     }
+
+    public function accessTutorReceipt($slug, $filename)
+    {
+        // return storage_path('app/billing/student-payment-receipt/'.$file);
+        ob_end_clean();
+        return response()->file(storage_path('app/finance/tutor-payment-receipt/' . $slug . '/' . $filename));
+    }
 }

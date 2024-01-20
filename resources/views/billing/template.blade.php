@@ -116,6 +116,40 @@
                         <td class="p-2 bg-amber-600 text-white font-bold">{{$totalHours / 60}} jam</td>
                         <td class="p-2 bg-amber-100 font-bold">Rp.{{number_format($totalPrice, 0, ',', '.')}}</td>
                     </tr>
+                    <tr class="border-b border-amber-800 dark:border-gray-700">
+                        <td scope="row" class="p-2 text-base bg-amber-800 text-white font-bold" colspan="2">
+                            Kode Promo
+                        </td>
+                        <td class="p-2 bg-amber-600 text-white">
+                            @if ($item->thePromo != null)
+                            {{$item->thePromo->code}}
+                            @else
+                            Tidak ada promo
+                            @endif
+                        </td>
+                        <td class="p-2 bg-amber-100">
+                            @if ($item->thePromo != null)
+                            Rp.{{number_format($item->amount - $item->amount_no_promo, 0, ',', '.')}}
+                            @else
+                            -
+                            @endif
+
+                        </td>
+                    </tr>
+                    <tr class="font-semibold text-gray-900 dark:text-white">
+                        <td scope="row" class="p-2 text-base bg-amber-800 text-white font-bold" colspan="3">Total</td>
+                        {{-- <td class="p-2 bg-amber-600 text-white font-bold">{{$totalHours / 60}} jam</td> --}}
+                        <td class="p-2 bg-amber-100 font-bold">Rp.{{number_format($totalPrice - ($item->amount -
+                            $item->amount_no_promo), 0, ',', '.')}}</td>
+                    </tr>
+                    <tr class="">
+                        <td scope="row" colspan="4">
+                            <p class="italic">
+                                Terbilang {{Terbilang::make($totalPrice - ($item->amount - $item->amount_no_promo), '
+                                rupiah')}}
+                            </p>
+                        </td>
+                    </tr>
                 </tfoot>
             </table>
             <div class="grid grid-cols-2 gap-x-4 items-end">
@@ -136,19 +170,20 @@
                     </div>
                     <a href="https://flip.id/me/firstyaandreaspandega" class="w-full px-2">
                         <div class="font-semibold bg-amber-600 text-white border-1 rounded-md">
-                        Bayar via Aplikasi Flip (klik disini)</a>
-                        </div>
-                    <p class="text-sm italic">a.n. Firstya Andreas Pandega / 0851 - 7982 - 4064</p>
-                           
-                    maksimal pada tanggal <span class="font-bold">{{$billing->due_date->format('d/m/Y')}}</span>.
-                    Keterlambatan pembayaran dapat mengakibatkan denda.
+                            Bayar via Aplikasi Flip (klik disini)
+                    </a>
                 </div>
-                <div class="mt-4 text-gray-800 text-sm">
-                    <span class="font-bold text-2xl text-amber-500/40 italic text-right">
-                        Belajar Dulu, Menginspirasi Kemudian!
-                    </span>
-                </div>
+                <p class="text-sm italic">a.n. Firstya Andreas Pandega / 0851 - 7982 - 4064</p>
+
+                maksimal pada tanggal <span class="font-bold">{{$billing->due_date->format('d/m/Y')}}</span>.
+                Keterlambatan pembayaran dapat mengakibatkan denda.
             </div>
+            <div class="mt-4 text-gray-800 text-sm">
+                <span class="font-bold text-2xl text-amber-500/40 italic text-right">
+                    Belajar Dulu, Menginspirasi Kemudian!
+                </span>
+            </div>
+        </div>
         </div>
     </main>
     {{-- @stack('modals') --}}

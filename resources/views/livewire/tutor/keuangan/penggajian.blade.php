@@ -1,14 +1,10 @@
 <div>
     <x-page.header>
-        Daftar Status Billing Kelas KASI
+        Daftar Honor Tutor
     </x-page.header>
 
 
     <x-page.content-white>
-        {{-- <div class="p-4 w-fit text-sm">
-            <a href="#PastTable" class="px-3 py-2 bg-gray-700 text-white shadow-md rounded-md">Ke Tabel Kelas Yang Lalu</a>
-            <a href="#TomorrowTable" class="px-3 py-2 bg-gray-700 text-white shadow-md rounded-md">Ke Tabel Kelas Yang Akan Datang</a>
-        </div> --}}
         <div class="px-4 py-2">
             @if(session()->has('success'))
             <div class="flex items-center p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400"
@@ -24,10 +20,10 @@
                 </div>
             </div>
             @endif
-            {{-- Today Classes --}}
-            <x-table.classes search='true'>
+            {{-- Active billings --}}
+            <x-table.tutor model='searchActive'>
                 <x-slot name="title">
-                    Daftar Kelas Belum Masuk Billing ({{$unbilled->count()}})
+                    Daftar Pembayaran Honor Aktif ({{$active->count()}})
                 </x-slot>
 
                 <x-slot name="caption">
@@ -36,16 +32,19 @@
 
                 <x-slot name="head">
                     <x-table.head>
-                        Waktu
+                        Nomor
                     </x-table.head>
                     <x-table.head>
-                        Mata Pelajaran
+                        Identitas Tutor
                     </x-table.head>
                     <x-table.head>
-                        Nama Tutor
+                        Periode
                     </x-table.head>
                     <x-table.head>
-                        Nama Murid
+                        Nominal
+                    </x-table.head>
+                    <x-table.head>
+                        Status
                     </x-table.head>
                     <x-table.head>
                         Opsi
@@ -56,36 +55,29 @@
                     @php
                     // dd($today);
                     @endphp
-                    @forelse ($unbilled as $i => $item)
-                    <x-table.row-class-today wire:loading.class.delay.longest='opacity-80' :tutor='$item->theTutor'
-                        :student='$item->theStudent' :course='$item->theCourse' :data='$item'>
-                        <x-slot name="id">
-                            {{$item->id}}
+                    @forelse ($active as $i => $item)
+                    <x-table.row-tutor-fee wire:loading.class.delay.longest='opacity-80' :item='$item'>
+                        <x-slot name="sequence">
+                            {{$i+1}}
                         </x-slot>
-                        <x-slot name="time">
-                            {{$item->date_of_event->format('d M Y H:i T')}}
-                        </x-slot>
-                        <x-slot name="topic">
-                            {{$item->topic}}
-                        </x-slot>
-                    </x-table.row-class-today>
+                    </x-table.row-tutor-fee>
                     @empty
                     <tr>
                         <td colspan="5" class="px-2 py-3 italic">
-                            Tidak ada data kelas
+                            Tidak ada data
                         </td>
                     </tr>
                     @endforelse
                 </x-slot>
                 <x-slot name="foot">
-                    {{$unbilled->links()}}
+                    {{$active->links()}}
                 </x-slot>
-            </x-table.classes>
-
-            {{-- Tomorrow Classes --}}
-            <x-table.classes-tomorrow>
+            </x-table.tutor>
+            
+            {{-- Past Classes --}}
+            <x-table.tutor model='searchPaid'>
                 <x-slot name="title">
-                    Daftar Kelas Sudah Masuk Billing ({{$billed->count()}})
+                    Daftar Honor Tutor Lunas ({{$paid->count()}})
                 </x-slot>
 
                 <x-slot name="caption">
@@ -94,16 +86,19 @@
 
                 <x-slot name="head">
                     <x-table.head>
-                        Waktu
+                        Nomor
                     </x-table.head>
                     <x-table.head>
-                        Mata Pelajaran
+                        Identitas Tutor
                     </x-table.head>
                     <x-table.head>
-                        Nama Tutor
+                        Periode
                     </x-table.head>
                     <x-table.head>
-                        Nama Murid
+                        Nominal
+                    </x-table.head>
+                    <x-table.head>
+                        Status
                     </x-table.head>
                     <x-table.head>
                         Opsi
@@ -111,34 +106,27 @@
                 </x-slot>
 
                 <x-slot name="body">
+                    @forelse ($paid as $i => $item)
                     @php
-                    // dd($today);
+                    // dd($item);
                     @endphp
-                    @forelse ($billed as $i => $item)
-                    <x-table.row-class-today wire:loading.class.delay.longest='opacity-80' :tutor='$item->theTutor'
-                        :student='$item->theStudent' :course='$item->theCourse' :data='$item'>
-                        <x-slot name="id">
-                            {{$item->id}}
+                    <x-table.row-tutor-fee wire:loading.class.delay.longest='opacity-80' :item='$item'>
+                        <x-slot name="sequence">
+                            {{$i+1}}
                         </x-slot>
-                        <x-slot name="time">
-                            {{$item->date_of_event->format('d M Y H:i T')}}
-                        </x-slot>
-                        <x-slot name="topic">
-                            {{$item->topic}}
-                        </x-slot>
-                    </x-table.row-class-today>
+                    </x-table.row-tutor-fee>
                     @empty
                     <tr>
                         <td colspan="5" class="px-2 py-3 italic">
-                            Tidak ada kelas yang akan datang
+                            Tidak ada data
                         </td>
                     </tr>
                     @endforelse
                 </x-slot>
                 <x-slot name="foot">
-                    {{$billed->links()}}
+                    {{$paid->links()}}
                 </x-slot>
-            </x-table.classes-tomorrow>
+            </x-table.tutor>
         </div>
     </x-page.content-white>
 </div>

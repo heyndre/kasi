@@ -95,8 +95,11 @@
     </td>
 
     <td class="px-6 py-4">
-        @if (auth()->user()->role == 'MURID' || auth()->user()->role == 'WALI MURID')
+        @if (auth()->user()->isStudent())
         <a href="{{route('student.billing.status', ['id' => $item->id])}}"
+            class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Lihat rincian</a>
+        @elseif (auth()->user()->isGuardian())
+        <a href="{{route('guardian.billing.status', ['id' => $item->id])}}"
             class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Lihat rincian</a>
         @else
         <a href="{{route('payment.student.status', ['id' => $item->id])}}"

@@ -4,11 +4,12 @@ namespace App\Livewire\Admin\Keuangan;
 
 use App\Models\Billing;
 use App\Models\Expense;
+use App\Models\Promo;
 use Livewire\Component;
 
 class PembayaranMuridStatus extends Component
 {
-    public $billing, $diff = 0;
+    public $billing, $diff = 0, $promoCode;
 
     public function mount($id)
     {
@@ -46,6 +47,32 @@ class PembayaranMuridStatus extends Component
         session()->flash('success', 'Entri pengembalian dana berhasil dibuat');
         return $this->redirect(route('payment.student.status', ['id' => $this->billing->id]));
 
+    }
+
+    public function addPromoCode() {
+        $promo = Promo::where('code', strtoupper($this->promoCode))->first();
+        if ($promo->type == 'flat') {
+            $promoAmount = $promo->amount;
+        } elseif ($promo->type) {
+            $promoAmount = $promo->amount / 100 * $this->billing->amount;
+        }
+
+        $this->billing->update([
+            'amount' => $this->billing->amount_no_promo - $promoAmount,
+            'promo_code' => strtoupper($this->promoCode)
+        ]);
+
+        session()->flash('success1', 'Aplikasi Kode Promo Berhasil');
+        return redirect(request()->header('Referer'));
+    }
+
+    public function updatedPromoCode() {
+        $check = Promo::where('code', $this->promoCode)->first();
+        if ($check) {
+            session()->flash('success1', 'Kode Promo Tersedia');
+        } else {
+            session()->flash('warning1', 'Kode Promo Tidak Tersedia');
+        }
     }
 
     public function render()

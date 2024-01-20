@@ -29,9 +29,15 @@ use App\Livewire\Admin\Keuangan\KonfirmasiPayment as KonfirmasiStatusPembayaranM
 use App\Livewire\Admin\Keuangan\Refund\UploadReceipt as KonfirmasiRefundPembayaranMurid;
 use App\Livewire\Admin\Keuangan\BillingIndex as BillingIndex;
 
+use App\Livewire\Admin\Keuangan\Penggajian\Tutor as HonorTutorIndex;
+use App\Livewire\Admin\Keuangan\Penggajian\TutorReceipt as HonorTutorReceipt;
+
 use App\Livewire\Student\Keuangan\BillingIndex as StudentBillingIndex;
 use App\Livewire\Student\Keuangan\UploadPayment as StudentUploadPayment;
 use App\Livewire\Student\Kelas\Index as StudentClasses;
+
+use App\Livewire\Guardian\Keuangan\BillingIndex as GuardianBillingIndex;
+use App\Livewire\Guardian\Kelas\Index as GuardianClasses;
 
 use App\Livewire\Tutor\Kelas\Index as TutorClasses;
 use App\Livewire\Tutor\Kelas\Edit as TutorClassEdit;
@@ -43,6 +49,8 @@ use App\Livewire\Tutor\Register as TutorRegister;
 use App\Livewire\Tutor\Edit as TutorEdit;
 use App\Livewire\Tutor\Murid\Aktif as TutorStudentActive;
 use App\Livewire\Tutor\Murid\Inaktif as TutorStudentInactive;
+use App\Livewire\Tutor\Keuangan\Penggajian as TutorSeeFee;
+
 // use App\Livewire\Tutor\Birthday as TutorBirthday;
 
 use Illuminate\Support\Facades\Route;
@@ -73,6 +81,8 @@ Route::get('tes-mail', function () {
     dd('Mail sent successfully.');
 });
 
+Route::get('tes-fee', [MeetingController::class, 'tesFee']);
+
 
 Route::view('default-billing', 'billing.default');
 Route::view('mail-student-attendance', 'mail.student-attendance');
@@ -90,6 +100,7 @@ Route::middleware([
     Route::get('/file/access/class/photo/{file?}', [FileAccessController::class, 'accessClassPhoto'])->name('file.class.photo');
     Route::get('/file/access/payment/student/{nim}/{filename?}', [FileAccessController::class, 'accessStudentReceipt'])->name('file.payment.student');
     Route::get('/file/access/payment/refund/{file}/{name?}', [FileAccessController::class, 'accessStudentRefund'])->name('file.payment.refund');
+    Route::get('/file/access/payment/tutor/{slug}/{filename?}', [FileAccessController::class, 'accessTutorReceipt'])->name('file.payment.tutor');
 
     Route::middleware('role:ADMIN,SUPERADMIN')->group(function () {
 
@@ -132,7 +143,9 @@ Route::middleware([
         // Route::post('keuangan/billing/validasi/', [BillingController::class, 'submitBillPayment'])->name('payment.student.submit');
         Route::get('keuangan/billing/', BillingIndex::class)->name('payment.student.billing');
 
-
+        Route::get('keuangan/penggajian/tutor', HonorTutorIndex::class)->name('finance.tutor.fee');
+        Route::get('keuangan/penggajian/tutor/receipt/{id}', HonorTutorReceipt::class)->name('finance.tutor.fee.receipt');
+        Route::get('keuangan/penggajian/tutor/status/{id}', HonorTutorIndex::class)->name('finance.tutor.fee.status');
 
         Route::get('tes-pdf', [BillingController::class, 'testPDF'])->name('test.pdf');
 
@@ -164,7 +177,25 @@ Route::middleware([
         Route::get('/kelas/status/billing', KBMStatusIndex::class)->name('student.classes.billing.status');
         Route::get('/kelas/detail/{id}', KBMShow::class)->name('student.classes.show');
         Route::get('/kelas/konfirmasi-kehadiran/{id}', [MeetingController::class, 'studentAttendance'])->name('student.classes.attendance');
+    });
 
+    // Guardian group
+    Route::prefix('wali-murid')->middleware('role:WALI MURID')->group(function () {
+        Route::get('keuangan/tagihan/', GuardianBillingIndex::class)->name('guardian.billing.index');
+        Route::get('keuangan/tagihan/unggah-pembayaran/{id}', StudentUploadPayment::class)->name('guardian.billing.upload');
+
+        Route::get('keuangan/tagihan/unduh/{id}', [BillingController::class, 'generateInvoice'])->name('guardian.billing.download');
+        Route::get('keuangan/tagihan/unduh-png/{id}', [BillingController::class, 'generateInvoiceImage'])->name('guardian.billing.download.image');
+
+        Route::get('keuangan/status/{id}', StatusPembayaranMurid::class)->name('guardian.billing.status');
+
+        Route::get('/profil/murid/data/{nim}', StudentShow::class)->name('guardian.student.show');
+        Route::get('/profil/wali-murid/show/{slug}', GuardianShow::class)->name('guardian.show.profile');
+
+        Route::get('/kelas/list', GuardianClasses::class)->name('guardian.classes');
+        Route::get('/kelas/status/billing', KBMStatusIndex::class)->name('guardian.classes.billing.status');
+        Route::get('/kelas/detail/{id}', KBMShow::class)->name('guardian.classes.show');
+        // Route::get('/kelas/konfirmasi-kehadiran/{id}', [MeetingController::class, 'studentAttendance'])->name('student.classes.attendance');
     });
 
     // Tutor group
@@ -188,7 +219,7 @@ Route::middleware([
         Route::get('/murid/list/aktif', TutorStudentActive::class)->name('tutor.students.active');
         Route::get('/murid/list/inaktif', TutorStudentInactive::class)->name('tutor.students.inactive');
         Route::get('/data/murid/{nim}', StudentShow::class)->name('tutor.student.show');
-
+        Route::get('keuangan/penggajian', TutorSeeFee::class)->name('tutor.my-fee');
     });
 });
 

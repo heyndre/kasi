@@ -16,7 +16,7 @@
                         {{ __('Dashboard') }}
                     </x-nav-link>
 
-                    @if (auth()->user()->role == 'ADMIN' || auth()->user()->role == 'SUPERADMIN')
+                    @if (auth()->user()->isManagement())
                     <div class="hidden sm:flex sm:items-center sm:ms-6">
                         <!-- Settings Dropdown -->
                         <div class="ms-3 relative">
@@ -44,7 +44,7 @@
                                         Daftar Billing
                                     </x-dropdown-link>
 
-                                    <x-dropdown-link href="{{ route('profile.show') }}">
+                                    {{-- <x-dropdown-link href="{{ route('profile.show') }}">
                                         {{ __('Konfirmasi Pembayaran') }}
                                     </x-dropdown-link>
 
@@ -58,7 +58,7 @@
 
                                     <x-dropdown-link href="{{ route('profile.show') }}">
                                         {{ __('Konfirmasi Pembayaran') }}
-                                    </x-dropdown-link>
+                                    </x-dropdown-link> --}}
 
                                     <div class="border-t border-gray-200"></div>
 
@@ -72,6 +72,13 @@
 
                                     <x-dropdown-link href="{{ route('profile.show') }}">
                                         {{ __('Transaksi') }}
+                                    </x-dropdown-link>
+
+                                    <div class="block px-4 py-2 text-xs text-gray-400">
+                                        Penggajian
+                                    </div>
+                                    <x-dropdown-link href="{{ route('finance.tutor.fee') }}">
+                                        Penggajian Tutor
                                     </x-dropdown-link>
 
 
@@ -281,7 +288,7 @@
                                         Honor
                                     </div>
 
-                                    <x-dropdown-link href="{{ route('profile.show') }}">
+                                    <x-dropdown-link href="{{ route('tutor.my-fee') }}">
                                         Status Honor Saya
                                     </x-dropdown-link>
 
@@ -452,6 +459,86 @@
                                     </div>
                                     <x-dropdown-link href="{{ route('student.classes') }}">
                                         Jadwal Kelas Saya
+                                    </x-dropdown-link>
+
+                                    <div class="block px-4 py-2 text-xs text-gray-400">
+                                        Bantuan
+                                    </div>
+                                    <x-dropdown-link target='_blank'
+                                        href="https://wa.me/{{$setting->where('key','whatsapp')->value('value')}}?text=Halo%2C saya butuh bantuan tentang Portal KASI bagian Kelas">
+                                        Hubungi Admin KASI
+                                    </x-dropdown-link>
+                                </x-slot>
+                            </x-dropdown>
+                        </div>
+                    </div>
+                    @endif
+
+                    @if (auth()->user()->isGuardian())
+                    <div class="hidden sm:flex sm:items-center sm:ms-6">
+                        <!-- Keuangan -->
+                        <div class="ms-3 relative">
+                            <x-dropdown align="right" width="48">
+                                <x-slot name="trigger">
+                                    <span class="inline-flex rounded-md">
+                                        <button type="button"
+                                            class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-5 font-medium rounded-md text-gray-900 bg-white hover:text-gray-700 hover:bg-gray-50 focus:outline-none focus:bg-gray-50 active:bg-gray-50 transition ease-in-out duration-150">
+                                            Keuangan
+                                            <svg class="ms-2 -me-0.5 h-4 w-4" xmlns="http://www.w3.org/2000/svg"
+                                                fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                                stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                                            </svg>
+                                        </button>
+                                    </span>
+                                </x-slot>
+
+                                <x-slot name="content">
+                                    <div class="block px-4 py-2 text-xs text-gray-400">
+                                        Billing & Pembayaran
+                                    </div>
+                                    <x-dropdown-link href="{{ route('guardian.billing.index') }}">
+                                        Tagihan Saya
+                                    </x-dropdown-link>
+
+                                    <div class="block px-4 py-2 text-xs text-gray-400">
+                                        Bantuan
+                                    </div>
+                                    <x-dropdown-link target='_blank'
+                                        href="https://wa.me/{{$setting->where('key','whatsapp')->value('value')}}?text=Halo%2C saya butuh bantuan tentang Portal KASI bagian Billing/Tagihan dan Pembayaran">
+                                        Hubungi Admin KASI
+                                    </x-dropdown-link>
+                                </x-slot>
+                            </x-dropdown>
+                        </div>
+                    </div>
+
+                    <div class="hidden sm:flex sm:items-center sm:ms-6">
+                        <!-- Keuangan -->
+                        <div class="ms-3 relative">
+                            <x-dropdown align="right" width="48">
+                                <x-slot name="trigger">
+                                    <span class="inline-flex rounded-md">
+                                        <button type="button"
+                                            class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-5 font-medium rounded-md text-gray-900 bg-white hover:text-gray-700 hover:bg-gray-50 focus:outline-none focus:bg-gray-50 active:bg-gray-50 transition ease-in-out duration-150">
+                                            Kelas
+                                            <svg class="ms-2 -me-0.5 h-4 w-4" xmlns="http://www.w3.org/2000/svg"
+                                                fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                                stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                                            </svg>
+                                        </button>
+                                    </span>
+                                </x-slot>
+
+                                <x-slot name="content">
+                                    <div class="block px-4 py-2 text-xs text-gray-400">
+                                        Jadwal
+                                    </div>
+                                    <x-dropdown-link href="{{ route('guardian.classes') }}">
+                                        Jadwal Kelas Anak Saya
                                     </x-dropdown-link>
 
                                     <div class="block px-4 py-2 text-xs text-gray-400">

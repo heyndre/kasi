@@ -10,14 +10,18 @@ class TutorPayment extends Model
     use HasFactory;
 
     protected $guarded = [], $table = 'tutor_payment_sharing';
+    protected $casts = [
+        'pay_date' => 'datetime',
+        'due_date' => 'datetime',
+    ];
 
     public function theTutor()
     {
         return $this->belongsTo(Tutor::class, 'tutor_id', 'id');
     }
 
-    public function theBill()
+    public function theClass()
     {
-        return $this->belongsTo(Billing::class, 'billing_id', 'id');
+        return $this->hasMany(Course::class, 'tutor_payment_id', 'id');
     }
 }

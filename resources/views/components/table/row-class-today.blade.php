@@ -12,7 +12,7 @@
         {{$time}}
         <p class="text-gray-800 font-semibold">
             {{$data->statusName()}}
-            </p>
+        </p>
     </td>
     <td class="px-6 py-4">
         {{$course->name}}
@@ -88,6 +88,9 @@
             class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Lihat rincian</a>
         @elseif (auth()->user()->role == 'MURID')
         <a href="{{route('student.classes.show', ['id' => $id])}}"
+            class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Lihat rincian</a>
+        @elseif (auth()->user()->isGuardian())
+        <a href="{{route('guardian.classes.show', ['id' => $id])}}"
             class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Lihat rincian</a>
         @elseif (auth()->user()->role == 'TUTOR')
         <a href="{{route('tutor.classes.show', ['id' => $id])}}"

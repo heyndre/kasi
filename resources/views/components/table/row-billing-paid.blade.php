@@ -60,11 +60,12 @@
                 src="https://ui-avatars.com/api/?name={{substr($acronymPlus, 0, 3)}}&color=7F9CF5&background=EBF4FF"
                 alt="{{$acronym}}">
             @else
-            <img class="w-14 h-14 rounded-full" src="{{asset($item->theStudent->theGuardian->userData->profile_photo_path)}}"
-                alt="{{$acronym}}">
+            <img class="w-14 h-14 rounded-full"
+                src="{{asset($item->theStudent->theGuardian->userData->profile_photo_path)}}" alt="{{$acronym}}">
             @endif
             <div class="pl-3 space-y-2">
-                <a href="{{route('guardian.show', ['slug' => $item->theStudent->theGuardian->userData->slug])}}" class="hover:underline">
+                <a href="{{route('guardian.show', ['slug' => $item->theStudent->theGuardian->userData->slug])}}"
+                    class="hover:underline">
                     <div class="text-base font-semibold bg-white-100/50 rounded-sm px-2 py-1">
                         {{$item->theStudent->theGuardian->userData->nickname}}
                     </div>
@@ -74,7 +75,7 @@
                 </a>
             </div>
             @else
-                <p class="italic">N/A</p>
+            <p class="italic">N/A</p>
             @endif
         </div>
     </td>
@@ -94,9 +95,12 @@
     </td>
 
     <td class="px-6 py-4">
-        @if (auth()->user()->role == 'MURID')
+        @if (auth()->user()->isStudent())
         <a href="{{route('student.billing.status', ['id' => $item->id])}}"
-            class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Lihat rincian</a>    
+            class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Lihat rincian</a>
+        @elseif (auth()->user()->isGuardian())
+        <a href="{{route('guardian.billing.status', ['id' => $item->id])}}"
+            class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Lihat rincian</a>
         @else
         <a href="{{route('payment.student.status', ['id' => $item->id])}}"
             class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Lihat rincian</a>

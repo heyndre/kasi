@@ -44,6 +44,11 @@ class Course extends Model
         return $this->hasOne(CourseBase::class, 'id', 'course_id');
     }
 
+    public function theSharing()
+    {
+        return $this->belongsTo(TutorPayment::class, 'tutor_payment_id', 'id');
+    }
+
     public function statusName()
     {
         if ($this->status == 'WAITING') {

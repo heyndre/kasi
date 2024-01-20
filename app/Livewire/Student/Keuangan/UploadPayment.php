@@ -144,9 +144,8 @@ class UploadPayment extends Component
             $payment->update([
                 'payment_file' => $filename
             ]);
-
         }
-        
+
         $recipients = User::management()->get();
         foreach ($recipients as $to) {
             $data = [
@@ -154,7 +153,7 @@ class UploadPayment extends Component
                 'billingID' => $billing->id,
                 'paymentID' => $payment->id,
                 'studentPayTime' => $payment->pay_date->format('d/m/Y H:i:s T'),
-                'guardianName' => $billing->theStudent->theGuardian->userData->name,
+                // 'guardianName' => $billing->theStudent->theGuardian->userData->name,
                 'studentName' => $billing->theStudent->userData->name,
                 'studentNIM' => $billing->theStudent->nim,
 
@@ -162,7 +161,11 @@ class UploadPayment extends Component
             SendStudentReceiptConfirm::dispatch($data);
         }
 
-        return $this->redirect(route('student.billing.status', ['id' => $billing->id]));
+        if (auth()->user()->isStudent()) {
+            return $this->redirect(route('student.billing.status', ['id' => $billing->id]));
+        } elseif (auth()->user()->isGuardian()) {
+            return $this->redirect(route('guardian.billing.status', ['id' => $billing->id]));
+        }
     }
 
     public function updatedReceipt()
