@@ -5,7 +5,7 @@
     <x-slot name='button'>
         @if (auth()->user()->role == 'ADMIN' || auth()->user()->role == 'SUPERADMIN')
         <x-page.edit-button>
-            Ubah Kelas
+            Ubah Data Kelas
             <x-slot name='route'>
                 {{route('kbm.edit', ['id' => $course->id])}}
             </x-slot>
@@ -65,7 +65,7 @@
         @endif
         @elseif (auth()->user()->role == 'TUTOR')
         <x-page.edit-button>
-            Ubah Detail Kelas
+            Ubah Data Kelas
             <x-slot name='route'>
                 {{route('tutor.classes.edit', ['id' => $course->id])}}
             </x-slot>

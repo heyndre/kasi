@@ -121,15 +121,15 @@
                             Kode Promo
                         </td>
                         <td class="p-2 bg-amber-600 text-white">
-                            @if ($item->thePromo != null)
-                            {{$item->thePromo->code}}
+                            @if ($billing->promo_code != null)
+                            {{$billing->promo_code}}
                             @else
                             Tidak ada promo
                             @endif
                         </td>
                         <td class="p-2 bg-amber-100">
-                            @if ($item->thePromo != null)
-                            Rp.{{number_format($item->amount - $item->amount_no_promo, 0, ',', '.')}}
+                            @if ($billing->promo_code != null)
+                            Rp.({{number_format($billing->amount - $billing->amount_no_promo, 0, ',', '.')}})
                             @else
                             -
                             @endif
@@ -139,13 +139,13 @@
                     <tr class="font-semibold text-gray-900 dark:text-white">
                         <td scope="row" class="p-2 text-base bg-amber-800 text-white font-bold" colspan="3">Total</td>
                         {{-- <td class="p-2 bg-amber-600 text-white font-bold">{{$totalHours / 60}} jam</td> --}}
-                        <td class="p-2 bg-amber-100 font-bold">Rp.{{number_format($totalPrice - ($item->amount -
-                            $item->amount_no_promo), 0, ',', '.')}}</td>
+                        <td class="p-2 bg-amber-100 font-bold">Rp.{{number_format($totalPrice - ($billing->amount_no_promo -
+                            $billing->amount), 0, ',', '.')}}</td>
                     </tr>
                     <tr class="">
                         <td scope="row" colspan="4">
                             <p class="italic">
-                                Terbilang {{Terbilang::make($totalPrice - ($item->amount - $item->amount_no_promo), '
+                                Terbilang {{Terbilang::make($totalPrice - ($billing->amount_no_promo - $billing->amount), '
                                 rupiah')}}
                             </p>
                         </td>

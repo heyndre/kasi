@@ -125,7 +125,7 @@ class BillingController extends Controller
 
     public function generateInvoice($id)
     {
-        $billing = Billing::with('theClass.theTutor.userData', 'theStudent', 'theStudentData')
+        $billing = Billing::with('theClass.theTutor.userData', 'theStudent', 'theStudentData', 'thePromo')
             ->where('id', $id)->firstOrFail();
         $filename = 'Invoice KASI ' . str_pad($billing->invoice_id, 5, '0', STR_PAD_LEFT) . '.pdf';
 
