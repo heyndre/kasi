@@ -16,7 +16,7 @@
             @csrf
 
             <div>
-                <x-label for="email" value="Email atau Username login" />
+                <x-label for="email" value="Email/Nomor Telepon/NIM" />
                 <x-input id="email" class="block mt-1 w-full" type="text" name="email" :value="old('email')" required autofocus autocomplete="username" />
             </div>
 
@@ -25,12 +25,12 @@
                 <x-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="current-password" />
             </div>
 
-            <div class="block mt-4">
+            {{-- <div class="block mt-4">
                 <label for="remember_me" class="flex items-center">
                     <x-checkbox id="remember_me" name="remember" />
                     <span class="ms-2 text-sm text-gray-600">{{ __('Tetap login') }}</span>
                 </label>
-            </div>
+            </div> --}}
             @php
             $whatsapp = \App\Models\Setting::where('key', 'whatsapp')->value('value');
             @endphp

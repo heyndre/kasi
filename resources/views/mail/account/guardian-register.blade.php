@@ -311,7 +311,7 @@
                                                                         style="font-size: 14px; line-height: 23.8px; font-family: helvetica, sans-serif;"><span
                                                                             style="line-height: 23.8px;">
                                                                             Nama Akun :
-                                                                            {{$data['studentName']}}
+                                                                            {{$data['guardianName']}}
                                                                         </span>
                                                                         <span style="line-height: 23.8px;">
                                                                         </span>

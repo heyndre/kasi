@@ -10,6 +10,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Fortify\Fortify;
+use Illuminate\Support\Str;
 
 class JetstreamServiceProvider extends ServiceProvider
 {
@@ -21,6 +22,7 @@ class JetstreamServiceProvider extends ServiceProvider
         Fortify::authenticateUsing(function (Request $request) {
             $user = User::where('email', $request->email)
             ->orSearch('mobile_number', $request->email)
+            ->orSearch('mobile_number', Str::replaceFirst('0','62',$request->email))
             ->first();
             // dd($user);
             

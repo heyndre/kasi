@@ -4,7 +4,15 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-VRHMB694FN"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
 
+  gtag('config', 'G-VRHMB694FN');
+    </script>
     <title>Portal KASI</title>
 
     <!-- Fonts -->
@@ -62,8 +70,7 @@
                             </a>
                         </div>
                         <div class="hidden lg:mt-0 lg:col-span-5 lg:flex">
-                            <img src="{{Storage::url('portal-banner.jpg')}}"
-                                alt="Banner Portal KASI">
+                            <img src="{{Storage::url('portal-banner.jpg')}}" alt="Banner Portal KASI">
                         </div>
                     </div>
                 </section>

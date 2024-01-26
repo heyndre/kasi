@@ -188,11 +188,11 @@
                                         Daftar Wali Murid
                                     </x-dropdown-link>
 
-                                    
+
                                     <div class="block px-4 py-2 text-xs text-gray-400">
                                         Registrasi
                                     </div>
-                                    
+
                                     <x-dropdown-link href="{{ route('guardian.register') }}" wire:navigate>
                                         Registrasi Wali Murid
                                     </x-dropdown-link>
@@ -282,7 +282,7 @@
                                     <x-dropdown-link href="">
                                         Daftar Billing Murid Saya
                                     </x-dropdown-link> --}}
-                                    
+
                                     <div class="border-t border-gray-200"></div>
                                     <div class="block px-4 py-2 text-xs text-gray-400">
                                         Honor
@@ -340,7 +340,7 @@
                                     </x-dropdown-link>
 
                                     <div class="border-t border-gray-200"></div>
-                                
+
                                     <div class="block px-4 py-2 text-xs text-gray-400">
                                         Bantuan
                                     </div>
@@ -694,6 +694,90 @@
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
         </div>
+
+        @if (auth()->user()->isTutor())
+        <div class="pt-4 pb-1 border-t border-gray-200">
+            <div class="mt-3 space-y-1">
+                <div class="block px-4 py-2 text-xs text-gray-400">
+                    Keuangan
+                </div>
+                <x-responsive-nav-link href="{{ route('tutor.my-fee') }}" :active="request()->routeIs('tutor.my-fee')">
+                    Status Honor Saya
+                </x-responsive-nav-link>
+
+                <x-responsive-nav-link target='_blank'
+                    href="https://wa.me/{{$setting->where('key','whatsapp')->value('value')}}?text=Halo%2C saya butuh bantuan tentang Portal KASI">
+                    Bantuan
+                </x-responsive-nav-link>
+
+                <div class="block px-4 py-2 text-xs text-gray-400">
+                    KBM
+                </div>
+                <x-responsive-nav-link href="{{ route('tutor.classes') }}" :active="request()->routeIs('tutor.classes')">
+                    Jadwal Kelas
+                </x-responsive-nav-link>
+
+                <div class="block px-4 py-2 text-xs text-gray-400">
+                    Murid
+                </div>
+                <x-responsive-nav-link href="{{ route('tutor.students.active') }}" :active="request()->routeIs('tutor.students.active')">
+                    Murid Aktif Saya
+                </x-responsive-nav-link>
+            </div>
+        </div>
+        @endif
+
+        @if (auth()->user()->isStudent())
+        <div class="pt-4 pb-1 border-t border-gray-200">
+            <div class="mt-3 space-y-1">
+                <div class="block px-4 py-2 text-xs text-gray-400">
+                    Keuangan
+                </div>
+                <x-responsive-nav-link href="{{ route('student.billing.index') }}" :active="request()->routeIs('student.billing.index')">
+                    Tagihan Saya
+                </x-responsive-nav-link>
+
+                <x-responsive-nav-link target='_blank'
+                    href="https://wa.me/{{$setting->where('key','whatsapp')->value('value')}}?text=Halo%2C saya butuh bantuan tentang Portal KASI">
+                    Bantuan
+                </x-responsive-nav-link>
+
+                <div class="block px-4 py-2 text-xs text-gray-400">
+                    KBM
+                </div>
+                <x-responsive-nav-link href="{{ route('student.classes') }}" :active="request()->routeIs('student.classes')">
+                    Jadwal Kelas Saya
+                </x-responsive-nav-link>
+            </div>
+        </div>
+        @endif
+
+
+        @if (auth()->user()->isGuardian())
+        <div class="pt-4 pb-1 border-t border-gray-200">
+            <div class="mt-3 space-y-1">
+                <div class="block px-4 py-2 text-xs text-gray-400">
+                    Keuangan
+                </div>
+                <x-responsive-nav-link href="{{ route('guardian.billing.index') }}" :active="request()->routeIs('guardian.billing.index')">
+                    Tagihan Saya
+                </x-responsive-nav-link>
+
+                <x-responsive-nav-link target='_blank'
+                    href="https://wa.me/{{$setting->where('key','whatsapp')->value('value')}}?text=Halo%2C saya butuh bantuan tentang Portal KASI">
+                    Bantuan
+                </x-responsive-nav-link>
+
+                <div class="block px-4 py-2 text-xs text-gray-400">
+                    KBM
+                </div>
+                <x-responsive-nav-link href="{{ route('guardian.classes') }}" :active="request()->routeIs('guardian.classes')">
+                    Jadwal Kelas Anak Saya
+                </x-responsive-nav-link>
+            </div>
+        </div>
+        @endif
+
 
         <!-- Responsive Settings Options -->
         <div class="pt-4 pb-1 border-t border-gray-200">
