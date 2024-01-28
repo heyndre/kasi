@@ -25,11 +25,11 @@
                         </a> --}}
                         <h1
                             class="mb-4 text-4xl font-extrabold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-6xl dark:text-white">
-                            Selamat datang di Portal KASI!
+                           {{__('word.welcome')}}
                         </h1>
                         <p
                             class="mb-8 text-lg font-normal text-gray-500 lg:text-xl sm:px-16 xl:px-48 dark:text-gray-400">
-                            Belajar Dulu, Menginspirasi Kemudian!
+                            {{__('motto')}}
                         </p>
                         <div
                             class="flex flex-col mb-8 lg:mb-16 space-y-4 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4">
@@ -93,11 +93,11 @@
                         </a> --}}
                         <h1
                             class="mb-4 text-4xl font-extrabold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-6xl dark:text-white">
-                            Selamat datang di Portal KASI!
+                           {{__('word.welcome')}}
                         </h1>
                         <p
                             class="mb-8 text-lg font-normal text-gray-500 lg:text-xl sm:px-16 xl:px-48 dark:text-gray-400">
-                            Belajar Dulu, Menginspirasi Kemudian!
+                            {{__('motto')}}
                         </p>
                         <div
                             class="flex flex-col mb-8 lg:mb-16 space-y-4 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4">
@@ -161,17 +161,17 @@
                         </a> --}}
                         <h1
                             class="mb-4 text-4xl font-extrabold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-6xl dark:text-white">
-                            Selamat datang di Portal KASI!
+                           {{__('word.welcome')}}
                         </h1>
                         <p
                             class="mb-8 text-lg font-normal text-gray-500 lg:text-xl sm:px-16 xl:px-48 dark:text-gray-400">
-                            Belajar Dulu, Menginspirasi Kemudian!
+                            {{__('motto')}}
                         </p>
                         <div
                             class="flex flex-col mb-8 lg:mb-16 space-y-4 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4">
                             <a href="{{route('student.classes')}}"
                                 class="inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center text-white rounded-lg bg-amber-700 hover:bg-amber-800 focus:ring-4 focus:ring-amber-300 dark:focus:ring-amber-900">
-                                Lihat Jadwal Kelas
+                                {{__('see.class.schedule')}}
                                 <svg class="ml-2 -mr-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
                                     xmlns="http://www.w3.org/2000/svg">
                                     <path fill-rule="evenodd"
@@ -193,7 +193,7 @@
                         <div class="px-4 mx-auto text-center md:max-w-screen-md lg:max-w-screen-lg lg:px-36">
                             <span class="font-semibold text-gray-400">Belajar Dulu, Menginspirasi Kemudian!
                                 <br>
-                                Cek juga
+                                {{__('See Also')}}
                             </span>
                             <div
                                 class="flex flex-wrap justify-center items-center mt-8 text-gray-500 sm:justify-between">
@@ -229,11 +229,11 @@
                         </a> --}}
                         <h1
                             class="mb-4 text-4xl font-extrabold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-6xl dark:text-white">
-                            Selamat datang di Portal KASI!
+                           {{__('word.welcome')}}
                         </h1>
                         <p
                             class="mb-8 text-lg font-normal text-gray-500 lg:text-xl sm:px-16 xl:px-48 dark:text-gray-400">
-                            Belajar Dulu, Menginspirasi Kemudian!
+                            {{__('motto')}}
                         </p>
                         <div
                             class="flex flex-col mb-8 lg:mb-16 space-y-4 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4">

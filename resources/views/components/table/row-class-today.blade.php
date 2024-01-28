@@ -88,7 +88,7 @@
             class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Lihat rincian</a>
         @elseif (auth()->user()->role == 'MURID')
         <a href="{{route('student.classes.show', ['id' => $id])}}"
-            class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Lihat rincian</a>
+            class="font-medium text-blue-600 dark:text-blue-500 hover:underline">{{__('See Details')}}</a>
         @elseif (auth()->user()->isGuardian())
         <a href="{{route('guardian.classes.show', ['id' => $id])}}"
             class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Lihat rincian</a>

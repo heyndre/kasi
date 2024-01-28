@@ -76,8 +76,8 @@ class BillingController extends Controller
         // ->where('expire_at', '>=', $course->date_of_event)
         // ->get());
         $availPackage = Package::where('student_id', $course->theStudent->id)
-        ->where('expire_at', '>=', $course->date_of_event)
-        ->get();
+            ->where('expire_at', '>=', $course->date_of_event)
+            ->get();
 
         // if ($course->theStudent->has('thePackage')) {
         if ($availPackage->count() > 0) {
@@ -130,36 +130,69 @@ class BillingController extends Controller
         $filename = 'Invoice KASI ' . str_pad($billing->invoice_id, 5, '0', STR_PAD_LEFT) . '.pdf';
 
         if (PHP_OS == 'Linux') {
-            $image = Browsershot::html(view('billing.template', ['billing' => $billing])->render())
-                ->waitUntilNetworkIdle()
-                ->newHeadless()
-                ->emulateMedia("screen")
-                ->format("A4")
-                ->margins(0.25, 0.25, 0.25, 0.25, "in")
-                ->showBackground()
-                ->setRemoteInstance('127.0.0.1', 9222)
-                ->mobile()
-                ->fullPage()
-                ->setCustomTempPath(storage_path('/tmp'))
-                ->setNodeBinary('/www/server/nvm/versions/node/v20.11.0/bin/node')
-                ->setNpmBinary('/www/server/nvm/versions/node/v20.11.0/bin/npm')
-                ->userDataDir('/var/fileexchange')
-                ->disableJavascript()
-                ->save(storage_path("app/billing/" . $filename));
+            if ($billing->theStudent->nationality == 'INDONESIAN') {
+                $image = Browsershot::html(view('billing.template', ['billing' => $billing])->render())
+                    ->waitUntilNetworkIdle()
+                    ->newHeadless()
+                    ->emulateMedia("screen")
+                    ->format("A4")
+                    ->margins(0.25, 0.25, 0.25, 0.25, "in")
+                    ->showBackground()
+                    ->setRemoteInstance('127.0.0.1', 9222)
+                    ->mobile()
+                    ->fullPage()
+                    ->setCustomTempPath(storage_path('/tmp'))
+                    ->setNodeBinary('/www/server/nvm/versions/node/v20.11.0/bin/node')
+                    ->setNpmBinary('/www/server/nvm/versions/node/v20.11.0/bin/npm')
+                    ->userDataDir('/var/fileexchange')
+                    ->disableJavascript()
+                    ->save(storage_path("app/billing/" . $filename));
+            } else {
+                $image = Browsershot::html(view('billing.template-english', ['billing' => $billing])->render())
+                    ->waitUntilNetworkIdle()
+                    ->newHeadless()
+                    ->emulateMedia("screen")
+                    ->format("A4")
+                    ->margins(0.25, 0.25, 0.25, 0.25, "in")
+                    ->showBackground()
+                    ->setRemoteInstance('127.0.0.1', 9222)
+                    ->mobile()
+                    ->fullPage()
+                    ->setCustomTempPath(storage_path('/tmp'))
+                    ->setNodeBinary('/www/server/nvm/versions/node/v20.11.0/bin/node')
+                    ->setNpmBinary('/www/server/nvm/versions/node/v20.11.0/bin/npm')
+                    ->userDataDir('/var/fileexchange')
+                    ->disableJavascript()
+                    ->save(storage_path("app/billing/" . $filename));
+            }
         } else {
-            $image = Browsershot::html(view('billing.template', ['billing' => $billing])->render())
-                ->waitUntilNetworkIdle()
-                ->newHeadless()
-                ->emulateMedia("screen")
-                ->format("A4")
-                ->margins(0.25, 0.25, 0.25, 0.25, "in")
-                ->showBackground()
-                ->setRemoteInstance('127.0.0.1', 9222)
-                ->mobile()
-                ->fullPage()
-                ->disableJavascript()
-                ->save(storage_path("app/billing/" . $filename));
-
+            if ($billing->theStudent->nationality == 'INDONESIAN') {
+                $image = Browsershot::html(view('billing.template', ['billing' => $billing])->render())
+                    ->waitUntilNetworkIdle()
+                    ->newHeadless()
+                    ->emulateMedia("screen")
+                    ->format("A4")
+                    ->margins(0.25, 0.25, 0.25, 0.25, "in")
+                    ->showBackground()
+                    ->setRemoteInstance('127.0.0.1', 9222)
+                    ->mobile()
+                    ->fullPage()
+                    ->disableJavascript()
+                    ->save(storage_path("app/billing/" . $filename));
+            } else {
+                $image = Browsershot::html(view('billing.template-english', ['billing' => $billing])->render())
+                    ->waitUntilNetworkIdle()
+                    ->newHeadless()
+                    ->emulateMedia("screen")
+                    ->format("A4")
+                    ->margins(0.25, 0.25, 0.25, 0.25, "in")
+                    ->showBackground()
+                    ->setRemoteInstance('127.0.0.1', 9222)
+                    ->mobile()
+                    ->fullPage()
+                    ->disableJavascript()
+                    ->save(storage_path("app/billing/" . $filename));
+            }
         }
         return Response::download(storage_path("app/billing/" . $filename), $filename);
     }
@@ -170,37 +203,70 @@ class BillingController extends Controller
             ->where('id', $id)->firstOrFail();
         $filename = 'Invoice KASI ' . str_pad($billing->invoice_id, 5, '0', STR_PAD_LEFT) . '.png';
 
-        if (PHP_OS == 'Linux') {       
-            $image = Browsershot::html(view('billing.template', ['billing' => $billing])->render())
-            ->waitUntilNetworkIdle()
-            ->newHeadless()
-            ->emulateMedia("screen")
-            ->format("A4")
-            ->margins(0.25, 0.25, 0.25, 0.25, "in")
-            ->showBackground()
-            ->setRemoteInstance('127.0.0.1', 9222)
-            ->mobile()
-            ->fullPage()
-            ->setCustomTempPath(storage_path('/tmp'))
-            ->setNodeBinary('/www/server/nvm/versions/node/v20.11.0/bin/node')
-            ->setNpmBinary('/www/server/nvm/versions/node/v20.11.0/bin/npm')
-            ->userDataDir('/var/fileexchange')
-            ->deviceScaleFactor(2)
-            ->disableJavascript()
-            ->save(storage_path("app/billing/" . $filename));
+        if (PHP_OS == 'Linux') {
+            if ($billing->theStudent->nationality == 'INDONESIAN') {
+                $image = Browsershot::html(view('billing.template', ['billing' => $billing])->render())
+                    ->waitUntilNetworkIdle()
+                    ->newHeadless()
+                    ->emulateMedia("screen")
+                    ->format("A4")
+                    ->margins(0.25, 0.25, 0.25, 0.25, "in")
+                    ->showBackground()
+                    ->setRemoteInstance('127.0.0.1', 9222)
+                    ->mobile()
+                    ->fullPage()
+                    ->setCustomTempPath(storage_path('/tmp'))
+                    ->setNodeBinary('/www/server/nvm/versions/node/v20.11.0/bin/node')
+                    ->setNpmBinary('/www/server/nvm/versions/node/v20.11.0/bin/npm')
+                    ->userDataDir('/var/fileexchange')
+                    ->disableJavascript()
+                    ->save(storage_path("app/billing/" . $filename));
+            } else {
+                $image = Browsershot::html(view('billing.template-english', ['billing' => $billing])->render())
+                    ->waitUntilNetworkIdle()
+                    ->newHeadless()
+                    ->emulateMedia("screen")
+                    ->format("A4")
+                    ->margins(0.25, 0.25, 0.25, 0.25, "in")
+                    ->showBackground()
+                    ->setRemoteInstance('127.0.0.1', 9222)
+                    ->mobile()
+                    ->fullPage()
+                    ->setCustomTempPath(storage_path('/tmp'))
+                    ->setNodeBinary('/www/server/nvm/versions/node/v20.11.0/bin/node')
+                    ->setNpmBinary('/www/server/nvm/versions/node/v20.11.0/bin/npm')
+                    ->userDataDir('/var/fileexchange')
+                    ->disableJavascript()
+                    ->save(storage_path("app/billing/" . $filename));
+            }
         } else {
-            $image = Browsershot::html(view('billing.template', ['billing' => $billing])->render())
-            ->waitUntilNetworkIdle()
-            ->newHeadless()
-            ->emulateMedia("screen")
-            ->format("A4")
-            ->margins(0.25, 0.25, 0.25, 0.25, "in")
-            ->showBackground()
-            ->setRemoteInstance('127.0.0.1', 9222)
-            ->mobile()
-            ->fullPage()
-            ->disableJavascript()
-            ->save(storage_path("app/billing/" . $filename));
+            if ($billing->theStudent->nationality == 'INDONESIAN') {
+                $image = Browsershot::html(view('billing.template', ['billing' => $billing])->render())
+                    ->waitUntilNetworkIdle()
+                    ->newHeadless()
+                    ->emulateMedia("screen")
+                    ->format("A4")
+                    ->margins(0.25, 0.25, 0.25, 0.25, "in")
+                    ->showBackground()
+                    ->setRemoteInstance('127.0.0.1', 9222)
+                    ->mobile()
+                    ->fullPage()
+                    ->disableJavascript()
+                    ->save(storage_path("app/billing/" . $filename));
+            } else {
+                $image = Browsershot::html(view('billing.template-english', ['billing' => $billing])->render())
+                    ->waitUntilNetworkIdle()
+                    ->newHeadless()
+                    ->emulateMedia("screen")
+                    ->format("A4")
+                    ->margins(0.25, 0.25, 0.25, 0.25, "in")
+                    ->showBackground()
+                    ->setRemoteInstance('127.0.0.1', 9222)
+                    ->mobile()
+                    ->fullPage()
+                    ->disableJavascript()
+                    ->save(storage_path("app/billing/" . $filename));
+            }
         }
         return Response::download(storage_path("app/billing/" . $filename), $filename);
     }

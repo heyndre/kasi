@@ -1,6 +1,6 @@
 <div>
     <x-page.header>
-        Status Billing
+        {{__("Billing Status")}}
     </x-page.header>
     <x-slot name='button'>
         @if (auth()->user()->role == 'ADMIN' || auth()->user()->role == 'SUPERADMIN')
@@ -27,7 +27,7 @@
         @if (auth()->user()->isStudent())
         @if ($billing->thePayment->isEmpty() || $diff > 0)
         <x-page.edit-button>
-            Unggah Bukti Pembayaran
+            {{__("Upload Payment Proof")}}
             <x-slot name='route'>
                 {{route('student.billing.upload', ['id' => $billing->id])}}
             </x-slot>
@@ -79,7 +79,7 @@
                 class=" min-h-[100vh] flex flex-col w-full gap-4 p-4 bg-white border border-gray-200 rounded-lg md:flex-row dark:border-gray-700 dark:bg-gray-800">
                 <div class="w-1/3 p-6">
                     <div class="text-2xl font-bold">
-                        Status Pembayaran Billing
+                        {{__("Billing Payment Status")}}
                     </div>
 
                     <ol class="relative border-s border-gray-200 dark:border-gray-700 mt-6">
@@ -97,9 +97,9 @@
                         @endisset --}}
 
                         @isset($billing)
-                        <x-flowbite.timeline-vertical-item title='Billing dibuat' :latest='false'
+                        <x-flowbite.timeline-vertical-item title='{{__("Billing Created")}}' :latest='false'
                             :time='$billing->created_at'
-                            description="Tagihan #{{str_pad($billing->invoice_id, 5, '0', STR_PAD_LEFT)}} <br> Total Rp.{{number_format($billing->amount, 2, ',', '.')}}"
+                            description="{{__('Billing')}} #{{str_pad($billing->invoice_id, 5, '0', STR_PAD_LEFT)}} <br> Total {{$billing->theStudent->nationality == 'KOREAN' ? 'KRW' : 'Rp.'}}{{number_format($billing->amount, 2, ',', '.')}}"
                             link='' linkDesc="">
                         </x-flowbite.timeline-vertical-item>
 
@@ -107,26 +107,26 @@
                         <x-flowbite.timeline-vertical-item title=' Billing ditagihkan' :latest='false'
                             :time='$billing->bill_date' description='Klik tombol untuk mengunduh tagihan'
                             target='_blank' link='{{route("billing.download", ["id" => $billing->id])}}'
-                            linkDesc='Unduh Tagihan #{{str_pad($billing->invoice_id, 5, "0", STR_PAD_LEFT)}} (PDF)'
+                            linkDesc='{{__("Download Invoice")}} #{{str_pad($billing->invoice_id, 5, "0", STR_PAD_LEFT)}} (PDF)'
                             target2='_blank' link2='{{route("billing.download.image", ["id" => $billing->id])}}'
-                            linkDesc2='Unduh Tagihan #{{str_pad($billing->invoice_id, 5, "0", STR_PAD_LEFT)}} (PNG)'>
+                            linkDesc2='{{__("Download Invoice")}} #{{str_pad($billing->invoice_id, 5, "0", STR_PAD_LEFT)}} (PNG)'>
                         </x-flowbite.timeline-vertical-item>
                         @elseif (auth()->user()->role == 'MURID')
-                        <x-flowbite.timeline-vertical-item title=' Billing ditagihkan' :latest='false'
+                        <x-flowbite.timeline-vertical-item title='{{__("Billed At")}}' :latest='false'
                             :time='$billing->bill_date' description='Klik tombol untuk mengunduh tagihan'
                             target='_blank' link='{{route("student.billing.download", ["id" => $billing->id])}}'
-                            linkDesc='Unduh Tagihan #{{str_pad($billing->invoice_id, 5, "0", STR_PAD_LEFT)}} (PDF)'
+                            linkDesc='{{__("Download Invoice")}} #{{str_pad($billing->invoice_id, 5, "0", STR_PAD_LEFT)}} (PDF)'
                             target2='_blank' link2='{{route("student.billing.download.image", ["id" => $billing->id])}}'
-                            linkDesc2='Unduh Tagihan #{{str_pad($billing->invoice_id, 5, "0", STR_PAD_LEFT)}} (PNG)'>
+                            linkDesc2='{{__("Download Invoice")}} #{{str_pad($billing->invoice_id, 5, "0", STR_PAD_LEFT)}} (PNG)'>
                         </x-flowbite.timeline-vertical-item>
                         @elseif (auth()->user()->role == 'WALI MURID')
                         <x-flowbite.timeline-vertical-item title=' Billing ditagihkan' :latest='false'
                             :time='$billing->bill_date' description='Klik tombol untuk mengunduh tagihan'
                             target='_blank' link='{{route("guardian.billing.download", ["id" => $billing->id])}}'
-                            linkDesc='Unduh Tagihan #{{str_pad($billing->invoice_id, 5, "0", STR_PAD_LEFT)}} (PDF)'
+                            linkDesc='{{__("Download Invoice")}} #{{str_pad($billing->invoice_id, 5, "0", STR_PAD_LEFT)}} (PDF)'
                             target2='_blank'
                             link2='{{route("guardian.billing.download.image", ["id" => $billing->id])}}'
-                            linkDesc2='Unduh Tagihan #{{str_pad($billing->invoice_id, 5, "0", STR_PAD_LEFT)}} (PNG)'>
+                            linkDesc2='{{__("Download Invoice")}} #{{str_pad($billing->invoice_id, 5, "0", STR_PAD_LEFT)}} (PNG)'>
                         </x-flowbite.timeline-vertical-item>
                         @endif
                         @endisset
@@ -150,7 +150,7 @@
                         @endif
 
                         @isset($item->confirm_date)
-                        <x-flowbite.timeline-vertical-item title='Pembayaran dikonfirmasi' :latest='false'
+                        <x-flowbite.timeline-vertical-item title='{{__("Payment Confirmed")}}' :latest='false'
                             :time='$item->confirm_date'
                             description="Pembayaran #{{str_pad($item->id, 5, '0', STR_PAD_LEFT)}}"
                             link="{{route('file.payment.student', ['nim' => $item->payment_file])}}"
@@ -194,26 +194,26 @@
                                 <button id="about-tab" data-tabs-target="#about" type="button" role="tab"
                                     aria-controls="about" aria-selected="true"
                                     class="inline-block p-4 text-blue-600 rounded-ss-lg hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-blue-500">
-                                    Informasi Kelas
+                                    {{__("Class Information")}}
                                 </button>
                             </li>
                             <li class="me-2">
                                 <button id="services-tab" data-tabs-target="#services" type="button" role="tab"
                                     aria-controls="services" aria-selected="false"
                                     class="inline-block p-4 hover:text-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-gray-300">
-                                    Informasi Promo
+                                    {{__("Promo Information")}}
                             <li class="me-2">
                                 <button id="statistics-tab" data-tabs-target="#statistics" type="button" role="tab"
                                     aria-controls="statistics" aria-selected="false"
                                     class="inline-block p-4 hover:text-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-gray-300">
-                                    Informasi Pembayaran
+                                    {{__("Payment Information")}}
                                 </button>
                             </li>
                             <li class="me-2">
                                 <button id="refund-tab" data-tabs-target="#refund" type="button" role="tab"
                                     aria-controls="refund" aria-selected="false"
                                     class="inline-block p-4 hover:text-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-gray-300">
-                                    Informasi Pengembalian Dana
+                                    {{__("Refund Information")}}
                                     @if($diff < 0) <span
                                         class="inline-flex items-center bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded-full dark:bg-green-900 dark:text-green-300">
                                         <span class="w-2 h-2 me-1 bg-green-500 rounded-full"></span>
@@ -229,7 +229,7 @@
                                     <div class="w-fit">
                                         <label class="mb-2 font-semibold leading-none text-gray-900 dark:text-white"
                                             for="name">
-                                            Data Murid
+                                            {{__('Student Information')}}
                                         </label>
                                         <div class="mb-4 font-light sm:mb-5 d">
                                             <div class="flex items-center">
@@ -260,7 +260,7 @@
                                     <div class="w-fit">
                                         <label class="mb-2 font-semibold leading-none text-gray-900 dark:text-white"
                                             for="name">
-                                            Data Wali Murid
+                                            {{__('Guardian Information')}}
                                         </label>
                                         <div
                                             class="mb-4 flex items-center font-light text-gray-500 sm:mb-5 dark:text-gray-400">
@@ -296,28 +296,28 @@
                                 {{-- Today Classes --}}
                                 <x-table.classes search='false'>
                                     <x-slot name="title">
-                                        Daftar Kelas di dalam billing ({{$billing->theClass->count()}})
+                                        {{__('Classes in Billing')}} ({{$billing->theClass->count()}})
                                     </x-slot>
 
                                     <x-slot name="caption">
-                                        Per {{date('d F Y H:i T')}}
+                                        {{date('d F Y H:i T')}}
                                     </x-slot>
 
                                     <x-slot name="head">
                                         <x-table.head>
-                                            Waktu
+                                            {{__('Date and Time')}}
                                         </x-table.head>
                                         <x-table.head>
-                                            Mata Pelajaran
+                                            {{__('Course')}}
                                         </x-table.head>
                                         <x-table.head>
-                                            Nama Tutor
+                                            {{__('Tutor Information')}}
                                         </x-table.head>
                                         <x-table.head>
-                                            Topik
+                                            {{__('Topic')}}
                                         </x-table.head>
                                         <x-table.head>
-                                            Opsi
+                                            {{__('Option')}}
                                         </x-table.head>
                                     </x-slot>
 
@@ -402,28 +402,28 @@
                             aria-labelledby="statistics-tab">
                             <x-table.table search='false'>
                                 <x-slot name="title">
-                                    Daftar pembayaran ({{$billing->thePayment->count()}})
+                                    {{__("Payment List")}} ({{$billing->thePayment->count()}})
                                 </x-slot>
 
                                 <x-slot name="caption">
-                                    Per {{date('d F Y H:i T')}}
+                                    {{date('d F Y H:i T')}}
                                 </x-slot>
 
                                 <x-slot name="head">
                                     <x-table.head>
-                                        Nomor Pembayaran
+                                        {{__("Payment Number")}}
                                     </x-table.head>
                                     <x-table.head>
-                                        Metode Pembayaran
+                                        {{__("Payment Method")}}
                                     </x-table.head>
                                     <x-table.head>
-                                        Jumlah
+                                        {{__("Amount")}}
                                     </x-table.head>
                                     <x-table.head>
-                                        Tanggal Transaksi
+                                        {{__("Date of Transaction")}}
                                     </x-table.head>
                                     <x-table.head>
-                                        Bukti Pembayaran
+                                        {{__("Payment Receipt")}}
                                     </x-table.head>
                                 </x-slot>
 
@@ -439,7 +439,7 @@
                                     @empty
                                     <tr>
                                         <td colspan="5" class="px-2 py-3 italic">
-                                            Tidak ada data pembayaran
+                                            {{__("No Data")}}
                                         </td>
                                     </tr>
                                     @endforelse
@@ -451,7 +451,7 @@
                         <div class="hidden bg-white rounded-lg dark:bg-gray-800" id="refund" role="tabpanel"
                             aria-labelledby="refund-tab">
                             <div class="m-7">
-                                @if ($diff < 0) <x-page.button-with-confirm route='#'
+                                @if ($diff < 0 && auth()->user()->isManagement()) <x-page.button-with-confirm route='#'
                                     confirmMessage='Konfirmasi pembuatan entri pengembalian dana?'
                                     wire:click.prevent='makeRefund'>
                                     Buat Pengembalian Dana

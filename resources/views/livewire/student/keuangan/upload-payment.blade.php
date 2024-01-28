@@ -1,6 +1,6 @@
 <div>
     <x-page.header>
-        Unggah Bukti Pembayaran
+        {{__('Upload Payment Proof')}}
     </x-page.header>
 
     <x-page.style>
@@ -22,15 +22,18 @@
             <form wire:submit.prevent='uploadPayment' class="grid grid-cols-2 gap-4">
                 <div class="mt-6">
                     <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                        Detail Transaksi
+                        {{__('Transaction Detail')}}
                     </label>
-                    Nomor Invoice : {{str_pad($theBillData->invoice_id, 5, '0', STR_PAD_LEFT)}}
-                    <p>Jumlah ditagihkan : Rp.{{number_format($theBillData->amount, 2, ',', '.')}}</p>
+                    Invoice # : {{str_pad($theBillData->invoice_id, 5, '0', STR_PAD_LEFT)}}
+                    <p>{{__("Amount")}} : {{$theBillData->theStudent->nationality == 'KOREAN' ? 'KRW' :
+                        'Rp.'}}{{number_format($theBillData->amount, 2, ',', '.')}}</p>
+                    @if (auth()->user()->theStudent->nationality != 'KOREAN')
                     <p class="italic">Terbilang : {{Terbilang::make($theBillData->amount, ' rupiah')}}</p>
+                    @endif
                 </div>
                 <div class="mb-6" wire:ignore>
                     <label for="eduStatus" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                        Metode Pembayaran
+                        {{__('Payment Method')}}
                         @error('eduStatus')
                         <p class="mt-2 text-sm text-red-600 dark:text-red-500"><span class="font-medium">Oops!</span>
                             {{$message}}</p>
@@ -48,19 +51,28 @@
                         <option value="package" disabled>Kuota Paket Kelas (tidak ada kuota aktif)</option>
                         @endif
                         @else
-                        <option value="bank_transfer">Transfer Bank</option>
-                        <option value="other">Metode pembayaran lainnya</option>
+                        <option value="bank_transfer">{{__('Bank Transfer')}}</option>
+                        <option value="other">{{__('Other Payment Method')}}</option>
                         <option value="package" disabled>Kuota Paket Kelas (tidak ada kuota aktif)</option>
                         @endif
                     </select>
                 </div>
                 @if ($payMethod == 'bank_transfer')
                 <div class="mt-4 text-gray-800 text-sm">
+                    @if (auth()->user()->theStudent->nationality == 'KOREAN')
+                    Please transfer the payment to
+                    <p class="font-semibold">BANK BCA (Indonesia) 0240920395</p>
+                    <p class="text-sm italic"> Firstya Andreas Pandega</p>
+                    before <span class="font-bold">{{$theBillData->due_date->format('d/m/Y')}}</span>.
+                    Passing this date will incur additional fees.
+                    @endif
+                    @if (auth()->user()->theStudent->nationality == 'INDONESIAN')
                     Pembayaran dapat dilakukan melalui transfer ke
                     <p class="font-semibold">BANK BCA 0240920395</p>
                     <p class="text-sm italic">a.n. Firstya Andreas Pandega</p>
                     maksimal pada tanggal <span class="font-bold">{{$theBillData->due_date->format('d/m/Y')}}</span>.
                     Keterlambatan pembayaran dapat mengakibatkan denda.
+                    @endif
                 </div>
                 @else
                 <div class=""></div>
@@ -105,7 +117,7 @@
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M1 5.917 5.724 10.5 15 1.5" />
                         </svg>
-                        Simpan
+                        {{__('Save')}}
                         {{-- <input wire:click='' type="submit" value="" class="hidden"> --}}
                     </button>
                     <div role="status" wire:loading>
@@ -128,7 +140,7 @@
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M1 7.5h11m0 0L8 3.786M12 7.5l-4 3.714M12 1h3c.53 0 1.04.196 1.414.544.375.348.586.82.586 1.313v9.286c0 .492-.21.965-.586 1.313A2.081 2.081 0 0 1 15 14h-3" />
                         </svg>
-                        Batal
+                        {{__('Cancel')}}
                     </a>
                 </div>
             </form>
@@ -154,7 +166,7 @@
 
         $(document).ready(function() {
             $('#payMethod').select2({
-                placeholder: 'Pilih metode pembayaran',
+                placeholder: '{{__("Select Payment Method")}}',
             }).on('change', function(e){
                 @this.set('payMethod', e.target.value);
             });

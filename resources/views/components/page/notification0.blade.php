@@ -23,7 +23,7 @@
         </svg>
         <span class="sr-only">Error</span>
         <div>
-            <span class="font-medium">Kesalahan | </span> {{session('fail0')}}
+            <span class="font-medium">{{__('Error')}} | </span> {{session('fail0')}}
         </div>
     </div>
     @endif
@@ -37,7 +37,7 @@
         </svg>
         <span class="sr-only">Warning</span>
         <div>
-            <span class="font-medium">Peringatan | </span> {{session('warning0')}}
+            <span class="font-medium">{{__('Warning')}} | </span> {{session('warning0')}}
         </div>
     </div>
     @endif

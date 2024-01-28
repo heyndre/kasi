@@ -3,6 +3,7 @@
 namespace App\Livewire\Student;
 
 use App\Jobs\SendRegisterStudent;
+use App\Jobs\SendRegisterStudentEnglish;
 use App\Models\Student;
 use App\Models\User;
 use App\Models\Guardian;
@@ -19,7 +20,7 @@ class Register extends Component
 {
     use WithFileUploads;
 
-    public $email, $whatsapp, $birthday, $name, $nickname, $avatar, $hasGuardian = false, $showGuardian = false, $guardian, $guardians, $city, $address, $province, $eduStatus = 'educating', $eduLevel, $workTitle = 'unemployed', $workSite, $eduSite;
+    public $email, $whatsapp, $birthday, $name, $nationality = 'INDONESIAN', $nickname, $avatar, $hasGuardian = false, $showGuardian = false, $guardian, $guardians, $city, $address, $province, $eduStatus = 'educating', $eduLevel, $workTitle = 'unemployed', $workSite, $eduSite;
 
     public function mount()
     {
@@ -95,6 +96,7 @@ class Register extends Component
             'edu_site' => $this->eduSite,
             'work_title' => $this->workTitle,
             'work_site' => $this->workSite,
+            'nationality' => $this->nationality,
         ]);
 
         if ($data['email'] !== null) {
@@ -108,7 +110,12 @@ class Register extends Component
                 'studentPassword' => $base->birthday->format('dmY')
             ];
 
-            SendRegisterStudent::dispatch($emailData);
+            if ($this->nationality == 'INDONESIAN') {
+                SendRegisterStudent::dispatch($emailData);
+            } else {
+                SendRegisterStudentEnglish::dispatch($emailData);
+            }
+
         }
 
 

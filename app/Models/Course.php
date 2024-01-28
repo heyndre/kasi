@@ -51,18 +51,34 @@ class Course extends Model
 
     public function statusName()
     {
-        if ($this->status == 'WAITING') {
-            return 'Menunggu Pelaksanaan Kelas';
-        } else if ($this->status == 'RUNNING') {
-            return 'Kelas sedang dilaksanakan';
-        } else if ($this->status == 'CONDUCTED') {
-            return 'Kelas selesai';
-        } else if ($this->status == 'CANCELLED') {
-            return 'Kelas dibatalkan';
-        } else if ($this->status == 'BURNED') {
-            return 'Kelas selesai tanpa kehadiran murid';
-        } else if ($this->status == 'NEEDCONFIRMATION') {
-            return 'Menunggu konfirmasi Admin KASI';
+        if (session('language') == 'id') {
+            if ($this->status == 'WAITING') {
+                return 'Menunggu Pelaksanaan Kelas';
+            } else if ($this->status == 'RUNNING') {
+                return 'Kelas sedang dilaksanakan';
+            } else if ($this->status == 'CONDUCTED') {
+                return 'Kelas selesai';
+            } else if ($this->status == 'CANCELLED') {
+                return 'Kelas dibatalkan';
+            } else if ($this->status == 'BURNED') {
+                return 'Kelas selesai tanpa kehadiran murid';
+            } else if ($this->status == 'NEEDCONFIRMATION') {
+                return 'Menunggu konfirmasi Admin KASI';
+            }
+        } else {
+            if ($this->status == 'WAITING') {
+                return 'Waiting to be started';
+            } else if ($this->status == 'RUNNING') {
+                return 'Class being held';
+            } else if ($this->status == 'CONDUCTED') {
+                return 'Class was conducted';
+            } else if ($this->status == 'CANCELLED') {
+                return 'Class cancelled';
+            } else if ($this->status == 'BURNED') {
+                return 'Class was conducted without student';
+            } else if ($this->status == 'NEEDCONFIRMATION') {
+                return 'Waiting Admin KASI Confirmation';
+            } 
         }
     }
 }

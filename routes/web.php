@@ -3,6 +3,7 @@
 use App\Http\Controllers\BillingController;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\FileAccessController;
+use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\MeetingController;
 use App\Livewire\Student\Active as StudentActive;
 use App\Livewire\Student\Inactive as StudentInactive;
@@ -86,6 +87,8 @@ Route::get('tes-fee', [MeetingController::class, 'tesFee']);
 
 Route::view('default-billing', 'billing.default');
 Route::view('mail-student-attendance', 'mail.student-attendance');
+
+Route::get('language/{lang}', [LanguageController::class, 'setLanguage'])->name('language.switch');
 
 Route::middleware([
     'auth:sanctum',

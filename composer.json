@@ -11,6 +11,7 @@
         "google/apiclient": "^2.15",
         "guzzlehttp/guzzle": "^7.2",
         "jenssegers/date": "^4.0",
+        "laravel-lang/locales": "^2.5",
         "laravel/framework": "^10.10",
         "laravel/jetstream": "^4.1",
         "laravel/sanctum": "^3.3",

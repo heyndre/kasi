@@ -1,13 +1,17 @@
 <div>
     <x-page.header>
-        Jadwal Kelas KASI
+        {{__('KASI Class Schedule')}}
     </x-page.header>
 
 
     <x-page.content-white>
         <div class="p-4 w-fit text-sm">
-            <a href="#PastTable" class="px-3 py-2 bg-gray-700 text-white shadow-md rounded-md">Ke Tabel Kelas Yang Lalu</a>
-            <a href="#TomorrowTable" class="px-3 py-2 bg-gray-700 text-white shadow-md rounded-md">Ke Tabel Kelas Yang Akan Datang</a>
+            <a href="#PastTable" class="px-3 py-2 bg-gray-700 text-white shadow-md rounded-md">
+                {{__('Past Classes')}}
+            </a>
+            <a href="#TomorrowTable" class="px-3 py-2 bg-gray-700 text-white shadow-md rounded-md">
+                {{__('Future Classes')}}
+            </a>
         </div>
         <div class="px-4 py-2">
             @if(session()->has('success'))
@@ -27,7 +31,7 @@
             {{-- Today Classes --}}
             <x-table.classes search='true'>
                 <x-slot name="title">
-                    Jadwal Kelas Hari Ini ({{$today->count()}})
+                    {{__('Today Schedule')}} ({{$today->count()}})
                 </x-slot>
 
                 <x-slot name="caption">
@@ -36,19 +40,19 @@
 
                 <x-slot name="head">
                     <x-table.head>
-                        Waktu
+                        {{__('Time of Event')}}
                     </x-table.head>
                     <x-table.head>
-                        Mata Pelajaran
+                        {{__('Course')}}
                     </x-table.head>
                     <x-table.head>
-                        Nama Tutor
+                        {{__('Tutor Name')}}
                     </x-table.head>
                     <x-table.head>
-                        Nama Murid
+                        {{__('Student Name')}}
                     </x-table.head>
                     <x-table.head>
-                        Opsi
+                        {{__('Option')}}
                     </x-table.head>
                 </x-slot>
 
@@ -66,23 +70,24 @@
                     if ($i == 0) {
                     $color = 'rgba('.$r. ','. $g. ','. $b. ',.1)';
                     } else {
-                        if ($today[$i-1]->date_of_event == $item->date_of_event) {
-                            $color = $lastColor;
-                        } else {
-                            while ($lastColor == $color) {
-                            $hash = md5(Str::random(25));
-                            $r = hexdec(substr($hash, 0, 2)); // r
-                            $g = hexdec(substr($hash, 2, 2)); // g
-                            $b = hexdec(substr($hash, 4, 2)); //b
-                            $color = 'rgba('.$r. ','. $g. ','. $b. ',.1)';
-                            }
-                            }
-                            // dd($color);
-                        }
-                        $lastColor = $color;
+                    if ($today[$i-1]->date_of_event == $item->date_of_event) {
+                    $color = $lastColor;
+                    } else {
+                    while ($lastColor == $color) {
+                    $hash = md5(Str::random(25));
+                    $r = hexdec(substr($hash, 0, 2)); // r
+                    $g = hexdec(substr($hash, 2, 2)); // g
+                    $b = hexdec(substr($hash, 4, 2)); //b
+                    $color = 'rgba('.$r. ','. $g. ','. $b. ',.1)';
+                    }
+                    }
+                    // dd($color);
+                    }
+                    $lastColor = $color;
                     @endphp
                     <x-table.row-class-today wire:loading.class.delay.longest='opacity-80' :tutor='$item->theTutor'
-                        :student='$item->theStudent' :course='$item->theCourse' :data='$item' style='background-color: {{$color}}'>
+                        :student='$item->theStudent' :course='$item->theCourse' :data='$item'
+                        style='background-color: {{$color}}'>
                         <x-slot name="id">
                             {{$item->id}}
                         </x-slot>
@@ -96,7 +101,7 @@
                     @empty
                     <tr>
                         <td colspan="5" class="px-2 py-3 italic">
-                            Tidak ada kelas hari ini
+                            {{__('No Data')}}
                         </td>
                     </tr>
                     @endforelse
@@ -108,7 +113,7 @@
             {{-- Tomorrow Classes --}}
             <x-table.classes-tomorrow>
                 <x-slot name="title">
-                    Jadwal Kelas Yang Akan Datang ({{$tomorrow->count()}})
+                    {{__('Future Classes')}} ({{$tomorrow->count()}})
                 </x-slot>
 
                 <x-slot name="caption">
@@ -117,19 +122,19 @@
 
                 <x-slot name="head">
                     <x-table.head>
-                        Waktu
+                        {{__('Time of Event')}}
                     </x-table.head>
                     <x-table.head>
-                        Mata Pelajaran
+                        {{__('Course')}}
                     </x-table.head>
                     <x-table.head>
-                        Nama Tutor
+                        {{__('Tutor Name')}}
                     </x-table.head>
                     <x-table.head>
-                        Nama Murid
+                        {{__('Student Name')}}
                     </x-table.head>
                     <x-table.head>
-                        Opsi
+                        {{__('Option')}}
                     </x-table.head>
                 </x-slot>
 
@@ -147,23 +152,24 @@
                     if ($i == 0) {
                     $color = 'rgba('.$r. ','. $g. ','. $b. ',.1)';
                     } else {
-                        if ($tomorrow[$i-1]->date_of_event == $item->date_of_event) {
-                            $color = $lastColor;
-                        } else {
-                            while ($lastColor == $color) {
-                            $hash = md5(Str::random(25));
-                            $r = hexdec(substr($hash, 0, 2)); // r
-                            $g = hexdec(substr($hash, 2, 2)); // g
-                            $b = hexdec(substr($hash, 4, 2)); //b
-                            $color = 'rgba('.$r. ','. $g. ','. $b. ',.1)';
-                            }
-                            }
-                            // dd($color);
-                        }
-                        $lastColor = $color;
+                    if ($tomorrow[$i-1]->date_of_event == $item->date_of_event) {
+                    $color = $lastColor;
+                    } else {
+                    while ($lastColor == $color) {
+                    $hash = md5(Str::random(25));
+                    $r = hexdec(substr($hash, 0, 2)); // r
+                    $g = hexdec(substr($hash, 2, 2)); // g
+                    $b = hexdec(substr($hash, 4, 2)); //b
+                    $color = 'rgba('.$r. ','. $g. ','. $b. ',.1)';
+                    }
+                    }
+                    // dd($color);
+                    }
+                    $lastColor = $color;
                     @endphp
                     <x-table.row-class-today wire:loading.class.delay.longest='opacity-80' :tutor='$item->theTutor'
-                        :student='$item->theStudent' :course='$item->theCourse' :data='$item' style='background-color: {{$color}}'>
+                        :student='$item->theStudent' :course='$item->theCourse' :data='$item'
+                        style='background-color: {{$color}}'>
                         <x-slot name="id">
                             {{$item->id}}
                         </x-slot>
@@ -177,7 +183,7 @@
                     @empty
                     <tr>
                         <td colspan="5" class="px-2 py-3 italic">
-                            Tidak ada kelas yang akan datang
+                            {{__('No Data')}}
                         </td>
                     </tr>
                     @endforelse
@@ -190,7 +196,7 @@
             {{-- Past Classes --}}
             <x-table.classes-past>
                 <x-slot name="title">
-                    Jadwal Kelas Yang Lalu ({{$past->count()}})
+                    {{__('Past Classes')}} ({{$past->count()}})
                 </x-slot>
 
                 <x-slot name="caption">
@@ -199,19 +205,19 @@
 
                 <x-slot name="head">
                     <x-table.head>
-                        Waktu
+                        {{__('Time of Event')}}
                     </x-table.head>
                     <x-table.head>
-                        Mata Pelajaran
+                        {{__('Course')}}
                     </x-table.head>
                     <x-table.head>
-                        Nama Tutor
+                        {{__('Tutor Name')}}
                     </x-table.head>
                     <x-table.head>
-                        Nama Murid
+                        {{__('Student Name')}}
                     </x-table.head>
                     <x-table.head>
-                        Opsi
+                        {{__('Option')}}
                     </x-table.head>
                 </x-slot>
 
@@ -223,15 +229,18 @@
                     @php
                     // dd($i);
                     if ($item->status == 'CONDUCTED') {
-                        $color = 'rgba(76,200,80,.1)';
+                    $color = 'rgba(76,200,80,.1)';
                     } else if ($item->status == 'BURNED') {
-                        $color = 'rgba(76,0,153,.1)';
+                    $color = 'rgba(76,0,153,.1)';
                     } else if ($item->status == 'CANCELLED') {
-                        $color = 'rgba(153,0,76,.1)';
+                    $color = 'rgba(153,0,76,.1)';
+                    } else {
+                    $color = 'rgba(100,200,100,.1)';
                     }
                     @endphp
                     <x-table.row-class-today wire:loading.class.delay.longest='opacity-80' :tutor='$item->theTutor'
-                        :student='$item->theStudent' :course='$item->theCourse' :data='$item' style='background-color: {{$color}}'>
+                        :student='$item->theStudent' :course='$item->theCourse' :data='$item'
+                        style='background-color: {{$color}}'>
                         <x-slot name="id">
                             {{$item->id}}
                         </x-slot>
@@ -245,7 +254,7 @@
                     @empty
                     <tr>
                         <td colspan="5" class="px-2 py-3 italic">
-                            Tidak ada kelas yang sudah selesai
+                            {{__('No Data')}}
                         </td>
                     </tr>
                     @endforelse

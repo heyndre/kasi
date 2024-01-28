@@ -40,7 +40,7 @@
         @elseif (auth()->user()->isStudent())
         @if ($billingStatus == 'Ditagih')
         <x-page.edit-button>
-            Cek Pembayaran
+            {{__('View Billing Status')}}
             <x-slot name='route'>
                 {{route('student.billing.status', ['id' => $billing->id])}}
             </x-slot>
@@ -108,25 +108,25 @@
                 class=" min-h-[100vh] flex flex-col w-full gap-4 p-4 bg-white border border-gray-200 rounded-lg md:flex-row dark:border-gray-700 dark:bg-gray-800">
                 <div class="w-1/3 p-6">
                     <div class="text-2xl font-bold">
-                        Data Kelas
+                        {{__('Class Data')}}
                     </div>
                     <div class="grid gap-y-2">
                         <div class="border-b-1">
-                            Pelaksanaan Kelas
+                            {{__('Date and Time')}}
                             <div class="font-thin">
                                 {{$course->date_of_event->format('l d M Y H:i T')}}
                             </div>
                         </div>
                         <div class="border-b-1">
-                            Durasi Kelas
+                            {{__('Duration')}}
                             <div class="font-thin">
-                                {{$course->length}} menit
+                                {{$course->length}} {{__('minutes')}}
                             </div>
                         </div>
 
                         <hr class="p-3">
                         <div class="border-b-1">
-                            Kehadiran Murid
+                            {{__('Student Attendance')}}
                             <div class="font-thin">
                                 @if ($course->student_attendance !== null)
                                 {{$course->student_attendance->format('l d M Y H:i T')}}
@@ -138,12 +138,12 @@
                                 == 'RUNNING'))
                                 <a href="{{$meetingLink}}" target="_blank"
                                     class="text-white bg-green-500 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center me-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
-                                    Klik untuk masuk ke kelas
+                                    {{__('Click to open the meeting')}}
                                 </a>
                                 @endif
                                 @else
                                 <p class="italic font-thin">
-                                    Tidak ada data
+                                    {{__('No Data')}}
                                 </p>
                                 @if (auth()->user()->role == 'MURID')
                                 <div>
@@ -157,7 +157,7 @@
                                             <path
                                                 d="M13.243 3.2 7.359 9.081a.5.5 0 0 0-.136.256L6.51 12.9a.5.5 0 0 0 .59.59l3.566-.713a.5.5 0 0 0 .255-.136L16.8 6.757 13.243 3.2Z" />
                                         </svg>
-                                        Tandai Kehadiran & Masuk ke Kelas
+                                       {{__('Mark Attendance')}}
                                     </div>
                                 </div>
                                 @endif
@@ -181,7 +181,7 @@
                             </div>
                         </div>
                         <div class="border-b-1">
-                            Kehadiran Tutor
+                            {{__('Tutor Attendance')}}
                             <div class="font-thin">
                                 @if ($course->tutor_attendance !== null)
                                 {{$course->tutor_attendance->format('l d M Y H:i T')}}
@@ -235,8 +235,8 @@
                             </div>
                         </div>
                         <hr class="p-3">
-                        <div class="border-b-1">
-                            Status Billing
+                        {{-- <div class="border-b-1">
+                            Billing Status
                             <div class="font-thin">
                                 <a href="">
                                     {{$billingStatus}}
@@ -258,7 +258,7 @@
                                     {{$tutorPayment}}
                                 </a>
                             </div>
-                        </div>
+                        </div> --}}
 
                         @if (auth()->user()->role == 'ADMIN' || auth()->user()->role == 'SUPERADMIN')
                         <hr class="p-3">
@@ -334,32 +334,32 @@
                     @if ($course->status == 'WAITING')
                     <div
                         class="text-cyan-700 bg-gradient-to-r from-cyan-100 to-blue-100 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
-                        Menunggu Pelaksanaan Kelas
+                        {{$course->statusName()}}
                     </div>
                     @elseif ($course->status == 'RUNNING')
                     <div
                         class="text-cyan-700 bg-gradient-to-r from-cyan-100 to-blue-100 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
-                        Kelas Sedang Dilaksanakan
+                        {{$course->statusName()}}
                     </div>
                     @elseif ($course->status == 'BURNED')
                     <div
                         class="text-white bg-gradient-to-r from-purple-500 to-pink-500 hover:bg-gradient-to-l focus:ring-4 focus:outline-none focus:ring-purple-200 dark:focus:ring-purple-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
-                        Kelas selesai tanpa kehadiran murid
+                        {{$course->statusName()}}
                     </div>
                     @elseif ($course->status == 'NEEDCONFIRMATION')
                     <div
                         class="text-white bg-gradient-to-r from-purple-500 to-pink-500 hover:bg-gradient-to-l focus:ring-4 focus:outline-none focus:ring-purple-200 dark:focus:ring-purple-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
-                        Menunggu konfirmasi Admin KASI
+                        {{$course->statusName()}}
                     </div>
                     @elseif ($course->status == 'CONDUCTED')
                     <div
                         class="text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
-                        Kelas selesai
+                        {{$course->statusName()}}
                     </div>
                     @elseif ($course->status == 'CANCELLED')
                     <div
                         class="text-white bg-gradient-to-br from-pink-500 to-orange-400 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-pink-200 dark:focus:ring-pink-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
-                        Kelas Dibatalkan
+                        {{$course->statusName()}}
                     </div>
                     @endif
                     <div wire:ignore
@@ -370,21 +370,21 @@
                                 <button id="about-tab" data-tabs-target="#about" type="button" role="tab"
                                     aria-controls="about" aria-selected="true"
                                     class="inline-block p-4 text-blue-600 rounded-ss-lg hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-blue-500">
-                                    Informasi Kelas
+                                    {{__('Class Information')}}
                                 </button>
                             </li>
                             <li class="me-2">
                                 <button id="services-tab" data-tabs-target="#services" type="button" role="tab"
                                     aria-controls="services" aria-selected="false"
                                     class="inline-block p-4 hover:text-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-gray-300">
-                                    Informasi Murid
+                                    {{__('Student Information')}}
                                 </button>
                             </li>
                             <li class="me-2">
                                 <button id="statistics-tab" data-tabs-target="#statistics" type="button" role="tab"
                                     aria-controls="statistics" aria-selected="false"
                                     class="inline-block p-4 hover:text-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-gray-300">
-                                    Informasi Tutor
+                                    {{__('Tutor Information')}}
                                 </button>
                             </li>
                         </ul>
@@ -395,7 +395,7 @@
                                     <div class="w-fit">
                                         <label class="mb-2 font-semibold leading-none text-gray-900 dark:text-white"
                                             for="name">
-                                            Bidang Pelajaran
+                                            Course
                                         </label>
                                         <div class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">
                                             {{$course->theCourse->name}}
@@ -404,7 +404,7 @@
                                     <div class="w-fit">
                                         <label class="mb-2 font-semibold leading-none text-gray-900 dark:text-white"
                                             for="name">
-                                            Topik Bahasan
+                                            {{__('Topic')}}
                                         </label>
                                         <div class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">
                                             {{$course->topic}}
@@ -413,7 +413,7 @@
                                     <div class="w-fit">
                                         <label class="mb-2 font-semibold leading-none text-gray-900 dark:text-white"
                                             for="name">
-                                            Catatan Tutor untuk Murid
+                                            {{__('Tutor Notes for Student')}}
                                         </label>
                                         <div class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">
                                             {{$course->tutor_notes}}
@@ -433,7 +433,7 @@
                                     <div class="w-fit">
                                         <label class="mb-2 font-semibold leading-none text-gray-900 dark:text-white"
                                             for="name">
-                                            Referensi Tambahan
+                                            {{__('Additional References')}}
                                         </label>
                                         <div class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">
                                             @php
@@ -454,17 +454,17 @@
                                     <div class="w-fit">
                                         <label class="mb-2 font-semibold leading-none text-gray-900 dark:text-white"
                                             for="name">
-                                            Rekaman Kelas
+                                            {{__('Class Recording')}}
                                         </label>
                                         <div
                                             class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400 text-wrap break-all hover:underline hover:text-sky-600">
-                                            <a href="{{$recording}}">Lihat Rekaman Kelas di {{$recordingSource}}</a>
+                                            <a href="{{$recording}}">{{$recordingSource}}</a>
                                         </div>
                                     </div>
                                     <div class="w-fit">
                                         <label class="mb-2 font-semibold leading-none text-gray-900 dark:text-white"
                                             for="name">
-                                            Foto Kelas
+                                            {{__('Class Photo')}}
                                         </label>
                                         <div class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">
                                             @if ($course->photo)
@@ -475,14 +475,14 @@
                                                     alt="">
                                             </a>
                                             @else
-                                            Tidak ada foto kelas.
+                                            {{__('No Photo')}}
                                             @endif
                                         </div>
                                     </div>
                                     <div class="w-fit col-span-2">
                                         <label class="mb-2 font-semibold leading-none text-gray-900 dark:text-white"
                                             for="name">
-                                            Materi Pelajaran
+                                            {{__('Class Matter')}}
                                         </label>
                                         <div class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">
                                             {!!$course->lesson_matter!!}
@@ -497,7 +497,7 @@
                                 <div class="w-fit col-span-2">
                                     <label class="mb-2 font-semibold leading-none text-gray-900 dark:text-white"
                                         for="name">
-                                        Data Murid
+                                        {{__('Student Data')}}
                                     </label>
                                     <div class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">
                                         <div class="mb-4 font-light sm:mb-5 d">
@@ -545,7 +545,7 @@
                                 <div class="w-fit col-span-2">
                                     <label class="mb-2 font-semibold leading-none text-gray-900 dark:text-white"
                                         for="name">
-                                        Data Tutor
+                                        {{__('Tutor Data')}}
                                     </label>
                                     <div class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">
                                         <div class="mb-4 font-light sm:mb-5 d">

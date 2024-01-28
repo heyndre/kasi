@@ -81,9 +81,14 @@
         </div>
     </td>
     <td>
+        @if (session('language') == 'id')
         Rp.{{number_format($item->amount, 0, ',', '.')}}
         <p class="italic">({{Terbilang::make($item->amount, ' rupiah')}})</p>
-        <p>Tenggat pembayaran: {{$item->due_date->format('d-m-Y')}}</p>
+        @endif
+        @if ($item->theStudent->nationality == 'KOREAN')
+        KRW {{number_format($item->amount, 0, ',', '.')}}
+        @endif
+        <p>{{__('Payment Due Date')}}: {{$item->due_date->format('d-m-Y')}}</p>
     </td>
 
     <td>
@@ -91,19 +96,19 @@
         // $payment = $item->whereHas('thePayment', function ($q) {$q->whereNull('confirm_date');})->with('thePayment')->first();
         // dd($payment);
         @endphp
-        Menunggu <b>pembayaran</b>
+        {{__('Waiting')}} <b>{{__('Payment')}}</b>
     </td>
 
     <td class="px-6 py-4">
         @if (auth()->user()->isStudent())
         <a href="{{route('student.billing.status', ['id' => $item->id])}}"
-            class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Lihat rincian</a>
+            class="font-medium text-blue-600 dark:text-blue-500 hover:underline">{{__('See Details')}}</a>
         @elseif (auth()->user()->isGuardian())
         <a href="{{route('guardian.billing.status', ['id' => $item->id])}}"
-            class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Lihat rincian</a>
+            class="font-medium text-blue-600 dark:text-blue-500 hover:underline">{{__('See Details')}}</a>
         @else
         <a href="{{route('payment.student.status', ['id' => $item->id])}}"
-            class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Lihat rincian</a>
+            class="font-medium text-blue-600 dark:text-blue-500 hover:underline">{{__('See Details')}}</a>
         @endif
     </td>
 </tr>

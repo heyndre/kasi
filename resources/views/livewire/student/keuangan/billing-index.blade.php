@@ -1,6 +1,6 @@
 <div>
     <x-page.header>
-        Daftar Tagihan (Invoice)
+        {{__('Billing List (Invoice)')}}
     </x-page.header>
 
     <x-page.content-white>
@@ -22,31 +22,31 @@
             {{-- Active billings --}}
             <x-table.billing model='searchActive'>
                 <x-slot name="title">
-                    Daftar Tagihan Aktif ({{$active->count()}})
+                    {{__('Active/Unpaid Invoice')}} ({{$active->count()}})
                 </x-slot>
 
                 <x-slot name="caption">
-                    Per {{date('d F Y H:i T')}}
+                    {{date('d F Y H:i T')}}
                 </x-slot>
 
                 <x-slot name="head">
                     <x-table.head>
-                        Nomor
+                        {{__('#')}}
                     </x-table.head>
                     <x-table.head>
-                        Identitas Murid
+                        {{__('Student Information')}}
                     </x-table.head>
                     <x-table.head>
-                        Identitas Wali Murid
+                        {{__('Guardian Information')}}
                     </x-table.head>
                     <x-table.head>
-                        Nominal
+                        {{__('Amount')}}
                     </x-table.head>
                     <x-table.head>
                         Status
                     </x-table.head>
                     <x-table.head>
-                        Opsi
+                        {{__('Option')}}
                     </x-table.head>
                 </x-slot>
 
@@ -63,7 +63,7 @@
                     @empty
                     <tr>
                         <td colspan="5" class="px-2 py-3 italic">
-                            Tidak ada data
+                            {{__('No Data')}}
                         </td>
                     </tr>
                     @endforelse
@@ -76,31 +76,31 @@
             {{-- Need Confirmation billings --}}
             <x-table.billing model='searchConfirm'>
                 <x-slot name="title">
-                    Daftar Tagihan Menunggu Konfirmasi Pembayaran ({{$confirm->count()}})
+                    {{__('Waiting for Confirmation by KASI')}} ({{$confirm->count()}})
                 </x-slot>
 
                 <x-slot name="caption">
-                    Per {{date('d F Y H:i T')}}
+                    {{date('d F Y H:i T')}}
                 </x-slot>
 
                 <x-slot name="head">
                     <x-table.head>
-                        Nomor
+                        #
                     </x-table.head>
                     <x-table.head>
-                        Identitas Murid
+                        {{__('Student Information')}}
                     </x-table.head>
                     <x-table.head>
-                        Identitas Wali Murid
+                        {{__('Guardian Information')}}
                     </x-table.head>
                     <x-table.head>
-                        Nominal
+                        {{__('Amount')}}
                     </x-table.head>
                     <x-table.head>
                         Status
                     </x-table.head>
                     <x-table.head>
-                        Opsi
+                        {{__('Option')}}
                     </x-table.head>
                 </x-slot>
 
@@ -117,7 +117,7 @@
                     @empty
                     <tr>
                         <td colspan="5" class="px-2 py-3 italic">
-                            Tidak ada data
+                            {{__('No Data')}}
                         </td>
                     </tr>
                     @endforelse
@@ -130,31 +130,31 @@
             {{-- Past Classes --}}
             <x-table.billing model='searchPaid'>
                 <x-slot name="title">
-                    Daftar Tagihan Dibayar ({{$paid->count()}})
+                    {{__('Paid Invoice')}} ({{$paid->count()}})
                 </x-slot>
 
                 <x-slot name="caption">
-                    Per {{date('d F Y H:i T')}}
+                    {{date('d F Y H:i T')}}
                 </x-slot>
 
                 <x-slot name="head">
                     <x-table.head>
-                        Nomor
+                        #
                     </x-table.head>
                     <x-table.head>
-                        Identitas Murid
+                        {{__('Student Information')}}
                     </x-table.head>
                     <x-table.head>
-                        Identitas Wali Murid
+                        {{__('Guardian Information')}}
                     </x-table.head>
                     <x-table.head>
-                        Nominal
+                        {{__('Amount')}}
                     </x-table.head>
                     <x-table.head>
-                        Pembayaran
+                        {{__('Payment')}}
                     </x-table.head>
                     <x-table.head>
-                        Opsi
+                        {{__('Option')}}
                     </x-table.head>
                 </x-slot>
 
@@ -171,7 +171,7 @@
                     @empty
                     <tr>
                         <td colspan="5" class="px-2 py-3 italic">
-                            Tidak ada data
+                            {{__('No Data')}}
                         </td>
                     </tr>
                     @endforelse
