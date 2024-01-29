@@ -13,7 +13,7 @@ use Livewire\Component;
 
 class Create extends Component
 {
-    public $dateOfEvent, $dateFormat, $student, $link, $package, $courseBase, $tutor, $topic, $selectedCourse = 4, $lesson, $reference, $endTime, $length = 60, $availability = 'waiting';
+    public $dateOfEvent, $dateFormat, $isFreeTrial = 0, $student, $link, $package, $courseBase, $tutor, $topic, $selectedCourse = 4, $lesson, $reference, $endTime, $length = 60, $availability = 'waiting';
 
     public function mount()
     {
@@ -113,8 +113,15 @@ class Create extends Component
             'course_id' => $this->selectedCourse,
             'additional_links' => json_encode([]),
             'meeting_link' => $this->link,
-            'price' => CourseBase::where('id', $this->selectedCourse)->first()->price
+            'price' => CourseBase::where('id', $this->selectedCourse)->first()->price,
         ]);
+
+        if ($this->isFreeTrial == true) {
+            $session->update([
+                'free_trial' => 1,
+                'length' => 30,
+            ]);
+        }
 
         // dd($session->theStudent->has_guardian);
 

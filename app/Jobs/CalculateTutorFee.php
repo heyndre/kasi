@@ -50,7 +50,11 @@ class CalculateTutorFee implements ShouldQueue
 
             foreach ($unpaidClasses as $item) {
                 // dd($item);
-                $price = ($item->price * ($item->length / 60)) * 75 / 100;
+                if ($item->free_trial == 1) {
+                    $price = ($item->price * ($item->length / 60)) * 75 / 100 / 2;
+                } else {
+                    $price = ($item->price * ($item->length / 60)) * 75 / 100;
+                }
                 $totalPrice += $price;
                 $totalMinutes += $item->length;
 

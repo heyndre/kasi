@@ -95,24 +95,43 @@ class BillingController extends Controller
         if ($checkBilling !== null) {
             $lastAmount = $checkBilling->amount;
             $lastLength = $checkBilling->length;
-            $checkBilling->update([
-                'amount' => $lastAmount + ($course->length / 60 * $price),
-                'length' => $lastLength + $course->length
-            ]);
+            if ($course->free_trial == 0) {
+                $checkBilling->update([
+                    'amount' => $lastAmount + ($course->length / 60 * $price),
+                    'length' => $lastLength + $course->length
+                ]);
+            } else {
+                $checkBilling->update([
+                    'amount' => $lastAmount + 0,
+                    'length' => $lastLength + $course->length
+                ]);
+            }
 
             $course->update([
                 'billing_id' => $checkBilling->id,
             ]);
         } else {
-            $billing = Billing::create([
-                'bill_date' => Carbon::now()->addMonth()->startOfMonth(),
-                'due_date' => Carbon::now()->addMonth()->startOfMonth()->addDays(10),
-                'amount' => ($course->length / 60 * $price),
-                'amount_no_promo' => ($course->length / 60 * $price),
-                'invoice_id' => $invoiceNumber,
-                'student_id' => $course->student_id,
-                'length' => $course->length,
-            ]);
+            if ($course->free_trial == 0) {
+                $billing = Billing::create([
+                    'bill_date' => Carbon::now()->addMonth()->startOfMonth(),
+                    'due_date' => Carbon::now()->addMonth()->startOfMonth()->addDays(10),
+                    'amount' => ($course->length / 60 * $price),
+                    'amount_no_promo' => ($course->length / 60 * $price),
+                    'invoice_id' => $invoiceNumber,
+                    'student_id' => $course->student_id,
+                    'length' => $course->length,
+                ]);
+            } else {
+                $billing = Billing::create([
+                    'bill_date' => Carbon::now()->addMonth()->startOfMonth(),
+                    'due_date' => Carbon::now()->addMonth()->startOfMonth()->addDays(10),
+                    'amount' => 0,
+                    'amount_no_promo' => ($course->length / 60 * $price),
+                    'invoice_id' => $invoiceNumber,
+                    'student_id' => $course->student_id,
+                    'length' => $course->length,
+                ]);
+            }
 
             $course->update([
                 'billing_id' => $billing->id,
