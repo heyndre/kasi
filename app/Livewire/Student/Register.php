@@ -67,7 +67,9 @@ class Register extends Component
             ]);
         }
 
-        $last_nim = Student::where('nim', 'like', date('Y') . '%')->max('nim');
+        $year = date('Y') . '%';
+        // $last_nim = Student::where('nim', 'like', date('Y') . '%')->max('nim');
+        $last_nim = Student::where('nim', 'like', $year)->max('nim');
         if (substr($last_nim, 4, 2) == date('m')) {
             $number = substr($last_nim, 6, 4) + 1;
         } else {
@@ -88,7 +90,7 @@ class Register extends Component
 
         $student = Student::create([
             'user_id' => $base->id,
-            'nim' => date("Y") . date('m') . '000' . $number,
+            'nim' => date("Y") . date('m') . str_pad($number, 4, "0", STR_PAD_LEFT),
             'has_guardian' => $data['hasGuardian'],
             'guardian_id' => $this->guardian,
             'edu_status' => $eduStatus,
@@ -115,7 +117,6 @@ class Register extends Component
             } else {
                 SendRegisterStudentEnglish::dispatch($emailData);
             }
-
         }
 
 
