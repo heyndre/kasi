@@ -228,6 +228,8 @@
                         $color = 'rgba(76,0,153,.1)';
                     } else if ($item->status == 'CANCELLED') {
                         $color = 'rgba(153,0,76,.1)';
+                    } else {
+                        $color = 'rgba(153,0,76,.1)';
                     }
                     @endphp
                     <x-table.row-class-today wire:loading.class.delay.longest='opacity-80' :tutor='$item->theTutor'

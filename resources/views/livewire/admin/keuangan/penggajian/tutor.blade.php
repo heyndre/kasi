@@ -1,6 +1,14 @@
 <div>
     <x-page.header>
         Daftar Honor Tutor
+        @if (auth()->user()->role == 'ADMIN' || auth()->user()->role == 'SUPERADMIN')
+        <x-page.edit-button>
+            Hitung Honor Tutor
+            <x-slot name='route'>
+                {{route('calculate.tutor.fee')}}
+            </x-slot>
+        </x-page.edit-button>
+        @endif
     </x-page.header>
 
 

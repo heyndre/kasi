@@ -82,7 +82,7 @@ Route::get('tes-mail', function () {
     dd('Mail sent successfully.');
 });
 
-Route::get('tes-fee', [MeetingController::class, 'tesFee']);
+// Route::get('tes-fee', [MeetingController::class, 'tesFee']);
 
 
 Route::view('default-billing', 'billing.default');
@@ -145,12 +145,16 @@ Route::middleware([
         // Route::get('keuangan/billing/konfirmasi/{id}', [BillingController::class, 'confirmBillPayment'])->name('payment.student.confirm');
         // Route::post('keuangan/billing/validasi/', [BillingController::class, 'submitBillPayment'])->name('payment.student.submit');
         Route::get('keuangan/billing/', BillingIndex::class)->name('payment.student.billing');
+        Route::get('keuangan/tagihan/unggah-pembayaran/{id}', StudentUploadPayment::class)->name('billing.upload');
 
         Route::get('keuangan/penggajian/tutor', HonorTutorIndex::class)->name('finance.tutor.fee');
         Route::get('keuangan/penggajian/tutor/receipt/{id}', HonorTutorReceipt::class)->name('finance.tutor.fee.receipt');
         Route::get('keuangan/penggajian/tutor/status/{id}', HonorTutorIndex::class)->name('finance.tutor.fee.status');
 
         Route::get('tes-pdf', [BillingController::class, 'testPDF'])->name('test.pdf');
+        
+        // Calculate Fee
+        Route::get('/keuangan/calculate-fee', [MeetingController::class, 'tesFee'])->name('calculate.tutor.fee');
 
 
         // Tutor Menu

@@ -99,6 +99,7 @@ class Show extends Component
         if ($this->course->theStudent->has_guardian == 1 && $this->course->theStudent->theGuardian->userData->email) {
             $data = [
                 'email' => $this->course->theStudent->theGuardian->userData->email,
+                'guardianName' => $this->course->theStudent->theGuardian->userData->name,
                 'classDate' => $this->course->date_of_event->format('d/m/Y H:i T'),
                 'studentName' => $this->course->theStudent->userData->name,
                 'studentNIM' => $this->course->theStudent->nim,

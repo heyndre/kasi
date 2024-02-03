@@ -48,9 +48,11 @@ class BillingController extends Controller
 
         $checkBilling = Billing::where('student_id', $course->student_id)
             // ->billBetween([$course->date_of_event->addMonth()->startOfMonth(), $course->date_of_event->addMonth()->endOfMonth()])
-            // ->whereBetween('bill_date', [$course->date_of_event->addMonth()->startOfMonth(), $course->date_of_event->addMonth()->endOfMonth()])
-            ->whereBetween('bill_date', [now()->addMonth()->startOfMonth(), now()->addMonth()->endOfMonth()])
+            ->whereBetween('bill_date', [$course->date_of_event->addMonthsNoOverflow(1)->startOfMonth(), $course->date_of_event->addMonthsNoOverflow(1)->endOfMonth()])
+            // ->whereBetween('bill_date', [Carbon::create($course->date_of_event->format('Y-m-01'))->addMonth(), Carbon::create($course->date_of_event->format('Y-m-t'))->addMonth()->endOfMonth()])
+            // ->whereBetween('bill_date', [now()->addMonth()->startOfMonth(), now()->addMonth()->endOfMonth()])
             ->first();
+            // ->toRawSql();
 
         // dd($checkBilling);
 
@@ -61,7 +63,7 @@ class BillingController extends Controller
             $invoiceNumber = $lastInvoiceNumber + 1;
             // dd('start 1');
         } else {
-            if ($checkBilling == null) {
+            if ($checkBilling != null) {
                 $invoiceNumber = $lastInvoiceNumber;
                 // dd('same number');
             } else {
@@ -98,11 +100,13 @@ class BillingController extends Controller
             if ($course->free_trial == 0) {
                 $checkBilling->update([
                     'amount' => $lastAmount + ($course->length / 60 * $price),
+                    'amount_no_promo' => $lastAmount + ($course->length / 60 * $price),
                     'length' => $lastLength + $course->length
                 ]);
             } else {
                 $checkBilling->update([
                     'amount' => $lastAmount + 0,
+                    'amount_no_promo' => $lastAmount + 0,
                     'length' => $lastLength + $course->length
                 ]);
             }
@@ -113,8 +117,8 @@ class BillingController extends Controller
         } else {
             if ($course->free_trial == 0) {
                 $billing = Billing::create([
-                    'bill_date' => Carbon::now()->addMonth()->startOfMonth(),
-                    'due_date' => Carbon::now()->addMonth()->startOfMonth()->addDays(10),
+                    'bill_date' => $course->date_of_event->addMonth()->startOfMonth(),
+                    'due_date' => $course->date_of_event->addMonth()->startOfMonth()->addDays(10),
                     'amount' => ($course->length / 60 * $price),
                     'amount_no_promo' => ($course->length / 60 * $price),
                     'invoice_id' => $invoiceNumber,
@@ -123,10 +127,10 @@ class BillingController extends Controller
                 ]);
             } else {
                 $billing = Billing::create([
-                    'bill_date' => Carbon::now()->addMonth()->startOfMonth(),
-                    'due_date' => Carbon::now()->addMonth()->startOfMonth()->addDays(10),
+                    'bill_date' => $course->date_of_event->addMonth()->startOfMonth(),
+                    'due_date' => $course->date_of_event->addMonth()->startOfMonth()->addDays(10),
                     'amount' => 0,
-                    'amount_no_promo' => ($course->length / 60 * $price),
+                    'amount_no_promo' => 0,
                     'invoice_id' => $invoiceNumber,
                     'student_id' => $course->student_id,
                     'length' => $course->length,

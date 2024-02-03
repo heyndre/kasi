@@ -63,7 +63,7 @@ class PembayaranMuridStatus extends Component
         $promo = Promo::where('code', strtoupper($this->promoCode))->first();
         if ($promo->type == 'flat') {
             $promoAmount = $promo->amount;
-        } elseif ($promo->type) {
+        } elseif ($promo->type == 'percentage') {
             $promoAmount = $promo->amount / 100 * $this->billing->amount;
         }
 

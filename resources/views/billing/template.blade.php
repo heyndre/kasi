@@ -58,7 +58,7 @@
                 <div class="px-4 py-2 font-semibold bg-amber-100 rounded-md my-1">
                     {{$billing->theStudentData->name}} - NIM {{$billing->theStudent->nim}}
                 </div>
-                untuk bulan <span class="font-semibold">{{$billing->bill_date->format('F Y')}}</span>
+                untuk bulan <span class="font-semibold">{{$billing->bill_date->subMonth()->format('F Y')}}</span>
             </div>
             <table class="w-full mt-4 text-sm table-auto text-gray-500 dark:text-gray-400">
                 <thead class="text-xs text-gray-700 uppercase dark:text-gray-400">
@@ -88,7 +88,7 @@
                     {{-- @for ($i = 0; $i < 15; $i++) @php $totalPrice +=$price; $totalHours +=$hours; @endphp --}}
                         @foreach ($billing->theClass as $item)
                         @php
-                        $totalPrice += $item->price;
+                        $totalPrice += $item->price * $item->length / 60;
                         $totalHours += $item->length;
                         @endphp
                         <tr class="border-b border-amber-800 dark:border-gray-700">
@@ -103,7 +103,7 @@
                                 {{$item->length}} menit
                             </td>
                             <td class="p-2 bg-amber-100">
-                                Rp.{{number_format($item->price, 0, ',', '.')}}
+                                Rp.{{number_format($item->price * $item->length / 60, 0, ',', '.')}}
                             </td>
                         </tr>
                         @endforeach

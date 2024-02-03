@@ -27,20 +27,23 @@ class CalculateTutorFee implements ShouldQueue
     /**
      * Execute the job.
      */
-    public function handle(): void
+    public function handle()
     {
         $tutorsID = Course::whereNull('tutor_payment_id')
+            ->whereNotNull('billing_id')
             ->whereIn('status', ['BURNED', 'CONDUCTED'])
             ->groupBy('tutor_id')
             ->pluck('tutor_id');
 
         // dd($tutorsID);
+        // $returnData = [];
 
         foreach ($tutorsID as $id) {
             $tutor = Tutor::with('userData')->where('id', $id)->first();
             $unpaidClasses = Course::with('theTutor.userData', 'theSharing')
                 ->where('tutor_id', $id)
                 ->whereNull('tutor_payment_id')
+                ->whereNotNull('billing_id')
                 ->whereIn('status', ['BURNED', 'CONDUCTED'])
                 ->get();
 
@@ -48,12 +51,24 @@ class CalculateTutorFee implements ShouldQueue
             $totalMinutes = 0;
             $period = now()->subMonth()->format('F Y');
 
+            $lastInvoiceNumber = TutorPayment::max('payment_number');
+
+            if ($lastInvoiceNumber == null) {
+                $lastInvoiceNumber = 0;
+                $invoiceNumber = $lastInvoiceNumber + 1;
+                // dd('start 1');
+            } else {
+                $invoiceNumber = $lastInvoiceNumber + 1;
+            }
+
+            // $returnData[$key] = ['tutor_id' => $id];
+
             foreach ($unpaidClasses as $item) {
                 // dd($item);
                 if ($item->free_trial == 1) {
-                    $price = ($item->price * ($item->length / 60)) * 75 / 100 / 2;
+                    $price = ($item->price_idr * ($item->length / 60)) * 50 / 100;
                 } else {
-                    $price = ($item->price * ($item->length / 60)) * 75 / 100;
+                    $price = ($item->price_idr * ($item->length / 60)) * 75 / 100;
                 }
                 $totalPrice += $price;
                 $totalMinutes += $item->length;
@@ -62,12 +77,22 @@ class CalculateTutorFee implements ShouldQueue
                     'class_id' => $item->id,
                     'tutor_id' => $item->tutor_id,
                     'amount' => $price,
+                    'due_date' => now(),
+                    'payment_number' => $invoiceNumber,
                 ]);
 
                 Course::where('id', $item->id)
                     ->update([
                         'tutor_payment_id' => $paymentData->id
                     ]);
+
+                // $returnData[$key][$id] = [
+                //     'class_id' => $item->id,
+                //     'tutor_id' => $item->tutor_id,
+                //     'amount' => $price,
+                //     'due_date' => now(),
+                //     'payment_number' => $invoiceNumber,
+                // ];
             }
 
 
@@ -82,6 +107,8 @@ class CalculateTutorFee implements ShouldQueue
                 ];
                 SendTutorFeeInfo::dispatch($data);
             }
+
+            // return $returnData;
         }
     }
 }

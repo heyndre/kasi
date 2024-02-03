@@ -14,7 +14,8 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule): void
     {
         // $schedule->command('inspire')->hourly();
-        $schedule->job(new CalculateTutorFee())->monthlyOn(1, '12:00');
+        $schedule->job(new CalculateTutorFee())->monthlyOn(2, '7:55')->sendOutputTo(storage_path('app/log/calculateTutorFee.log', true))
+        ->emailOutputTo('admin@kasi.web.id');
     }
 
     /**

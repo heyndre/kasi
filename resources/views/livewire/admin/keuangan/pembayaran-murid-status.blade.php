@@ -22,6 +22,22 @@
             @endif
         </x-page.edit-button>
         @endif
+        @if ($billing->thePayment->isEmpty() || $diff > 0)
+        <x-page.edit-button>
+            {{__("Upload Payment Proof")}}
+            <x-slot name='route'>
+                {{route('billing.upload', ['id' => $billing->id])}}
+            </x-slot>
+        </x-page.edit-button>
+        {{-- @elseif ($billing->thePayment->confirm_date == null)
+        <x-page.edit-button target='_blank'>
+            Inquiry Konfirmasi Pembayaran
+            <x-slot name='route'>
+                https://wa.me/6285179824064?text=Inquiry Konfirmasi Pembayaran Invoice nomor
+                {{str_pad($billing->invoice_id, 5, '0', STR_PAD_LEFT)}}
+            </x-slot>
+        </x-page.edit-button> --}}
+        @endif
         @endif
 
         @if (auth()->user()->isStudent())

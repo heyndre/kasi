@@ -27,7 +27,7 @@
                     Invoice # : {{str_pad($theBillData->invoice_id, 5, '0', STR_PAD_LEFT)}}
                     <p>{{__("Amount")}} : {{$theBillData->theStudent->nationality == 'KOREAN' ? 'KRW' :
                         'Rp.'}}{{number_format($theBillData->amount, 2, ',', '.')}}</p>
-                    @if (auth()->user()->theStudent->nationality != 'KOREAN')
+                    @if ($theBillData->theStudent->nationality != 'KOREAN')
                     <p class="italic">Terbilang : {{Terbilang::make($theBillData->amount, ' rupiah')}}</p>
                     @endif
                 </div>
@@ -59,14 +59,14 @@
                 </div>
                 @if ($payMethod == 'bank_transfer')
                 <div class="mt-4 text-gray-800 text-sm">
-                    @if (auth()->user()->theStudent->nationality == 'KOREAN')
+                    @if ($theBillData->theStudent->nationality == 'KOREAN')
                     Please transfer the payment to
                     <p class="font-semibold">BANK BCA (Indonesia) 0240920395</p>
                     <p class="text-sm italic"> Firstya Andreas Pandega</p>
                     before <span class="font-bold">{{$theBillData->due_date->format('d/m/Y')}}</span>.
                     Passing this date will incur additional fees.
                     @endif
-                    @if (auth()->user()->theStudent->nationality == 'INDONESIAN')
+                    @if ($theBillData->theStudent->nationality == 'INDONESIAN')
                     Pembayaran dapat dilakukan melalui transfer ke
                     <p class="font-semibold">BANK BCA 0240920395</p>
                     <p class="text-sm italic">a.n. Firstya Andreas Pandega</p>
