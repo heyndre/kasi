@@ -22,6 +22,9 @@ class TutorPayment extends Model
 
     public function theClass()
     {
-        return $this->hasMany(Course::class, 'tutor_payment_id', 'id');
+        // return $this->hasMany(Course::class, 'tutor_payment_id', 'id');
+        // return $this->belongsTo(Course::class, 'tutor_payment_id', 'id');
+        return $this->belongsTo(Course::class, 'id', 'tutor_payment_id');
+
     }
 }

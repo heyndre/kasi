@@ -211,6 +211,7 @@ Route::middleware([
         Route::get('keuangan/tagihan/unggah-pembayaran/{id}', StudentUploadPayment::class)->name('tutor.billing.upload');
 
         Route::get('keuangan/tagihan/unduh/{id}', [BillingController::class, 'generateInvoice'])->name('tutor.billing.download');
+        Route::get('keuangan/penggajian/unduh/{id}', [BillingController::class, 'generatePaymentTutor'])->name('tutor.fee.download');
 
         Route::get('keuangan/status/{id}', StatusPembayaranMurid::class)->name('tutor.billing.status');
 

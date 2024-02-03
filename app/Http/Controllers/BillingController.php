@@ -9,6 +9,7 @@ use App\Models\Course;
 use App\Models\CourseBase;
 use App\Models\Package;
 use App\Models\Setting;
+use App\Models\TutorPayment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
@@ -52,7 +53,7 @@ class BillingController extends Controller
             // ->whereBetween('bill_date', [Carbon::create($course->date_of_event->format('Y-m-01'))->addMonth(), Carbon::create($course->date_of_event->format('Y-m-t'))->addMonth()->endOfMonth()])
             // ->whereBetween('bill_date', [now()->addMonth()->startOfMonth(), now()->addMonth()->endOfMonth()])
             ->first();
-            // ->toRawSql();
+        // ->toRawSql();
 
         // dd($checkBilling);
 
@@ -292,6 +293,47 @@ class BillingController extends Controller
             }
         }
         return Response::download(storage_path("app/billing/" . $filename), $filename);
+    }
+
+    public function generatePaymentTutor($id)
+    {
+        $billing = TutorPayment::with('theClass', 'theTutor')
+            ->where('payment_number', $id)->get();
+        $filename = 'Pembayaran Tutor KASI ' . str_pad($billing[0]->payment_number, 5, '0', STR_PAD_LEFT) . '.pdf';
+        // dd($billing);
+
+        if (PHP_OS == 'Linux') {
+            $image = Browsershot::html(view('billing.template-tutor', ['billing' => $billing])->render())
+                ->waitUntilNetworkIdle()
+                ->newHeadless()
+                ->emulateMedia("screen")
+                ->format("A4")
+                ->margins(0.25, 0.25, 0.25, 0.25, "in")
+                ->showBackground()
+                ->setRemoteInstance('127.0.0.1', 9222)
+                ->mobile()
+                ->fullPage()
+                ->setCustomTempPath(storage_path('/tmp'))
+                ->setNodeBinary('/www/server/nvm/versions/node/v20.11.0/bin/node')
+                ->setNpmBinary('/www/server/nvm/versions/node/v20.11.0/bin/npm')
+                ->userDataDir('/var/fileexchange')
+                ->disableJavascript()
+                ->save(storage_path("app/billing/tutor/" . $filename));
+        } else {
+                $image = Browsershot::html(view('billing.template-tutor', ['billing' => $billing])->render())
+                    ->waitUntilNetworkIdle()
+                    ->newHeadless()
+                    ->emulateMedia("screen")
+                    ->format("A4")
+                    ->margins(0.25, 0.25, 0.25, 0.25, "in")
+                    ->showBackground()
+                    ->setRemoteInstance('127.0.0.1', 9222)
+                    ->mobile()
+                    ->fullPage()
+                    ->disableJavascript()
+                    ->save(storage_path("app/billing/tutor/" . $filename));
+        }
+        return Response::download(storage_path("app/billing/tutor/" . $filename), $filename);
     }
 
     public function generateInvoiceBarryPDF($id)

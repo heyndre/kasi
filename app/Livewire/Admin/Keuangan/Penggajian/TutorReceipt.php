@@ -61,10 +61,12 @@ class TutorReceipt extends Component
 
         $email = [
             'to' => $this->data[0]->theTutor->userData->email,
+            'email' => $this->data[0]->theTutor->userData->email,
             'tutorName' => $this->data[0]->theTutor->userData->name,
             'tutorNickname' => $this->data[0]->theTutor->userData->nickname,
             'paymentNumber' => $this->data[0]->payment_number,
             'paymentTime' => now(),
+            'periode' => now()->subMonth()->format('F Y'),
         ];
 
         SendTutorFeePayment::dispatch($email);

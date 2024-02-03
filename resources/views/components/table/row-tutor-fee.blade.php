@@ -62,6 +62,9 @@
     </td>
 
     <td class="px-6 py-4">
+        <a href="{{route('tutor.fee.download', ['id' => $item->payment_number])}}"
+            class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Lihat rincian</a>
+            <br>
         @if ($item->pay_date)
         <a href="{{route('file.payment.tutor', ['slug' => $item->payment_proof])}}"
             class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Lihat bukti</a>
