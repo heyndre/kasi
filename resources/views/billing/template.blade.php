@@ -88,7 +88,9 @@
                     {{-- @for ($i = 0; $i < 15; $i++) @php $totalPrice +=$price; $totalHours +=$hours; @endphp --}}
                         @foreach ($billing->theClass as $item)
                         @php
-                        $totalPrice += $item->price * $item->length / 60;
+                        if ($item->free_trial == 0) {
+                            $totalPrice += $item->price * $item->length / 60;
+                        }
                         $totalHours += $item->length;
                         @endphp
                         <tr class="border-b border-amber-800 dark:border-gray-700">
@@ -103,7 +105,7 @@
                                 {{$item->length}} menit
                             </td>
                             <td class="p-2 bg-amber-100">
-                                Rp.{{number_format($item->price * $item->length / 60, 0, ',', '.')}}
+                                Rp.{{$item->free_trial == 0 ? number_format($item->price * $item->length / 60, 0, ',', '.') : '0'}}
                             </td>
                         </tr>
                         @endforeach

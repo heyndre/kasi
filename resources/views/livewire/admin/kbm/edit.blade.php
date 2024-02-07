@@ -79,9 +79,11 @@
 
                 <div class="mb-6  col-span-2" >
                     <div class="">
-                        @foreach ($files as $item)
+                        @forelse ($files as $item)
                             <a href=""></a>
-                        @endforeach
+                            @empty
+                            -
+                        @endforelse
                     </div>
                     <div class="" >
                         <label for="files" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">

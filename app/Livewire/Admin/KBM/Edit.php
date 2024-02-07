@@ -50,7 +50,7 @@ class Edit extends Component
         $this->lesson = $this->data->lesson_matter;
         $this->reference = $this->data->additional_links;
         $this->links = $this->data->additional_links;
-        $this->files = json_decode($this->data->files);
+        $this->files = $this->data->files;
     }
 
     public function render()

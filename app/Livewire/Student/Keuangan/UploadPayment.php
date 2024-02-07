@@ -165,6 +165,8 @@ class UploadPayment extends Component
             return $this->redirect(route('student.billing.status', ['id' => $billing->id]));
         } elseif (auth()->user()->isGuardian()) {
             return $this->redirect(route('guardian.billing.status', ['id' => $billing->id]));
+        } elseif (auth()->user()->isManagement()) {
+            return $this->redirect(route('payment.student.status', ['id' => $billing->id]));
         }
     }
 

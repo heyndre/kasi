@@ -112,6 +112,7 @@ class Create extends Component
             'status' => 'WAITING',
             'course_id' => $this->selectedCourse,
             'additional_links' => json_encode([]),
+            'files' => json_encode([]),
             'meeting_link' => $this->link,
             'price' => CourseBase::where('id', $this->selectedCourse)->first()->price,
         ]);
