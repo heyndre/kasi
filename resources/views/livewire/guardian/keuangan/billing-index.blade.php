@@ -22,7 +22,7 @@
             {{-- Active billings --}}
             <x-table.billing model='searchActive'>
                 <x-slot name="title">
-                    Daftar Tagihan Aktif ({{$active->count()}})
+                    Daftar Tagihan Aktif ({{$active->total()}})
                 </x-slot>
 
                 <x-slot name="caption">
@@ -76,7 +76,7 @@
             {{-- Need Confirmation billings --}}
             <x-table.billing model='searchConfirm'>
                 <x-slot name="title">
-                    Daftar Tagihan Menunggu Konfirmasi Pembayaran ({{$confirm->count()}})
+                    Daftar Tagihan Menunggu Konfirmasi Pembayaran ({{$confirm->total()}})
                 </x-slot>
 
                 <x-slot name="caption">
@@ -130,7 +130,7 @@
             {{-- Past Classes --}}
             <x-table.billing model='searchPaid'>
                 <x-slot name="title">
-                    Daftar Tagihan Dibayar ({{$paid->count()}})
+                    Daftar Tagihan Dibayar ({{$paid->total()}})
                 </x-slot>
 
                 <x-slot name="caption">

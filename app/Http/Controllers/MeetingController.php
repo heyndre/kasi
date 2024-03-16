@@ -73,6 +73,7 @@ class MeetingController extends Controller
                 ->where('tutor_id', $id)
                 ->whereNull('tutor_payment_id')
                 ->whereIn('status', ['BURNED', 'CONDUCTED'])
+                ->whereBetween('date_of_event', [now()->subMonthsNoOverflow(1)->startOfMonth(), now()->subMonthsNoOverflow(1)->endOfMonth()])
                 ->get();
 
             $totalPrice = 0;
@@ -91,7 +92,7 @@ class MeetingController extends Controller
 
             foreach ($unpaidClasses as $item) {
                 // dd($item);
-                $price = ($item->price * ($item->length / 60)) * 75 / 100;
+                $price = ($item->price * ($item->length / 60)) * $item->tutor_percentage / 100;
                 $totalPrice += $price;
                 $totalMinutes += $item->length;
 
@@ -122,5 +123,7 @@ class MeetingController extends Controller
                 // SendTutorFeeInfo::dispatch($data);
             }
         }
+
+        return redirect()->back();
     }
 }

@@ -32,19 +32,25 @@
         @else
         <img class="w-14 h-14 rounded-full" src="{{asset($tutor->userData->profile_photo_path)}}" alt="{{$acronym}}">
         @endif
-        <div class="pl-3 space-y-2">
+        <div class="pl-3 space-y-2 text-wrap">
             <a href="{{route('tutor.show', ['slug' => $tutor->userData->slug])}}" class="hover:underline">
                 <div class="text-base font-semibold bg-white-100/50  rounded-sm px-2 py-1">
                     {{$tutor->userData->nickname}}
                 </div>
-                <div class="font-thin text-xs text-gray-800 px-2 py-1">
+                {{-- <div class="font-thin text-xs text-gray-800 px-2 py-1">
                     {{$tutor->userData->name}}
-                </div>
+                </div> --}}
             </a>
         </div>
     </td>
     <td class="px-6 py-4 dark:text-white">
         {{$topic}}
+    </td>
+
+    <td class="px-6 py-4 dark:text-white">
+        Rp.{{number_format($item->price_idr * $item->length / 60, 0, '.', ',')}}
+        <br>
+        ({{$item->length}} menit)
     </td>
 
     <td class="px-6 py-4">

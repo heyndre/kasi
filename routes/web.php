@@ -150,6 +150,7 @@ Route::middleware([
         Route::get('keuangan/penggajian/tutor', HonorTutorIndex::class)->name('finance.tutor.fee');
         Route::get('keuangan/penggajian/tutor/receipt/{id}', HonorTutorReceipt::class)->name('finance.tutor.fee.receipt');
         Route::get('keuangan/penggajian/tutor/status/{id}', HonorTutorIndex::class)->name('finance.tutor.fee.status');
+        Route::get('keuangan/penggajian/unduh/{id}', [BillingController::class, 'generatePaymentTutor'])->name('admin.tutor.fee.download');
 
         Route::get('tes-pdf', [BillingController::class, 'testPDF'])->name('test.pdf');
         

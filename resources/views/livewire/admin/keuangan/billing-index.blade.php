@@ -1,3 +1,6 @@
+@push('title')
+Daftar Tagihan/Billing    
+@endpush
 <div>
     <x-page.header>
         Daftar Billing (Invoice)
@@ -23,7 +26,7 @@
             {{-- Active billings --}}
             <x-table.billing model='searchActive'>
                 <x-slot name="title">
-                    Daftar Billing Aktif ({{$active->count()}})
+                    Daftar Billing Aktif ({{$active->total()}})
                 </x-slot>
 
                 <x-slot name="caption">
@@ -77,7 +80,7 @@
             {{-- Need Confirmation billings --}}
             <x-table.billing model='searchConfirm'>
                 <x-slot name="title">
-                    Daftar Tagihan Menunggu Konfirmasi Pembayaran ({{$confirm->count()}})
+                    Daftar Tagihan Menunggu Konfirmasi Pembayaran ({{$confirm->total()}})
                 </x-slot>
 
                 <x-slot name="caption">
@@ -131,7 +134,7 @@
             {{-- Past Classes --}}
             <x-table.billing model='searchPaid'>
                 <x-slot name="title">
-                    Daftar Biling Dibayar ({{$paid->count()}})
+                    Daftar Biling Dibayar ({{$paid->total()}})
                 </x-slot>
 
                 <x-slot name="caption">

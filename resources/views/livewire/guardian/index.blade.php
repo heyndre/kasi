@@ -22,7 +22,7 @@
             @endif
             <x-table.guardian>
                 <x-slot name="title">
-                    Daftar Wali Murid KASI ({{$guardians->count()}})
+                    Daftar Wali Murid KASI ({{$guardians->total()}})
                 </x-slot>
 
                 <x-slot name="caption">

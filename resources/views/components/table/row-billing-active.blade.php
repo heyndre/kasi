@@ -81,7 +81,7 @@
         </div>
     </td>
     <td>
-        @if (session('language') == 'id')
+        @if (session('language') == 'id' || session('language') == null)
         Rp.{{number_format($item->amount, 0, ',', '.')}}
         <p class="italic">({{Terbilang::make($item->amount, ' rupiah')}})</p>
         @endif

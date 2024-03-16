@@ -1,3 +1,6 @@
+@push('title')
+    Status Pembayaran Billing #{{str_pad($billing->invoice_id, 5, "0", STR_PAD_LEFT)}}
+@endpush
 <div>
     <x-page.header>
         {{__("Billing Status")}}
@@ -333,18 +336,24 @@
                                             {{__('Topic')}}
                                         </x-table.head>
                                         <x-table.head>
+                                            {{__('Price')}}
+                                        </x-table.head>
+                                        <x-table.head>
                                             {{__('Option')}}
                                         </x-table.head>
                                     </x-slot>
 
                                     <x-slot name="body">
                                         @php
-                                        // dd($today);
+                                        // dd($billing->theClass);
                                         @endphp
-                                        @forelse ($billing->theClass as $i => $item)
+                                        @forelse ($billing->theClass as $item)
                                         <x-table.row-class-billing wire:loading.class.delay.longest='opacity-80'
                                             :tutor='$item->theTutor' :student='$item->theStudent'
-                                            :course='$item->theCourse'>
+                                            :course='$item->theCourse' :item='$item'>
+                                            {{-- <x-slot name="length">
+                                                {{$item->theCourse->length}}
+                                            </x-slot> --}}
                                             <x-slot name="id">
                                                 {{$item->id}}
                                             </x-slot>
@@ -408,7 +417,9 @@
                                 <p>Nominal : {{number_format($billing->thePromo->amount, 2, ',', '.')}}</p>
                                 <p>Tipe : {{number_format($billing->thePromo->amount, 0)}} {{$billing->thePromo->type ==
                                     'flat' ? 'Flat' : 'Persen'}}</p>
-
+                                <p>
+                                    Jumlah diskon : {{number_format(($billing->amount_no_promo - $billing->amount), 2, '.', ',')}}
+                                </p>
                                 @else
                                 Tidak ada kode promo yang digunakan.
                                 @endif

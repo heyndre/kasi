@@ -22,7 +22,7 @@
             {{-- Active billings --}}
             <x-table.billing model='searchActive'>
                 <x-slot name="title">
-                    {{__('Active/Unpaid Invoice')}} ({{$active->count()}})
+                    {{__('Active/Unpaid Invoice')}} ({{$active->total()}})
                 </x-slot>
 
                 <x-slot name="caption">
@@ -76,7 +76,7 @@
             {{-- Need Confirmation billings --}}
             <x-table.billing model='searchConfirm'>
                 <x-slot name="title">
-                    {{__('Waiting for Confirmation by KASI')}} ({{$confirm->count()}})
+                    {{__('Waiting for Confirmation by KASI')}} ({{$confirm->total()}})
                 </x-slot>
 
                 <x-slot name="caption">
@@ -130,7 +130,7 @@
             {{-- Past Classes --}}
             <x-table.billing model='searchPaid'>
                 <x-slot name="title">
-                    {{__('Paid Invoice')}} ({{$paid->count()}})
+                    {{__('Paid Invoice')}} ({{$paid->total()}})
                 </x-slot>
 
                 <x-slot name="caption">

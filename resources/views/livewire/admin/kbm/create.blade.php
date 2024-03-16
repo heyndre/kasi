@@ -195,13 +195,29 @@
                     </label>
                     <select wire:model.live='selectedCourse' id="selectedCourse"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                        <option value="" disabled>Pilih mata pelajaran</option>
+                        <option value="" >Pilih mata pelajaran</option>
                         @isset($courseBase)
                         @foreach ($courseBase->theSkill as $item)
                         <option value="{{$item->id}}">{{$item->name}}</option>
                         @endforeach
                         @endisset
                     </select>
+                </div>
+                <div class="mb-6 {{$availability == 'available' ? '' : 'hidden'}}">
+                    <div class="">
+                        <label for="link" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                            Daftar Kelas yang pernah diambil bersama tutor
+                        </label>
+                        @if ($pastStudentClasses)
+                        <ul class="grid grid-cols-2 font-thin">
+                            @forelse ($pastStudentClasses as $item)
+                            <li>{{$item->theCourse->name}} <span class="text-sm italic">{{$item->date_of_event->format('d/m/Y H:i')}}</span></li>
+                            @empty
+                            <li>Belum melaksanakan kelas</li>
+                            @endforelse
+                        </ul>
+                        @endif
+                    </div>
                 </div>
                 <div class="">
                     <label for="isFreeTrial" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
@@ -231,6 +247,7 @@
                             placeholder="Masukkan link pertemuan">
                     </div>
                 </div>
+
                 {{-- <div class="mb-6 {{$availability == 'available' ? '' : 'hidden'}}">
                     <label for="topic" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                         Topik Kelas

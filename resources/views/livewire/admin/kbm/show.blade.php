@@ -1,3 +1,6 @@
+@push('title')
+    Detail Kelas #{{$course->id}}
+@endpush
 <div>
     <x-page.header>
         Detail Kelas
@@ -123,6 +126,23 @@
                                 {{$course->length}} {{__('minutes')}}
                             </div>
                         </div>
+                        @if (auth()->user()->isTutor() || auth()->user()->isManagement())
+                        <div class="border-b-1">
+                            Perkiraan pendapatan Tutor
+                            <div class="font-thin">
+                                Rp.{{number_format($course->length / 60 * $course->price * $course->tutor_percentage / 100, 2, ',', '.')}} 
+                            </div>
+                        </div>
+                        @endif
+                        @if (auth()->user()->isManagement())
+                        <div class="border-b-1">
+                            Perkiraan pendapatan KASI
+                            <div class="font-thin">
+                                Rp.{{number_format($course->length / 60 * $course->price * (100 - $course->tutor_percentage) / 100, 2, ',', '.')}} 
+                            </div>
+                        </div>
+                        @endif
+
 
                         <hr class="p-3">
                         <div class="border-b-1">

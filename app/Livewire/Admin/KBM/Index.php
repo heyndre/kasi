@@ -43,12 +43,13 @@ class Index extends Component
         ->orderBy('date_of_event')
         ->paginate(15);
 
+        $key = $this->searchPast;
         $past = Course::with('theTutor', 'theStudent', 'theCourse')
         ->whereDate('date_of_event', '<', Carbon::today())
-        // ->whereHas('theCourse', function($q) use ($sCourse) {
-        //     $q->search('name', $sCourse)
-        //     ->orderBy('name', 'asc');
-        // })
+        ->whereHas('theTutor.userData', function($q) use ($key) {
+            $q->search('name', $key)
+            ->orderBy('name', 'asc');
+        })
         ->orderBy('date_of_event', 'desc')
         ->paginate(15);
 

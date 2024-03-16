@@ -1,3 +1,6 @@
+@push('title')
+    Daftar Honor Tutor
+@endpush
 <div>
     <x-page.header>
         Daftar Honor Tutor
@@ -31,7 +34,7 @@
             {{-- Active billings --}}
             <x-table.tutor model='searchActive'>
                 <x-slot name="title">
-                    Daftar Pembayaran Honor Aktif ({{$active->count()}})
+                    Daftar Pembayaran Honor Aktif ({{$active->total()}})
                 </x-slot>
 
                 <x-slot name="caption">
@@ -85,7 +88,7 @@
             {{-- Past Classes --}}
             <x-table.tutor model='searchPaid'>
                 <x-slot name="title">
-                    Daftar Honor Tutor Lunas ({{$paid->count()}})
+                    Daftar Honor Tutor Lunas ({{$paid->total()}})
                 </x-slot>
 
                 <x-slot name="caption">

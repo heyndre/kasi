@@ -40,7 +40,8 @@ class BillingController extends Controller
             ->whereNull('billing_id')
             ->first();
 
-        // dd($course->date_of_event->addMonth()->startOfMonth());
+        // dd($course);
+        // dd($course->date_of_event->addMonthsNoOverflow(1)->startOfMonth());
 
         if ($course == null) {
             session()->flash('success', 'Kelas sudah dimasukkan ke billing');
@@ -98,6 +99,7 @@ class BillingController extends Controller
         if ($checkBilling !== null) {
             $lastAmount = $checkBilling->amount;
             $lastLength = $checkBilling->length;
+
             if ($course->free_trial == 0) {
                 $checkBilling->update([
                     'amount' => $lastAmount + ($course->length / 60 * $price),
@@ -320,18 +322,18 @@ class BillingController extends Controller
                 ->disableJavascript()
                 ->save(storage_path("app/billing/tutor/" . $filename));
         } else {
-                $image = Browsershot::html(view('billing.template-tutor', ['billing' => $billing])->render())
-                    ->waitUntilNetworkIdle()
-                    ->newHeadless()
-                    ->emulateMedia("screen")
-                    ->format("A4")
-                    ->margins(0.25, 0.25, 0.25, 0.25, "in")
-                    ->showBackground()
-                    ->setRemoteInstance('127.0.0.1', 9222)
-                    ->mobile()
-                    ->fullPage()
-                    ->disableJavascript()
-                    ->save(storage_path("app/billing/tutor/" . $filename));
+            $image = Browsershot::html(view('billing.template-tutor', ['billing' => $billing])->render())
+                ->waitUntilNetworkIdle()
+                ->newHeadless()
+                ->emulateMedia("screen")
+                ->format("A4")
+                ->margins(0.25, 0.25, 0.25, 0.25, "in")
+                ->showBackground()
+                ->setRemoteInstance('127.0.0.1', 9222)
+                ->mobile()
+                ->fullPage()
+                ->disableJavascript()
+                ->save(storage_path("app/billing/tutor/" . $filename));
         }
         return Response::download(storage_path("app/billing/tutor/" . $filename), $filename);
     }

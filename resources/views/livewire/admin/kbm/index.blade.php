@@ -1,3 +1,6 @@
+@push('title')
+    Jadwal Kelas {{now()->format('d/m/Y')}}
+@endpush
 <div>
     <x-page.header>
         Jadwal Kelas KASI

@@ -304,7 +304,7 @@
                                 {{-- Today Classes --}}
                                 <x-table.classes search='false'>
                                     <x-slot name="title">
-                                        Daftar Kelas Tutor ({{$tutor->theSession->count()}})
+                                        Daftar Kelas Tutor ({{$tutor->theSession->total()}})
                                     </x-slot>
 
                                     <x-slot name="caption">

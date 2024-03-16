@@ -5,6 +5,7 @@ namespace App\Livewire\Admin\Kbm;
 use App\Jobs\SendMeetingInfo;
 use App\Models\Course;
 use App\Models\CourseBase;
+use App\Models\CoursePivot;
 use App\Models\Setting;
 use App\Models\Student;
 use App\Models\Tutor;
@@ -13,7 +14,7 @@ use Livewire\Component;
 
 class Create extends Component
 {
-    public $dateOfEvent, $dateFormat, $isFreeTrial = 0, $student, $link, $package, $courseBase, $tutor, $topic, $selectedCourse = 4, $lesson, $reference, $endTime, $length = 60, $availability = 'waiting';
+    public $dateOfEvent, $dateFormat, $isFreeTrial = 0, $pastStudentClasses, $student, $link, $package, $courseBase, $tutor, $topic, $selectedCourse = 4, $lesson, $reference, $endTime, $length = 60, $availability = 'waiting';
 
     public function mount()
     {
@@ -92,11 +93,24 @@ class Create extends Component
             $this->availability = 'not available';
             // session()->flash('warning', 'Jadwal tidak tersedia, cari jadwal lain');
         }
+
+        $this->pastStudentClasses = Course::with('theCourse')
+            ->where('student_id', Student::where('nim', $this->student)->select('id'))
+            ->where('tutor_id', Tutor::whereHas('userData', function ($q) {
+                $q->where('slug', $this->tutor);
+            })->select('id'))
+            ->orderBy('created_at', 'DESC')
+            ->take(6)
+            // ->toRawSql();
+            ->get();
+        // dd($this->pastStudentClasses);
     }
 
     public function scheduleClass()
     {
         // dd($this);
+
+        $base = CourseBase::where('id', $this->selectedCourse)->first();
 
         $session = Course::create([
             'date_of_event' => $this->dateFormat,
@@ -114,7 +128,10 @@ class Create extends Component
             'additional_links' => json_encode([]),
             'files' => json_encode([]),
             'meeting_link' => $this->link,
-            'price' => CourseBase::where('id', $this->selectedCourse)->first()->price,
+            'price' => $base->price,
+            'price_idr' => $base->price_idr,
+            'tutor_percentage' => $base->tutor_percentage,
+
         ]);
 
         if ($this->isFreeTrial == true) {
