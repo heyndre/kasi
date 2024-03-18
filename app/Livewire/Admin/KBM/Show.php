@@ -77,6 +77,15 @@ class Show extends Component
         $this->recordingSource =  $this->course->recording_youtube == null ? 'Google Drive' : 'Youtube';
     }
 
+    public function duration($length) {
+        // dd($length);
+        $this->course->update([
+            'length' => $length
+        ]);
+        session()->flash('success', 'Durasi kelas berhasil diubah.');
+        return $this->redirect(route('kbm.show', ['id' => $this->course->id]), navigate: false);
+    }
+
     public function cancelClass()
     {
         $this->course->update([

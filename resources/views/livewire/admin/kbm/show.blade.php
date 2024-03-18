@@ -1,5 +1,5 @@
 @push('title')
-    Detail Kelas #{{$course->id}}
+Detail Kelas #{{$course->id}}
 @endpush
 <div>
     <x-page.header>
@@ -130,7 +130,8 @@
                         <div class="border-b-1">
                             Perkiraan pendapatan Tutor
                             <div class="font-thin">
-                                Rp.{{number_format($course->length / 60 * $course->price * $course->tutor_percentage / 100, 2, ',', '.')}} 
+                                Rp.{{number_format($course->length / 60 * $course->price * $course->tutor_percentage /
+                                100, 2, ',', '.')}}
                             </div>
                         </div>
                         @endif
@@ -138,7 +139,8 @@
                         <div class="border-b-1">
                             Perkiraan pendapatan KASI
                             <div class="font-thin">
-                                Rp.{{number_format($course->length / 60 * $course->price * (100 - $course->tutor_percentage) / 100, 2, ',', '.')}} 
+                                Rp.{{number_format($course->length / 60 * $course->price * (100 -
+                                $course->tutor_percentage) / 100, 2, ',', '.')}}
                             </div>
                         </div>
                         @endif
@@ -177,7 +179,7 @@
                                             <path
                                                 d="M13.243 3.2 7.359 9.081a.5.5 0 0 0-.136.256L6.51 12.9a.5.5 0 0 0 .59.59l3.566-.713a.5.5 0 0 0 .255-.136L16.8 6.757 13.243 3.2Z" />
                                         </svg>
-                                       {{__('Mark Attendance')}}
+                                        {{__('Mark Attendance')}}
                                     </div>
                                 </div>
                                 @endif
@@ -285,6 +287,53 @@
                         <div class="border-b-1">
                             Manajemen Status Kelas
                         </div>
+                        <div class="grid grid-cols-2 gap-y-2">
+                            <div wire:click='duration(30)' wire:confirm='Ubah durasi kelas menjadi 30 menit?'
+                                class="text-white cursor-pointer bg-green-500 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center me-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
+                                <svg class="w-3.5 h-3.5 me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                    fill="currentColor" viewBox="0 0 20 18">
+                                    <path
+                                        d="M12.687 14.408a3.01 3.01 0 0 1-1.533.821l-3.566.713a3 3 0 0 1-3.53-3.53l.713-3.566a3.01 3.01 0 0 1 .821-1.533L10.905 2H2.167A2.169 2.169 0 0 0 0 4.167v11.666A2.169 2.169 0 0 0 2.167 18h11.666A2.169 2.169 0 0 0 16 15.833V11.1l-3.313 3.308Zm5.53-9.065.546-.546a2.518 2.518 0 0 0 0-3.56 2.576 2.576 0 0 0-3.559 0l-.547.547 3.56 3.56Z" />
+                                    <path
+                                        d="M13.243 3.2 7.359 9.081a.5.5 0 0 0-.136.256L6.51 12.9a.5.5 0 0 0 .59.59l3.566-.713a.5.5 0 0 0 .255-.136L16.8 6.757 13.243 3.2Z" />
+                                </svg>
+                                Ubah Durasi: 30 Menit
+                            </div>
+                            <div wire:click='duration(45)' wire:confirm='Ubah durasi kelas menjadi 45 menit?'
+                                class="text-white cursor-pointer bg-green-500 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center me-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
+                                <svg class="w-3.5 h-3.5 me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                    fill="currentColor" viewBox="0 0 20 18">
+                                    <path
+                                        d="M12.687 14.408a3.01 3.01 0 0 1-1.533.821l-3.566.713a3 3 0 0 1-3.53-3.53l.713-3.566a3.01 3.01 0 0 1 .821-1.533L10.905 2H2.167A2.169 2.169 0 0 0 0 4.167v11.666A2.169 2.169 0 0 0 2.167 18h11.666A2.169 2.169 0 0 0 16 15.833V11.1l-3.313 3.308Zm5.53-9.065.546-.546a2.518 2.518 0 0 0 0-3.56 2.576 2.576 0 0 0-3.559 0l-.547.547 3.56 3.56Z" />
+                                    <path
+                                        d="M13.243 3.2 7.359 9.081a.5.5 0 0 0-.136.256L6.51 12.9a.5.5 0 0 0 .59.59l3.566-.713a.5.5 0 0 0 .255-.136L16.8 6.757 13.243 3.2Z" />
+                                </svg>
+                                Ubah Durasi: 45 Menit
+                            </div>
+                            <div wire:click='duration(60)' wire:confirm='Ubah durasi kelas menjadi 60 menit?'
+                                class="text-white cursor-pointer bg-green-500 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center me-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
+                                <svg class="w-3.5 h-3.5 me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                    fill="currentColor" viewBox="0 0 20 18">
+                                    <path
+                                        d="M12.687 14.408a3.01 3.01 0 0 1-1.533.821l-3.566.713a3 3 0 0 1-3.53-3.53l.713-3.566a3.01 3.01 0 0 1 .821-1.533L10.905 2H2.167A2.169 2.169 0 0 0 0 4.167v11.666A2.169 2.169 0 0 0 2.167 18h11.666A2.169 2.169 0 0 0 16 15.833V11.1l-3.313 3.308Zm5.53-9.065.546-.546a2.518 2.518 0 0 0 0-3.56 2.576 2.576 0 0 0-3.559 0l-.547.547 3.56 3.56Z" />
+                                    <path
+                                        d="M13.243 3.2 7.359 9.081a.5.5 0 0 0-.136.256L6.51 12.9a.5.5 0 0 0 .59.59l3.566-.713a.5.5 0 0 0 .255-.136L16.8 6.757 13.243 3.2Z" />
+                                </svg>
+                                Ubah Durasi: 60 Menit
+                            </div>
+                            <div wire:click='duration(90)' wire:confirm='Ubah durasi kelas menjadi 90 menit?'
+                                class="text-white cursor-pointer bg-green-500 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center me-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
+                                <svg class="w-3.5 h-3.5 me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                    fill="currentColor" viewBox="0 0 20 18">
+                                    <path
+                                        d="M12.687 14.408a3.01 3.01 0 0 1-1.533.821l-3.566.713a3 3 0 0 1-3.53-3.53l.713-3.566a3.01 3.01 0 0 1 .821-1.533L10.905 2H2.167A2.169 2.169 0 0 0 0 4.167v11.666A2.169 2.169 0 0 0 2.167 18h11.666A2.169 2.169 0 0 0 16 15.833V11.1l-3.313 3.308Zm5.53-9.065.546-.546a2.518 2.518 0 0 0 0-3.56 2.576 2.576 0 0 0-3.559 0l-.547.547 3.56 3.56Z" />
+                                    <path
+                                        d="M13.243 3.2 7.359 9.081a.5.5 0 0 0-.136.256L6.51 12.9a.5.5 0 0 0 .59.59l3.566-.713a.5.5 0 0 0 .255-.136L16.8 6.757 13.243 3.2Z" />
+                                </svg>
+                                Ubah Durasi: 90 Menit
+                            </div>
+                        </div>
+                        <hr class="my-4">
                         @if ($course->status != 'CANCELLED')
                         <div wire:click='cancelClass' wire:confirm='Ubah status kelas menjadi dibatalkan?'
                             class="text-white cursor-pointer bg-red-500 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center me-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">

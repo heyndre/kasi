@@ -1,3 +1,4 @@
+@inject('ctr', 'App\Http\Controllers\DashboardController')
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
@@ -25,7 +26,7 @@
                         </a> --}}
                         <h1
                             class="mb-4 text-4xl font-extrabold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-6xl dark:text-white">
-                           {{__('word.welcome')}}
+                            {{__('word.welcome')}}
                         </h1>
                         <p
                             class="mb-8 text-lg font-normal text-gray-500 lg:text-xl sm:px-16 xl:px-48 dark:text-gray-400">
@@ -54,6 +55,585 @@
                                 Watch video
                             </a> --}}
                         </div>
+
+                        <div class="mb-6">
+                            <div class="flex flex-wrap">
+                                <div
+                                    class="w-1/3 p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700">
+                                    <div class="flex items-center justify-between mb-4">
+                                        <h5 class="text-xl font-bold leading-none text-gray-900 dark:text-white">
+                                            Statistik Kelas Keseluruhan
+                                        </h5>
+                                        <!-- <a href="#"
+                                            class="text-sm font-medium text-blue-600 hover:underline dark:text-blue-500">
+                                            View all
+                                        </a> -->
+                                    </div>
+                                    <div class="flow-root">
+                                        <ul role="list" class="divide-y divide-gray-200 dark:divide-gray-700">
+                                            <li class="py-3 sm:py-4">
+                                                <div class="flex items-center">
+                                                    <div class="flex-shrink-0">
+                                                        <svg class="w-6 h-6 text-gray-800 dark:text-white"
+                                                            aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                                            width="24" height="24" fill="currentColor"
+                                                            viewBox="0 0 24 24">
+                                                            <path fill-rule="evenodd"
+                                                                d="M6 2a2 2 0 0 0-2 2v15a3 3 0 0 0 3 3h12a1 1 0 1 0 0-2h-2v-2h2a1 1 0 0 0 1-1V4a2 2 0 0 0-2-2h-8v16h5v2H7a1 1 0 1 1 0-2h1V2H6Z"
+                                                                clip-rule="evenodd" />
+                                                        </svg>
+
+                                                    </div>
+                                                    <div class="flex-1 min-w-0 ms-4">
+                                                        <p
+                                                            class="text-sm font-medium text-gray-900 truncate dark:text-white">
+                                                            Kelas Terlaksana
+                                                        </p>
+                                                        <p class="text-sm text-gray-500 truncate dark:text-gray-400">
+                                                            Keseluruhan
+                                                        </p>
+                                                    </div>
+                                                    <div
+                                                        class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
+                                                        {{$ctr->getClasses('CONDUCTED')}} kelas
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li class="py-3 sm:py-4">
+                                                <div class="flex items-center">
+                                                    <div class="flex-shrink-0">
+                                                        <svg class="w-6 h-6 text-gray-800 dark:text-white"
+                                                            aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                                            width="24" height="24" fill="currentColor"
+                                                            viewBox="0 0 24 24">
+                                                            <path fill-rule="evenodd"
+                                                                d="M6 2a2 2 0 0 0-2 2v15a3 3 0 0 0 3 3h12a1 1 0 1 0 0-2h-2v-2h2a1 1 0 0 0 1-1V4a2 2 0 0 0-2-2h-8v16h5v2H7a1 1 0 1 1 0-2h1V2H6Z"
+                                                                clip-rule="evenodd" />
+                                                        </svg>
+
+                                                    </div>
+                                                    <div class="flex-1 min-w-0 ms-4">
+                                                        <p
+                                                            class="text-sm font-medium text-gray-900 truncate dark:text-white">
+                                                            Kelas Menunggu Konfirmasi
+                                                        </p>
+                                                        <p class="text-sm text-gray-500 truncate dark:text-gray-400">
+                                                            Keseluruhan
+                                                        </p>
+                                                    </div>
+                                                    <div
+                                                        class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
+                                                        {{$ctr->getClasses('NEEDCONFIRMATION')}} kelas
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li class="py-3 sm:py-4">
+                                                <div class="flex items-center">
+                                                    <div class="flex-shrink-0">
+                                                        <svg class="w-6 h-6 text-gray-800 dark:text-white"
+                                                            aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                                            width="24" height="24" fill="currentColor"
+                                                            viewBox="0 0 24 24">
+                                                            <path fill-rule="evenodd"
+                                                                d="M6 2a2 2 0 0 0-2 2v15a3 3 0 0 0 3 3h12a1 1 0 1 0 0-2h-2v-2h2a1 1 0 0 0 1-1V4a2 2 0 0 0-2-2h-8v16h5v2H7a1 1 0 1 1 0-2h1V2H6Z"
+                                                                clip-rule="evenodd" />
+                                                        </svg>
+
+                                                    </div>
+                                                    <div class="flex-1 min-w-0 ms-4">
+                                                        <p
+                                                            class="text-sm font-medium text-gray-900 truncate dark:text-white">
+                                                            Kelas Dibatalkan
+                                                        </p>
+                                                        <p class="text-sm text-gray-500 truncate dark:text-gray-400">
+                                                            Keseluruhan
+                                                        </p>
+                                                    </div>
+                                                    <div
+                                                        class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
+                                                        {{$ctr->getClasses('CANCELLED')}} kelas
+                                                    </div>
+                                                </div>
+                                            </li>
+
+                                            <li class="py-3 sm:py-4">
+                                                <div class="flex items-center">
+                                                    <div class="flex-shrink-0">
+                                                        <svg class="w-6 h-6 text-gray-800 dark:text-white"
+                                                            aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                                            width="24" height="24" fill="currentColor"
+                                                            viewBox="0 0 24 24">
+                                                            <path fill-rule="evenodd"
+                                                                d="M6 2a2 2 0 0 0-2 2v15a3 3 0 0 0 3 3h12a1 1 0 1 0 0-2h-2v-2h2a1 1 0 0 0 1-1V4a2 2 0 0 0-2-2h-8v16h5v2H7a1 1 0 1 1 0-2h1V2H6Z"
+                                                                clip-rule="evenodd" />
+                                                        </svg>
+
+                                                    </div>
+                                                    <div class="flex-1 min-w-0 ms-4">
+                                                        <p
+                                                            class="text-sm font-medium text-gray-900 truncate dark:text-white">
+                                                            Kelas Menunggu Pelaksanaan
+                                                        </p>
+                                                        <p class="text-sm text-gray-500 truncate dark:text-gray-400">
+                                                            Keseluruhan
+                                                        </p>
+                                                    </div>
+                                                    <div
+                                                        class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
+                                                        {{$ctr->getClasses('WAITING')}} kelas
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="w-1/3 p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700">
+                                    <div class="flex items-center justify-between mb-4">
+                                        <h5 class="text-xl font-bold leading-none text-gray-900 dark:text-white">
+                                            Statistik Kelas Periode Ini
+                                        </h5>
+                                        <!-- <a href="#"
+                                            class="text-sm font-medium text-blue-600 hover:underline dark:text-blue-500">
+                                            View all
+                                        </a> -->
+                                    </div>
+                                    <div class="flow-root">
+                                        <ul role="list" class="divide-y divide-gray-200 dark:divide-gray-700">
+                                            <li class="py-3 sm:py-4">
+                                                <div class="flex items-center">
+                                                    <div class="flex-shrink-0">
+                                                        <svg class="w-6 h-6 text-gray-800 dark:text-white"
+                                                            aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                                            width="24" height="24" fill="currentColor"
+                                                            viewBox="0 0 24 24">
+                                                            <path fill-rule="evenodd"
+                                                                d="M6 2a2 2 0 0 0-2 2v15a3 3 0 0 0 3 3h12a1 1 0 1 0 0-2h-2v-2h2a1 1 0 0 0 1-1V4a2 2 0 0 0-2-2h-8v16h5v2H7a1 1 0 1 1 0-2h1V2H6Z"
+                                                                clip-rule="evenodd" />
+                                                        </svg>
+
+                                                    </div>
+                                                    <div class="flex-1 min-w-0 ms-4">
+                                                        <p
+                                                            class="text-sm font-medium text-gray-900 truncate dark:text-white">
+                                                            Kelas Terlaksana
+                                                        </p>
+                                                        <p class="text-sm text-gray-500 truncate dark:text-gray-400">
+                                                            Keseluruhan
+                                                        </p>
+                                                    </div>
+                                                    <div
+                                                        class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
+                                                        {{$ctr->getPeriodClasses('CONDUCTED')}} kelas
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li class="py-3 sm:py-4">
+                                                <div class="flex items-center">
+                                                    <div class="flex-shrink-0">
+                                                        <svg class="w-6 h-6 text-gray-800 dark:text-white"
+                                                            aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                                            width="24" height="24" fill="currentColor"
+                                                            viewBox="0 0 24 24">
+                                                            <path fill-rule="evenodd"
+                                                                d="M6 2a2 2 0 0 0-2 2v15a3 3 0 0 0 3 3h12a1 1 0 1 0 0-2h-2v-2h2a1 1 0 0 0 1-1V4a2 2 0 0 0-2-2h-8v16h5v2H7a1 1 0 1 1 0-2h1V2H6Z"
+                                                                clip-rule="evenodd" />
+                                                        </svg>
+
+                                                    </div>
+                                                    <div class="flex-1 min-w-0 ms-4">
+                                                        <p
+                                                            class="text-sm font-medium text-gray-900 truncate dark:text-white">
+                                                            Kelas Menunggu Konfirmasi
+                                                        </p>
+                                                        <p class="text-sm text-gray-500 truncate dark:text-gray-400">
+                                                            Keseluruhan
+                                                        </p>
+                                                    </div>
+                                                    <div
+                                                        class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
+                                                        {{$ctr->getPeriodClasses('NEEDCONFIRMATION')}} kelas
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li class="py-3 sm:py-4">
+                                                <div class="flex items-center">
+                                                    <div class="flex-shrink-0">
+                                                        <svg class="w-6 h-6 text-gray-800 dark:text-white"
+                                                            aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                                            width="24" height="24" fill="currentColor"
+                                                            viewBox="0 0 24 24">
+                                                            <path fill-rule="evenodd"
+                                                                d="M6 2a2 2 0 0 0-2 2v15a3 3 0 0 0 3 3h12a1 1 0 1 0 0-2h-2v-2h2a1 1 0 0 0 1-1V4a2 2 0 0 0-2-2h-8v16h5v2H7a1 1 0 1 1 0-2h1V2H6Z"
+                                                                clip-rule="evenodd" />
+                                                        </svg>
+
+                                                    </div>
+                                                    <div class="flex-1 min-w-0 ms-4">
+                                                        <p
+                                                            class="text-sm font-medium text-gray-900 truncate dark:text-white">
+                                                            Kelas Dibatalkan
+                                                        </p>
+                                                        <p class="text-sm text-gray-500 truncate dark:text-gray-400">
+                                                            Keseluruhan
+                                                        </p>
+                                                    </div>
+                                                    <div
+                                                        class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
+                                                        {{$ctr->getPeriodClasses('CANCELLED')}} kelas
+                                                    </div>
+                                                </div>
+                                            </li>
+
+                                            <li class="py-3 sm:py-4">
+                                                <div class="flex items-center">
+                                                    <div class="flex-shrink-0">
+                                                        <svg class="w-6 h-6 text-gray-800 dark:text-white"
+                                                            aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                                            width="24" height="24" fill="currentColor"
+                                                            viewBox="0 0 24 24">
+                                                            <path fill-rule="evenodd"
+                                                                d="M6 2a2 2 0 0 0-2 2v15a3 3 0 0 0 3 3h12a1 1 0 1 0 0-2h-2v-2h2a1 1 0 0 0 1-1V4a2 2 0 0 0-2-2h-8v16h5v2H7a1 1 0 1 1 0-2h1V2H6Z"
+                                                                clip-rule="evenodd" />
+                                                        </svg>
+
+                                                    </div>
+                                                    <div class="flex-1 min-w-0 ms-4">
+                                                        <p
+                                                            class="text-sm font-medium text-gray-900 truncate dark:text-white">
+                                                            Kelas Menunggu Pelaksanaan
+                                                        </p>
+                                                        <p class="text-sm text-gray-500 truncate dark:text-gray-400">
+                                                            Keseluruhan
+                                                        </p>
+                                                    </div>
+                                                    <div
+                                                        class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
+                                                        {{$ctr->getPeriodClasses('WAITING')}} kelas
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <div class="shrink-0"></div>
+
+                                <div
+                                    class="w-1/3 p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700">
+                                    <div class="flex items-center justify-between mb-4">
+                                        <h5 class="text-xl font-bold leading-none text-gray-900 dark:text-white">
+                                            Statistik Keuangan Keseluruhan
+                                        </h5>
+                                        <!-- <a href="#"
+                                            class="text-sm font-medium text-blue-600 hover:underline dark:text-blue-500">
+                                            View all
+                                        </a> -->
+                                    </div>
+                                    <div class="flow-root">
+                                        <ul role="list" class="divide-y divide-gray-200 dark:divide-gray-700">
+                                            <li class="py-3 sm:py-4">
+                                                <div class="flex items-center">
+                                                    <div class="flex-shrink-0">
+                                                        <svg class="w-6 h-6 text-gray-800 dark:text-white"
+                                                            aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                                            width="24" height="24" fill="currentColor"
+                                                            viewBox="0 0 24 24">
+                                                            <path fill-rule="evenodd"
+                                                                d="M6 2a2 2 0 0 0-2 2v15a3 3 0 0 0 3 3h12a1 1 0 1 0 0-2h-2v-2h2a1 1 0 0 0 1-1V4a2 2 0 0 0-2-2h-8v16h5v2H7a1 1 0 1 1 0-2h1V2H6Z"
+                                                                clip-rule="evenodd" />
+                                                        </svg>
+
+                                                    </div>
+                                                    <div class="flex-1 min-w-0 ms-4">
+                                                        <p
+                                                            class="text-sm font-medium text-gray-900 truncate dark:text-white">
+                                                            Pendapatan Kotor Kelas
+                                                        </p>
+                                                        <p class="text-sm text-gray-500 truncate dark:text-gray-400">
+                                                            Keseluruhan
+                                                        </p>
+                                                    </div>
+                                                    <div
+                                                        class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
+                                                        Rp.{{number_format($ctr->getFinance('GROSSPROFIT'), 2, ',',
+                                                        '.')}}
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li class="py-3 sm:py-4">
+                                                <div class="flex items-center">
+                                                    <div class="flex-shrink-0">
+                                                        <svg class="w-6 h-6 text-gray-800 dark:text-white"
+                                                            aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                                            width="24" height="24" fill="currentColor"
+                                                            viewBox="0 0 24 24">
+                                                            <path fill-rule="evenodd"
+                                                                d="M6 2a2 2 0 0 0-2 2v15a3 3 0 0 0 3 3h12a1 1 0 1 0 0-2h-2v-2h2a1 1 0 0 0 1-1V4a2 2 0 0 0-2-2h-8v16h5v2H7a1 1 0 1 1 0-2h1V2H6Z"
+                                                                clip-rule="evenodd" />
+                                                        </svg>
+
+                                                    </div>
+                                                    <div class="flex-1 min-w-0 ms-4">
+                                                        <p
+                                                            class="text-sm font-medium text-gray-900 truncate dark:text-white">
+                                                            Dana Diteruskan Ke Tutor
+                                                        </p>
+                                                        <p class="text-sm text-gray-500 truncate dark:text-gray-400">
+                                                            Keseluruhan
+                                                        </p>
+                                                    </div>
+                                                    <div
+                                                        class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
+                                                        Rp.{{number_format($ctr->getFinance('TUTORPAYMENT'), 2, ',',
+                                                        '.')}}
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li class="py-3 sm:py-4">
+                                                <div class="flex items-center">
+                                                    <div class="flex-shrink-0">
+                                                        <svg class="w-6 h-6 text-gray-800 dark:text-white"
+                                                            aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                                            width="24" height="24" fill="currentColor"
+                                                            viewBox="0 0 24 24">
+                                                            <path fill-rule="evenodd"
+                                                                d="M6 2a2 2 0 0 0-2 2v15a3 3 0 0 0 3 3h12a1 1 0 1 0 0-2h-2v-2h2a1 1 0 0 0 1-1V4a2 2 0 0 0-2-2h-8v16h5v2H7a1 1 0 1 1 0-2h1V2H6Z"
+                                                                clip-rule="evenodd" />
+                                                        </svg>
+
+                                                    </div>
+                                                    <div class="flex-1 min-w-0 ms-4">
+                                                        <p
+                                                            class="text-sm font-medium text-gray-900 truncate dark:text-white">
+                                                            Pendapatan Bersih Kelas
+                                                        </p>
+                                                        <p class="text-sm text-gray-500 truncate dark:text-gray-400">
+                                                            Keseluruhan
+                                                        </p>
+                                                    </div>
+                                                    <div
+                                                        class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
+                                                        Rp.{{number_format($ctr->getFinance('NETPROFIT'), 2, ',', '.')}}
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="w-1/3 p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700">
+                                    <div class="flex items-center justify-between mb-4">
+                                        <h5 class="text-xl font-bold leading-none text-gray-900 dark:text-white">
+                                            Statistik Keuangan Periode Ini
+                                        </h5>
+                                        <!-- <a href="#"
+                                            class="text-sm font-medium text-blue-600 hover:underline dark:text-blue-500">
+                                            View all
+                                        </a> -->
+                                    </div>
+                                    <div class="flow-root">
+                                        <ul role="list" class="divide-y divide-gray-200 dark:divide-gray-700">
+                                            <!-- PERIOD -->
+                                            <li class="py-3 sm:py-4">
+                                                <div class="flex items-center">
+                                                    <div class="flex-shrink-0">
+                                                        <svg class="w-6 h-6 text-gray-800 dark:text-white"
+                                                            aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                                            width="24" height="24" fill="currentColor"
+                                                            viewBox="0 0 24 24">
+                                                            <path fill-rule="evenodd"
+                                                                d="M6 2a2 2 0 0 0-2 2v15a3 3 0 0 0 3 3h12a1 1 0 1 0 0-2h-2v-2h2a1 1 0 0 0 1-1V4a2 2 0 0 0-2-2h-8v16h5v2H7a1 1 0 1 1 0-2h1V2H6Z"
+                                                                clip-rule="evenodd" />
+                                                        </svg>
+
+                                                    </div>
+                                                    <div class="flex-1 min-w-0 ms-4">
+                                                        <p
+                                                            class="text-sm font-medium text-gray-900 truncate dark:text-white">
+                                                            Pendapatan Kotor Kelas
+                                                        </p>
+                                                        <p class="text-sm text-gray-500 truncate dark:text-gray-400">
+                                                            Periode {{now()->format('F Y')}}
+                                                        </p>
+                                                    </div>
+                                                    <div
+                                                        class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
+                                                        Rp.{{number_format($ctr->getFinance('GROSSPROFITPERIOD'), 2,
+                                                        ',', '.')}}
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li class="py-3 sm:py-4">
+                                                <div class="flex items-center">
+                                                    <div class="flex-shrink-0">
+                                                        <svg class="w-6 h-6 text-gray-800 dark:text-white"
+                                                            aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                                            width="24" height="24" fill="currentColor"
+                                                            viewBox="0 0 24 24">
+                                                            <path fill-rule="evenodd"
+                                                                d="M6 2a2 2 0 0 0-2 2v15a3 3 0 0 0 3 3h12a1 1 0 1 0 0-2h-2v-2h2a1 1 0 0 0 1-1V4a2 2 0 0 0-2-2h-8v16h5v2H7a1 1 0 1 1 0-2h1V2H6Z"
+                                                                clip-rule="evenodd" />
+                                                        </svg>
+
+                                                    </div>
+                                                    <div class="flex-1 min-w-0 ms-4">
+                                                        <p
+                                                            class="text-sm font-medium text-gray-900 truncate dark:text-white">
+                                                            Dana Diteruskan Ke Tutor
+                                                        </p>
+                                                        <p class="text-sm text-gray-500 truncate dark:text-gray-400">
+                                                            Periode {{now()->format('F Y')}}
+                                                        </p>
+                                                    </div>
+                                                    <div
+                                                        class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
+                                                        Rp.{{number_format($ctr->getFinance('TUTORPAYMENTPERIOD'), 2,
+                                                        ',', '.')}}
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li class="py-3 sm:py-4">
+                                                <div class="flex items-center">
+                                                    <div class="flex-shrink-0">
+                                                        <svg class="w-6 h-6 text-gray-800 dark:text-white"
+                                                            aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                                            width="24" height="24" fill="currentColor"
+                                                            viewBox="0 0 24 24">
+                                                            <path fill-rule="evenodd"
+                                                                d="M6 2a2 2 0 0 0-2 2v15a3 3 0 0 0 3 3h12a1 1 0 1 0 0-2h-2v-2h2a1 1 0 0 0 1-1V4a2 2 0 0 0-2-2h-8v16h5v2H7a1 1 0 1 1 0-2h1V2H6Z"
+                                                                clip-rule="evenodd" />
+                                                        </svg>
+
+                                                    </div>
+                                                    <div class="flex-1 min-w-0 ms-4">
+                                                        <p
+                                                            class="text-sm font-medium text-gray-900 truncate dark:text-white">
+                                                            Pendapatan Bersih Kelas
+                                                        </p>
+                                                        <p class="text-sm text-gray-500 truncate dark:text-gray-400">
+                                                            Periode {{now()->format('F Y')}}
+                                                        </p>
+                                                    </div>
+                                                    <div
+                                                        class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
+                                                        Rp.{{number_format($ctr->getFinance('NETPROFITPERIOD'), 2, ',',
+                                                        '.')}}
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="w-1/3 p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700">
+                                    <div class="flex items-center justify-between mb-4">
+                                        <h5 class="text-xl font-bold leading-none text-gray-900 dark:text-white">
+                                            Statistik Keuangan Periode Sebelumnya
+                                        </h5>
+                                        <!-- <a href="#"
+                                            class="text-sm font-medium text-blue-600 hover:underline dark:text-blue-500">
+                                            View all
+                                        </a> -->
+                                    </div>
+                                    <div class="flow-root">
+                                        <ul role="list" class="divide-y divide-gray-200 dark:divide-gray-700">
+                                            <li class="py-3 sm:py-4">
+                                                <div class="flex items-center">
+                                                    <div class="flex-shrink-0">
+                                                        <svg class="w-6 h-6 text-gray-800 dark:text-white"
+                                                            aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                                            width="24" height="24" fill="currentColor"
+                                                            viewBox="0 0 24 24">
+                                                            <path fill-rule="evenodd"
+                                                                d="M6 2a2 2 0 0 0-2 2v15a3 3 0 0 0 3 3h12a1 1 0 1 0 0-2h-2v-2h2a1 1 0 0 0 1-1V4a2 2 0 0 0-2-2h-8v16h5v2H7a1 1 0 1 1 0-2h1V2H6Z"
+                                                                clip-rule="evenodd" />
+                                                        </svg>
+
+                                                    </div>
+                                                    <div class="flex-1 min-w-0 ms-4">
+                                                        <p
+                                                            class="text-sm font-medium text-gray-900 truncate dark:text-white">
+                                                            Pendapatan Kotor Kelas
+                                                        </p>
+                                                        <p class="text-sm text-gray-500 truncate dark:text-gray-400">
+                                                            Periode {{now()->subMonthNoOverflow()->format('F Y')}}
+                                                        </p>
+                                                    </div>
+                                                    <div
+                                                        class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
+                                                        Rp.{{number_format($ctr->getFinance('LASTGROSSPROFIT'), 2, ',',
+                                                        '.')}}
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li class="py-3 sm:py-4">
+                                                <div class="flex items-center">
+                                                    <div class="flex-shrink-0">
+                                                        <svg class="w-6 h-6 text-gray-800 dark:text-white"
+                                                            aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                                            width="24" height="24" fill="currentColor"
+                                                            viewBox="0 0 24 24">
+                                                            <path fill-rule="evenodd"
+                                                                d="M6 2a2 2 0 0 0-2 2v15a3 3 0 0 0 3 3h12a1 1 0 1 0 0-2h-2v-2h2a1 1 0 0 0 1-1V4a2 2 0 0 0-2-2h-8v16h5v2H7a1 1 0 1 1 0-2h1V2H6Z"
+                                                                clip-rule="evenodd" />
+                                                        </svg>
+
+                                                    </div>
+                                                    <div class="flex-1 min-w-0 ms-4">
+                                                        <p
+                                                            class="text-sm font-medium text-gray-900 truncate dark:text-white">
+                                                            Dana Diteruskan Ke Tutor
+                                                        </p>
+                                                        <p class="text-sm text-gray-500 truncate dark:text-gray-400">
+                                                            Periode {{now()->subMonthNoOverflow()->format('F Y')}}
+                                                        </p>
+                                                    </div>
+                                                    <div
+                                                        class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
+                                                        Rp.{{number_format($ctr->getFinance('LASTTUTORPAYMENT'), 2, ',',
+                                                        '.')}}
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li class="py-3 sm:py-4">
+                                                <div class="flex items-center">
+                                                    <div class="flex-shrink-0">
+                                                        <svg class="w-6 h-6 text-gray-800 dark:text-white"
+                                                            aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                                            width="24" height="24" fill="currentColor"
+                                                            viewBox="0 0 24 24">
+                                                            <path fill-rule="evenodd"
+                                                                d="M6 2a2 2 0 0 0-2 2v15a3 3 0 0 0 3 3h12a1 1 0 1 0 0-2h-2v-2h2a1 1 0 0 0 1-1V4a2 2 0 0 0-2-2h-8v16h5v2H7a1 1 0 1 1 0-2h1V2H6Z"
+                                                                clip-rule="evenodd" />
+                                                        </svg>
+
+                                                    </div>
+                                                    <div class="flex-1 min-w-0 ms-4">
+                                                        <p
+                                                            class="text-sm font-medium text-gray-900 truncate dark:text-white">
+                                                            Pendapatan Bersih Kelas
+                                                        </p>
+                                                        <p class="text-sm text-gray-500 truncate dark:text-gray-400">
+                                                            Periode {{now()->subMonthNoOverflow()->format('F Y')}}
+                                                        </p>
+                                                    </div>
+                                                    <div
+                                                        class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
+                                                        Rp.{{number_format($ctr->getFinance('LASTNETPROFIT'), 2, ',',
+                                                        '.')}}
+                                                    </div>
+                                                </div>
+                                            </li>
+
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <div class="px-4 mx-auto text-center md:max-w-screen-md lg:max-w-screen-lg lg:px-36">
                             <span class="font-semibold text-gray-400">Belajar Dulu, Menginspirasi Kemudian!
                                 <br>
@@ -61,7 +641,8 @@
                             </span>
                             <div
                                 class="flex flex-wrap justify-center items-center mt-8 text-gray-500 sm:justify-between">
-                                <a href="https://kasi.web.id" class="flex items-center mr-5 mb-5 lg:mb-0 hover:text-gray-800 dark:hover:text-gray-400">
+                                <a href="https://kasi.web.id"
+                                    class="flex items-center mr-5 mb-5 lg:mb-0 hover:text-gray-800 dark:hover:text-gray-400">
                                     <svg class="w-8 h-8 text-gray-800 dark:text-white" aria-hidden="true"
                                         xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 18">
                                         <path
@@ -71,7 +652,7 @@
                                         Blog eduKASI
                                     </p>
                                 </a>
-                                
+
                             </div>
                         </div>
                     </div>
@@ -93,7 +674,7 @@
                         </a> --}}
                         <h1
                             class="mb-4 text-4xl font-extrabold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-6xl dark:text-white">
-                           {{__('word.welcome')}}
+                            {{__('word.welcome')}}
                         </h1>
                         <p
                             class="mb-8 text-lg font-normal text-gray-500 lg:text-xl sm:px-16 xl:px-48 dark:text-gray-400">
@@ -129,7 +710,8 @@
                             </span>
                             <div
                                 class="flex flex-wrap justify-center items-center mt-8 text-gray-500 sm:justify-between">
-                                <a href="https://kasi.web.id" class="flex items-center mr-5 mb-5 lg:mb-0 hover:text-gray-800 dark:hover:text-gray-400">
+                                <a href="https://kasi.web.id"
+                                    class="flex items-center mr-5 mb-5 lg:mb-0 hover:text-gray-800 dark:hover:text-gray-400">
                                     <svg class="w-8 h-8 text-gray-800 dark:text-white" aria-hidden="true"
                                         xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 18">
                                         <path
@@ -139,7 +721,7 @@
                                         Blog eduKASI
                                     </p>
                                 </a>
-                                
+
                             </div>
                         </div>
                     </div>
@@ -161,7 +743,7 @@
                         </a> --}}
                         <h1
                             class="mb-4 text-4xl font-extrabold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-6xl dark:text-white">
-                           {{__('word.welcome')}}
+                            {{__('word.welcome')}}
                         </h1>
                         <p
                             class="mb-8 text-lg font-normal text-gray-500 lg:text-xl sm:px-16 xl:px-48 dark:text-gray-400">
@@ -197,7 +779,8 @@
                             </span>
                             <div
                                 class="flex flex-wrap justify-center items-center mt-8 text-gray-500 sm:justify-between">
-                                <a href="https://kasi.web.id" class="flex items-center mr-5 mb-5 lg:mb-0 hover:text-gray-800 dark:hover:text-gray-400">
+                                <a href="https://kasi.web.id"
+                                    class="flex items-center mr-5 mb-5 lg:mb-0 hover:text-gray-800 dark:hover:text-gray-400">
                                     <svg class="w-8 h-8 text-gray-800 dark:text-white" aria-hidden="true"
                                         xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 18">
                                         <path
@@ -207,7 +790,7 @@
                                         Blog eduKASI
                                     </p>
                                 </a>
-                                
+
                             </div>
                         </div>
                     </div>
@@ -229,7 +812,7 @@
                         </a> --}}
                         <h1
                             class="mb-4 text-4xl font-extrabold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-6xl dark:text-white">
-                           {{__('word.welcome')}}
+                            {{__('word.welcome')}}
                         </h1>
                         <p
                             class="mb-8 text-lg font-normal text-gray-500 lg:text-xl sm:px-16 xl:px-48 dark:text-gray-400">
@@ -265,7 +848,8 @@
                             </span>
                             <div
                                 class="flex flex-wrap justify-center items-center mt-8 text-gray-500 sm:justify-between">
-                                <a href="https://kasi.web.id" class="flex items-center mr-5 mb-5 lg:mb-0 hover:text-gray-800 dark:hover:text-gray-400">
+                                <a href="https://kasi.web.id"
+                                    class="flex items-center mr-5 mb-5 lg:mb-0 hover:text-gray-800 dark:hover:text-gray-400">
                                     <svg class="w-8 h-8 text-gray-800 dark:text-white" aria-hidden="true"
                                         xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 18">
                                         <path
@@ -275,7 +859,7 @@
                                         Blog eduKASI
                                     </p>
                                 </a>
-                                
+
                             </div>
                         </div>
                     </div>
