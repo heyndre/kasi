@@ -304,7 +304,7 @@
                                 {{-- Today Classes --}}
                                 <x-table.classes search='false'>
                                     <x-slot name="title">
-                                        Daftar Kelas Tutor ({{$tutor->theSession->total()}})
+                                        Daftar Kelas Tutor ({{$tutor->theSession->count('id')}})
                                     </x-slot>
 
                                     <x-slot name="caption">
@@ -336,7 +336,7 @@
                                         @forelse ($tutor->theSession as $i => $item)
                                         <x-table.row-class-billing wire:loading.class.delay.longest='opacity-80'
                                             :tutor='$item->theStudent' :student='$item->theTutor'
-                                            :course='$item->theCourse'>
+                                            :course='$item->theCourse' :item='$item' showTutorSharing='true'>
                                             <x-slot name="id">
                                                 {{$item->id}}
                                             </x-slot>

@@ -12,7 +12,7 @@
         {{$time}}
     </td>
     <td class="px-6 py-4">
-        {{$course->name}}
+        {{$item->name}}
     </td>
     <td class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
         @php
@@ -51,6 +51,9 @@
         Rp.{{number_format($item->price_idr * $item->length / 60, 0, '.', ',')}}
         <br>
         ({{$item->length}} menit)
+        @if (isset($showTutorSharing))
+        Rp.{{number_format($item->price_idr * $item->length / 60 * 75 / 100, 0, '.', ',')}}
+        @endif
     </td>
 
     <td class="px-6 py-4">

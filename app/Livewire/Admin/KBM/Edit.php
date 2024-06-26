@@ -16,27 +16,40 @@ class Edit extends Component
 {
     use SupportFileUploadsWithFileUploads;
 
-    public $data, $topic, $lesson, $reference, $links, $availability, $files = [], $photo, $recording = [];
+    public $data, $topic, $lesson, $reference, $links, $files = [], $photo, $recording, $noteStudent, $noteAdmin, $currentPhoto;
 
-    public function updatedFiles() {
-        // dd($this->files);
-    }
-
-    public function updateClass()
-    {
-        dd($this);
+    public function updateClass() {
+        // dd($this);
 
         $this->data->update([
             'topic' => $this->topic,
             'lesson_matter' => $this->lesson,
+            'recording_youtube' => $this->recording,
+            'tutor_notes' => $this->noteStudent,
+            'tutor_notes_to_admin' => $this->noteAdmin,
             // 'additional_links' => json_encode($this->reference),
         ]);
         if ($this->reference != $this->links) {
-            dd($this->reference == $this->links);
+            // dd($this->reference == $this->links);
             // dd($this);
-            // $this->data->update([
-            // 'additional_links' => json_encode($this->reference),
-            // ]);
+            $this->data->update([
+            'additional_links' => json_encode($this->reference),
+            ]);
+        }
+        
+        // dd($this->photo);
+        if ($this->photo !== null) {
+            if ($this->data->photo != null || $this->data->photo != '') {
+                if (File::exists(storage_path('app/classes/photo/') . $this->data->photo)) {
+                    // dd('yes');
+                    File::delete(storage_path('app/classes/photo/') . $this->data->photo);
+                }
+            }
+            Image::load($this->photo->getRealPath())->fit(Fit::Max, 1280, 720)->optimize()->save();
+            $filename = $this->photo->storeAs('', 'Meeting-'.str_pad($this->data->id, 5, '0', STR_PAD_LEFT),'class-photo');
+            $this->data->update([
+                'photo' => $filename,
+            ]);
         }
 
         session()->flash('success', 'Pembaruan detail kelas berhasil');
@@ -50,7 +63,11 @@ class Edit extends Component
         $this->lesson = $this->data->lesson_matter;
         $this->reference = $this->data->additional_links;
         $this->links = $this->data->additional_links;
-        $this->files = $this->data->files;
+        $this->currentPhoto = $this->data->photo;
+        $this->noteStudent = $this->data->tutor_notes;
+        $this->noteAdmin = $this->data->tutor_notes_to_admin;
+        $this->recording =  $this->data->recording_youtube == null ? $this->data->recording : $this->data->recording_youtube;
+        
     }
 
     public function render()
