@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
+
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -32,8 +34,12 @@ class AppServiceProvider extends ServiceProvider
         Builder::macro('orSearch', function ($field, $string) {
             return $string ? $this->orWhere($field, 'like', '%' . $string . '%') : $this;
         });
+        
+$value = Cache::remember('settings', 14400, function () {
+    return Setting::all();
+});
 
-        View::share('setting', Setting::all());
+        View::share('setting', Cache::get('settings'));
 
         // Builder
 

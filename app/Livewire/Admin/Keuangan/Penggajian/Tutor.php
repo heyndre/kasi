@@ -19,6 +19,7 @@ class Tutor extends Component
         ->whereNotNull('pay_date')
         ->selectRaw('*, SUM(amount) as total')
         ->groupBy('payment_number')
+        ->orderBy('payment_number', 'DESC')
         ->paginate(10);
 
         return view('livewire.admin.keuangan.penggajian.tutor', [

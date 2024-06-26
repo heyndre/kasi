@@ -20,6 +20,6 @@
         "flowbite": "^2.0.0",
         "flowbite-datepicker": "^1.2.4",
         "lightbox2": "^2.11.4",
-        "puppeteer": "^21.7.0"
+        "puppeteer": "^21.10.0"
     }
 }
