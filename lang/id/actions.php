@@ -64,6 +64,7 @@ return [
         'delete'    => 'Hapus :name',
         'duplicate' => 'Duplikat: nama',
         'edit'      => 'Sunting :name',
+        'export'    => 'Export :name',
         'hide'      => 'Sembunyikan :name',
         'import'    => 'Impor :name',
         'new'       => 'Baru :name',

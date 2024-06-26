@@ -14,7 +14,7 @@ use Livewire\Component;
 
 class Create extends Component
 {
-    public $dateOfEvent, $dateFormat, $isFreeTrial = 0, $pastStudentClasses, $student, $link, $package, $courseBase, $tutor, $topic, $selectedCourse = 4, $lesson, $reference, $endTime, $length = 60, $availability = 'waiting';
+    public $dateOfEvent, $dateFormat, $isFreeTrial = 0, $pastStudentClasses, $student, $link, $linkType = 'meetTutor', $package, $courseBase, $tutor, $topic, $selectedCourse = 4, $lesson, $reference, $endTime, $length = 60, $availability = 'waiting';
 
     public function mount()
     {
@@ -108,7 +108,7 @@ class Create extends Component
 
     public function scheduleClass()
     {
-        // dd($this);
+        dd($this);
 
         $base = CourseBase::where('id', $this->selectedCourse)->first();
 
@@ -204,8 +204,37 @@ class Create extends Component
         return $this->redirect(route('kbm.index'), navigate: true);
     }
 
+    public function updatedLinkType()
+    {
+        if ($this->linkType == 'meetTutor') {
+            $data = Tutor::whereHas('userData', function ($q) {
+                $q->where('slug', $this->tutor);
+            })->first();
+            if ($data !== null) {
+                $this->link = $data->meeting_link;
+            }
+        } elseif ($this->linkType == 'meetMain') {
+            $this->link = Setting::where('key', 'gmeet_link')->first()->value;
+        } else {
+            $this->link = Setting::where('key', 'default_link')->first()->value;
+        }
+    }
+
     public function render()
     {
+        if ($this->linkType == 'meetTutor') {
+            $data = Tutor::whereHas('userData', function ($q) {
+                $q->where('slug', $this->tutor);
+            })->first();
+            if ($data !== null) {
+                $this->link = $data->meeting_link;
+            }
+        } elseif ($this->linkType == 'meetMain') {
+            $this->link = Setting::where('key', 'gmeet_link')->first()->value;
+        } else {
+            $this->link = Setting::where('key', 'default_link')->first()->value;
+        }
+
         $students = Student::whereHas('userData', function ($q) {
             $q->whereIn('exist_status', ['Aktif', 'Reaktivasi']);
         })->get();

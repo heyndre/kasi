@@ -17,6 +17,7 @@
         "laravel/sanctum": "^3.3",
         "laravel/tinker": "^2.8",
         "livewire/livewire": "^3.0",
+        "predis/predis": "*",
         "riskihajar/terbilang": "^2.0",
         "spatie/image": "^3.3",
         "spatie/laravel-db-snapshots": "^2.5",
