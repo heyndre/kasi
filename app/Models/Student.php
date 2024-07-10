@@ -16,6 +16,21 @@ class Student extends Model
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
+    public function thePreference()
+    {
+        return $this->hasOne(StudentPreferences::class, 'student_id');
+    }
+
+    public function theCharacteristic()
+    {
+        return $this->hasOne(StudentCharacteristic::class, 'student_id');
+    }
+
+    public function theRecommendation()
+    {
+        return $this->hasMany(Recommendation::class, 'student_id');
+    }
+
     public function theGuardian()
     {
         return $this->belongsTo(Guardian::class, 'guardian_id', 'id');

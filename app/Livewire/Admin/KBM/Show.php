@@ -19,6 +19,9 @@ use App\Jobs\SendStudentAttendance;
 use App\Jobs\SendTutorAttendance;
 use App\Jobs\SendTutorConfirmClass;
 use Livewire\Component;
+use Alaouy\Youtube\Facades\Youtube;
+
+use  alchemyguy\YoutubeLaravelApi\AuthenticateService;
 
 class Show extends Component
 {
@@ -77,7 +80,22 @@ class Show extends Component
         $this->recordingSource =  $this->course->recording_youtube == null ? 'Google Drive' : 'Youtube';
     }
 
-    public function duration($length) {
+    public function youtube()
+    {
+        // $video = Youtube::getVideoInfo('rie-hPVJ7Sw');
+        // dd($video);
+
+        $authObject  = new AuthenticateService;
+
+        # Replace the identifier with a unqiue identifier for account or channel
+        $authUrl = $authObject->getLoginUrl('email', 'UCy_AafU9lcTV6fg7yNv2CTQ');
+
+        $code = Input::get('code');
+        $identifier = Input::get('state');
+    }
+
+    public function duration($length)
+    {
         // dd($length);
         $this->course->update([
             'length' => $length

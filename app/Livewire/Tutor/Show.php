@@ -4,6 +4,8 @@ namespace App\Livewire\Tutor;
 
 use App\Models\Student;
 use App\Models\Tutor;
+use App\Models\TutorCharacteristic;
+use App\Models\TutorPreferences;
 use App\Models\User;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
@@ -15,15 +17,46 @@ use Livewire\Component;
 
 class Show extends Component
 {
-    public $email, $tutor, $whatsapp, $birthday, $name, $photo, $city, $address, $province, $eduStatus = 'educating', $eduLevel, $workTitle = 'unemployed', $workSite, $eduSite, $bankNumber, $bankName, $bankAdditionalInfo, $eduMajor, $religion, $hobbies, $passion, $motto, $teachingExp, $leadershipExp, $competitionExp, $acronym, $acronymPlus, $status, $registeredAt, $lastLoginAt, $lastActiveAt, $photoUrl, $nextAnniversary, $slug;
+    public $email, $tutor, $preference, $char, $whatsapp, $birthday, $name, $photo, $city, $address, $province, $eduStatus = 'educating', $eduLevel, $workTitle = 'unemployed', $workSite, $eduSite, $bankNumber, $bankName, $bankAdditionalInfo, $eduMajor, $religion, $hobbies, $passion, $motto, $teachingExp, $leadershipExp, $competitionExp, $acronym, $acronymPlus, $status, $registeredAt, $lastLoginAt, $lastActiveAt, $photoUrl, $nextAnniversary, $slug, $evaluation = [];
 
     public function mount($slug)
     {
-        $data = Tutor::with('userData', 'theSkill')
+        $data = Tutor::with('userData', 'theSkill', 'theEvaluation.theMeetingEval.theCourse.theStudent', 'theCharacteristic', 'thePreference')
             ->whereHas('userData', function ($q) use ($slug) {
                 $q->where('slug', $slug);
             })->firstOrFail();
         // dd($data);
+        if ($data->thePreference == null) {
+            $this->preference = [
+                'duration' => null,
+                'time_of_day' => null
+            ];
+        } else {
+            $this->preference = [
+                'duration' => $data->thePreference->duration,
+                'time_of_day' => $data->thePreference->time_of_day,
+            ];
+        }
+
+        if ($data->theCharacteristic == null) {
+            $this->char = [
+                'neuro' => null,
+                'extra' => null,
+                'open' => null,
+                'agree' => null,
+                'conscient' => null
+            ];
+        } else {
+            $this->char = [
+                'neuro' => $data->theCharacteristic->neuroticism,
+                'extra' => $data->theCharacteristic->extraversion,
+                'open' => $data->theCharacteristic->openness,
+                'agree' => $data->theCharacteristic->agreeableness,
+                'conscient' => $data->theCharacteristic->conscientiousness
+            ];
+        }
+
+        $this->evaluation = $data->theEvaluation;
         $this->tutor = $data;
         $this->name = $data->userData->name;
         $this->email = $data->userData->email;
@@ -69,6 +102,30 @@ class Show extends Component
         }
 
         // dd($this);
+    }
+
+    public function saveChar()
+    {
+        // dd($this);
+        $charP = TutorCharacteristic::updateOrCreate([
+                'tutor_id' => $this->tutor->id,
+            ], [
+                'neuroticism' => $this->char['neuro'],
+                'openness' => $this->char['open'],
+                'agreeableness' => $this->char['agree'],
+                'extraversion' => $this->char['extra'],
+                'conscientiousness' => $this->char['conscient'],
+            ]
+        );
+
+        $prefP = TutorPreferences::updateOrCreate([
+            'tutor_id' => $this->tutor->id,
+        ], [
+            'duration' => $this->preference['duration'],
+            'time_of_day' => $this->preference['time_of_day'],
+        ]
+    );
+
     }
 
     public function render()

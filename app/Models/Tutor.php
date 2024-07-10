@@ -16,6 +16,21 @@ class Tutor extends Model
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
+    public function theCharacteristic()
+    {
+        return $this->hasOne(TutorCharacteristic::class, 'tutor_id');
+    }
+
+    public function thePreference()
+    {
+        return $this->hasOne(TutorPreferences::class, 'tutor_id');
+    }
+
+    public function theEvaluation()
+    {
+        return $this->hasMany(Evaluation::class, 'tutor_id', 'id');
+    }
+
     public function thePayment()
     {
         return $this->hasMany(TutorPayment::class, 'tutor_id', 'id');

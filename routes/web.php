@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\BillingController;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FileAccessController;
 use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\MeetingController;
@@ -57,6 +58,8 @@ use App\Livewire\Tutor\Keuangan\Penggajian as TutorSeeFee;
 use Illuminate\Support\Facades\Route;
 use Spatie\WelcomeNotification\WelcomesNewUsers;
 use App\Http\Controllers\welcomeController;
+use App\Livewire\Evaluation\Meeting\Add as EvalMeetingAdd;
+use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
 /*
 |--------------------------------------------------------------------------
@@ -84,6 +87,9 @@ Route::get('tes-mail', function () {
 
 // Route::get('tes-fee', [MeetingController::class, 'tesFee']);
 
+Route::get('google/redirect', [DashboardController::class, 'googleRedirect'])->name('google.redirect');
+Route::get('google/init', [DashboardController::class, 'initYoutube'])->name('google.init');
+Route::get('google/upload', [DashboardController::class, 'testYoutube'])->name('google.test');
 
 Route::view('default-billing', 'billing.default');
 Route::view('mail-student-attendance', 'mail.student-attendance');
@@ -166,6 +172,9 @@ Route::middleware([
 
         Route::get('/tutor/registrasi', TutorRegister::class)->name('tutor.register');
         // Route::get('/tutor/kalender-ulang-tahun', TutorBirthday::class)->name('tutor.birthday');
+
+        // Evaluation Menu
+        Route::get('evaluasi/pertemuan/{id}', EvalMeetingAdd::class)->name('evaluation.meeting.add');
     });
 
     // Student group

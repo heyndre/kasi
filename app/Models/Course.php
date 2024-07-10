@@ -49,6 +49,11 @@ class Course extends Model
         return $this->belongsTo(TutorPayment::class, 'tutor_payment_id', 'id');
     }
 
+    public function theEvaluation()
+    {
+        return $this->hasMany(MeetingEvaluation::class, 'course_id', 'id');
+    }
+
     public function statusName()
     {
         if (session('language') == 'id') {
